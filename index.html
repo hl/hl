@@ -451,16 +451,11 @@ edited 23 Feb 2026
   </div>
 </article></main>
 
-<!-- BIO_HTML_START -->
-<aside class="bio">
-  <div class="bio-label">About</div>
-  <div class="bio-body"><p>Henricus is a backend software developer with a passion for complex systems and elegant code architecture. Specializing in Elixir and Rust, he thrives on solving challenging technical problems and untangling intricate backend logic, though he openly admits frontend development isn't his forte. When he's not deep in code, Henricus enjoys analog and digital photography and considers being a dad his greatest achievement and defining characteristic.</p></div>
-</aside>
-<!-- BIO_HTML_END -->
 <div id="bio-section"><aside class="bio">
   <div class="bio-label">About</div>
   <div class="bio-body"><p>Henricus is a backend software developer with a passion for complex systems and elegant code architecture. Specializing in Elixir and Rust, he thrives on solving challenging technical problems and untangling intricate backend logic, though he openly admits frontend development isn't his forte. When he's not deep in code, Henricus enjoys analog and digital photography and considers being a dad his greatest achievement and defining characteristic.</p></div>
-</aside></div></div>
+</aside></div>
+</div>
 
 <!-- Settings modal -->
 <div class="modal-backdrop" id="settings-modal" onclick="maybeCloseSettings(event)">
@@ -703,14 +698,7 @@ function bioStaticHtml() {
 }
 
 function renderBio() {
-  const container = document.querySelector('.container');
-  let existing = document.getElementById('bio-section');
-  if (existing) existing.remove();
-  if (!settings.bio) return;
-  const aside = document.createElement('div');
-  aside.id = 'bio-section';
-  aside.innerHTML = bioStaticHtml();
-  container.appendChild(aside);
+  document.getElementById('bio-section').innerHTML = bioStaticHtml();
 }
 
 // ── Settings ──────────────────────────────────────────────────────────────────
@@ -846,7 +834,12 @@ edited 23 Feb 2026
     `<!-- HEADER_TITLE_START --><h1>${esc(siteTitle)}</h1><!-- HEADER_TITLE_END -->`
   );
   src = src.replace(
-    /<!-- BIO_HTML_START -->[\s\S]*?<!-- BIO_HTML_END -->/,
+    /<!-- BIO_HTML_START -->
+<aside class="bio">
+  <div class="bio-label">About</div>
+  <div class="bio-body"><p>Henricus is a backend software developer with a passion for complex systems and elegant code architecture. Specializing in Elixir and Rust, he thrives on solving challenging technical problems and untangling intricate backend logic, though he openly admits frontend development isn't his forte. When he's not deep in code, Henricus enjoys analog and digital photography and considers being a dad his greatest achievement and defining characteristic.</p></div>
+</aside>
+<!-- BIO_HTML_END -->/,
     `<!-- BIO_HTML_START -->\n${bioStaticHtml()}\n<!-- BIO_HTML_END -->`
   );
 
