@@ -787,15 +787,15 @@ function downloadQuine() {
   let src = document.documentElement.outerHTML;
 
   src = src.replace(
-    /\/\/ QUINE_NOTES_START[\s\S]*?\/\/ QUINE_NOTES_END/,
-    `// QUINE_NOTES_START\nvar EMBEDDED_NOTES = ${JSON.stringify(notes)};\n// QUINE_NOTES_END`
+    new RegExp('// QUINE_NOTES_START[\\s\\S]*?// QUINE_NOTES_END'),
+    '// QUINE_NOTES_START\nvar EMBEDDED_NOTES = ' + JSON.stringify(notes) + ';\n// QUINE_NOTES_END'
   );
   src = src.replace(
-    /\/\/ QUINE_SETTINGS_START[\s\S]*?\/\/ QUINE_SETTINGS_END/,
-    `// QUINE_SETTINGS_START\nvar EMBEDDED_SETTINGS = ${JSON.stringify(settings)};\n// QUINE_SETTINGS_END`
+    new RegExp('// QUINE_SETTINGS_START[\\s\\S]*?// QUINE_SETTINGS_END'),
+    '// QUINE_SETTINGS_START\nvar EMBEDDED_SETTINGS = ' + JSON.stringify(settings) + ';\n// QUINE_SETTINGS_END'
   );
   src = src.replace(
-    /<!-- NOTES_HTML_START -->
+    new RegExp('<!-- NOTES_HTML_START -->
 <article class="note" id="n-mlz1rjkb5qmdn" data-id="mlz1rjkb5qmdn" data-title="Instructions" data-body="Frontline LLM's are capable of following ~150-200 instructions. Before `CLAUDE.md` is read, `claude` already gets ~50 instructions. This means that the amount of instructions in your personal `CLAUDE.md` file plus any in your project, ideally need to stay below ~150.">
   <div class="note-view">
     <div class="note-header">
@@ -820,27 +820,27 @@ edited 23 Feb 2026
     </div>
   </div>
 </article>
-<!-- NOTES_HTML_END -->/,
-    `<!-- NOTES_HTML_START -->\n${notesStaticHtml()}\n<!-- NOTES_HTML_END -->`
+<!-- NOTES_HTML_END -->'),
+    '<!-- NOTES_HTML_START -->\n' + notesStaticHtml() + '\n<!-- NOTES_HTML_END -->'
   );
   const siteTitle = settings.title || 'Notes';
   const siteDesc  = settings.description || '';
   src = src.replace(
-    /<!-- SITE_META_START -->[\s\S]*?<!-- SITE_META_END -->/,
-    `<!-- SITE_META_START -->\n<title>${esc(siteTitle)}</title>\n<meta name="description" content="${esc(siteDesc)}">\n<!-- SITE_META_END -->`
+    new RegExp('<!-- SITE_META_START -->[\\s\\S]*?<!-- SITE_META_END -->'),
+    '<!-- SITE_META_START -->\n<title>' + esc(siteTitle) + '</title>\n<meta name="description" content="' + esc(siteDesc) + '">\n<!-- SITE_META_END -->'
   );
   src = src.replace(
-    /<!-- HEADER_TITLE_START -->[\s\S]*?<!-- HEADER_TITLE_END -->/,
-    `<!-- HEADER_TITLE_START --><h1>${esc(siteTitle)}</h1><!-- HEADER_TITLE_END -->`
+    new RegExp('<!-- HEADER_TITLE_START -->[\\s\\S]*?<!-- HEADER_TITLE_END -->'),
+    '<!-- HEADER_TITLE_START --><h1>' + esc(siteTitle) + '</h1><!-- HEADER_TITLE_END -->'
   );
   src = src.replace(
-    /<!-- BIO_HTML_START -->
+    new RegExp('<!-- BIO_HTML_START -->
 <aside class="bio">
   <div class="bio-label">About</div>
   <div class="bio-body"><p>Henricus is a backend software developer with a passion for complex systems and elegant code architecture. Specializing in Elixir and Rust, he thrives on solving challenging technical problems and untangling intricate backend logic, though he openly admits frontend development isn't his forte. When he's not deep in code, Henricus enjoys analog and digital photography and considers being a dad his greatest achievement and defining characteristic.</p></div>
 </aside>
-<!-- BIO_HTML_END -->/,
-    `<!-- BIO_HTML_START -->\n${bioStaticHtml()}\n<!-- BIO_HTML_END -->`
+<!-- BIO_HTML_END -->'),
+    '<!-- BIO_HTML_START -->\n' + bioStaticHtml() + '\n<!-- BIO_HTML_END -->'
   );
 
   const blob = new Blob([src], { type: 'text/html;charset=utf-8' });
