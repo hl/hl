@@ -1,1483 +1,879 @@
-<!DOCTYPE html>
 <html lang="en"><head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    
-    <!-- SEO & Meta Tags (Dynamic content will be updated by JS) -->
-    <meta name="description" content="Henricus is a backend software developer with a passion for complex systems and elegant code architecture. Specializing in Elixir and Rust, he thrives on solving challenging technical problems and untangling intricate backend logic, though he openly admits frontend development isn't his forte. When he's not deep in code, Henricus enjoys analog and digital photography and considers being a dad his greatest achievement and defining characteristic.">
-    <meta name="author" content="Autograph User">
-    
-    <!-- Open Graph / Facebook -->
-    <meta property="og:type" content="website">
-    <meta property="og:title" content="Henrics Louwhoff">
-    <meta property="og:description" content="Henricus is a backend software developer with a passion for complex systems and elegant code architecture. Specializing in Elixir and Rust, he thrives on solving challenging technical problems and untangling intricate backend logic, though he openly admits frontend development isn't his forte. When he's not deep in code, Henricus enjoys analog and digital photography and considers being a dad his greatest achievement and defining characteristic.">
-    
-    <!-- Twitter -->
-    <meta name="twitter:card" content="summary">
-    <meta name="twitter:title" content="Henrics Louwhoff">
-    <meta name="twitter:description" content="Henricus is a backend software developer with a passion for complex systems and elegant code architecture. Specializing in Elixir and Rust, he thrives on solving challenging technical problems and untangling intricate backend logic, though he openly admits frontend development isn't his forte. When he's not deep in code, Henricus enjoys analog and digital photography and considers being a dad his greatest achievement and defining characteristic.">
-    
-    <title>Henrics Louwhoff</title>
-    
-    <!-- Blog Configuration (Persisted) -->
-    <script id="blog-configuration" type="application/json">{
-  "title": "Henrics Louwhoff",
-  "pageTitle": "Henrics Louwhoff",
-  "introHtml": "Henricus is a backend software developer with a passion for complex systems and elegant code architecture. Specializing in Elixir and Rust, he thrives on solving challenging technical problems and untangling intricate backend logic, though he openly admits frontend development isn't his forte. When he's not deep in code, Henricus enjoys analog and digital photography and considers being a dad his greatest achievement and defining characteristic.",
-  "rawIntro": "Henricus is a backend software developer with a passion for complex systems and elegant code architecture. Specializing in Elixir and Rust, he thrives on solving challenging technical problems and untangling intricate backend logic, though he openly admits frontend development isn't his forte. When he's not deep in code, Henricus enjoys analog and digital photography and considers being a dad his greatest achievement and defining characteristic.",
-  "footerText": "Henrics Louwhoff",
-  "metaAuthor": "Autograph User",
-  "metaDescription": "Henricus is a backend software developer with a passion for complex systems and elegant code architecture. Specializing in Elixir and Rust, he thrives on solving challenging technical problems and untangling intricate backend logic, though he openly admits frontend development isn't his forte. When he's not deep in code, Henricus enjoys analog and digital photography and considers being a dad his greatest achievement and defining characteristic."
-}</script>
-    
-    <!-- Offline Markdown Parser -->
-    <script>
-        // A lightweight, offline-ready Markdown parser
-        const marked = {
-            parse: function(md) {
-                if(!md) return "";
-                let output = md;
-                
-                // 1. Code Blocks
-                const codeBlocks = [];
-                output = output.replace(/```([\s\S]*?)```/gm, (match) => {
-                    codeBlocks.push(match);
-                    return `__CODEBLOCK${codeBlocks.length-1}__`;
-                });
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<!-- SITE_META_START -->
+<title>Henricus's Notes</title>
+<meta name="description" content="Henricus Louwhoff">
+<!-- SITE_META_END -->
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,500;1,400&family=JetBrains+Mono:wght@400&display=swap');
 
-                // 2. Basic HTML Escaping
-                output = output.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+  :root {
+    --bg: #f7f5f0;
+    --fg: #1a1a1a;
+    --fg-muted: #888;
+    --fg-faint: #bbb;
+    --border: #e0ddd6;
+    --accent: #c0392b;
+    --max-w: 640px;
+  }
 
-                // 3. Block Elements
-                output = output.replace(/^# (.*$)/gim, '<h1>$1</h1>');
-                output = output.replace(/^## (.*$)/gim, '<h2>$1</h2>');
-                output = output.replace(/^### (.*$)/gim, '<h3>$1</h3>');
-                output = output.replace(/^> (.*$)/gim, '<blockquote>$1</blockquote>');
-                output = output.replace(/^- (.*$)/gim, '<li>$1</li>');
-                output = output.replace(/(<li>.*<\/li>)/gim, '<ul>$1</ul>').replace(/<\/ul>\s*<ul>/gim, '');
-                output = output.replace(/^---$/gim, '<hr>');
-
-                // 4. Inline Elements
-                output = output.replace(/!\[([^\]]+)\]\(([^)]+)\)/gim, '<img src="$2" alt="$1">');
-                output = output.replace(/\[([^\]]+)\]\(([^)]+)\)/gim, '<a href="$2">$1</a>');
-                output = output.replace(/\*\*(.*?)\*\*/gim, '<strong>$1</strong>');
-                output = output.replace(/\*(.*?)\*/gim, '<em>$1</em>');
-                output = output.replace(/`([^`]+)`/gim, '<code>$1</code>');
-
-                // 5. Newlines
-                output = output.replace(/\n/gim, '<br>');
-                output = output.replace(/(<\/h\d>|<\/blockquote>|<\/ul>|<\/hr>)\s*<br>/gim, '$1');
-
-                // 6. Restore Code Blocks
-                output = output.replace(/__CODEBLOCK(\d+)__/g, (match, index) => {
-                    let code = codeBlocks[index].replace(/```/g, '').trim();
-                    code = code.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
-                    return `<pre><code>${code}</code></pre>`;
-                });
-
-                return output;
-            }
-        };
-    </script>
-
-    <style>
-        :root {
-            --bg-color: #ffffff;
-            --text-color: #111111;
-            --secondary-text: #666666;
-            --border-color: #e6e6e6;
-            --code-bg: #f7f7f7;
-            --input-bg: #ffffff;
-            --danger-color: #d32f2f;
-            --button-text: #ffffff;
-            --overlay-gradient: linear-gradient(to bottom, rgba(255,255,255,0), rgba(255,255,255,1));
-        }
-
-        @media (prefers-color-scheme: dark) {
-            :root {
-                --bg-color: #0a0a0a;
-                --text-color: #ffffff;
-                --secondary-text: #a0a0a0;
-                --border-color: #333333;
-                --code-bg: #1a1a1a;
-                --input-bg: #0a0a0a;
-                --danger-color: #ff5252;
-                --button-text: #0a0a0a;
-                --overlay-gradient: linear-gradient(to bottom, rgba(10,10,10,0), rgba(10,10,10,1));
-            }
-        }
-
-        body {
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
-            background-color: var(--bg-color);
-            color: var(--text-color);
-            line-height: 1.75;
-            font-size: 18px;
-            margin: 0;
-            padding: 0;
-        }
-
-        .container {
-            max-width: 768px;
-            margin: 0 auto;
-            padding: 4rem 2rem;
-        }
-
-        /* --- Header & Intro --- */
-        header {
-            margin-bottom: 4rem;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        h1 {
-            margin: 0;
-            font-size: 3rem;
-            font-weight: 800;
-            letter-spacing: -1px;
-            line-height: 1.1;
-        }
-        
-        /* Links in header */
-        h1 a { text-decoration: none; color: inherit; }
-
-        .intro {
-            margin-top: 4rem; 
-            margin-bottom: 2rem;
-            padding-top: 2rem;
-            border-top: 1px solid var(--border-color);
-            color: var(--secondary-text);
-            font-size: 1.1rem;
-            line-height: 1.6;
-            font-weight: 400;
-        }
-
-        /* --- Buttons --- */
-        .controls {
-            display: flex;
-            align-items: center;
-        }
-
-        .controls button, button.primary, button.secondary {
-            background-color: transparent;
-            border: 2px solid var(--text-color);
-            color: var(--text-color);
-            height: 2.5rem; /* Fixed height for alignment */
-            padding: 0 1.2rem; /* Horizontal padding */
-            cursor: pointer;
-            font-size: 0.9rem;
-            font-weight: 600;
-            border-radius: 6px;
-            margin-left: 0.8rem;
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            box-sizing: border-box;
-        }
-        
-        button.primary, .controls button.primary {
-            background-color: var(--text-color);
-            color: var(--button-text);
-            border-color: var(--text-color);
-        }
-
-        .controls button:hover, button.secondary:hover {
-            background-color: var(--bg-color);
-            color: var(--text-color);
-            transform: translateY(-1px);
-        }
-
-         button.primary:hover, .controls button.primary:hover {
-            background-color: var(--secondary-text);
-            border-color: var(--secondary-text);
-            color: var(--button-text);
-        }
-
-        button:disabled, .controls button.primary:disabled {
-            opacity: 0.3;
-            cursor: not-allowed;
-            transform: none;
-            background-color: var(--text-color) !important;
-            border-color: var(--text-color) !important;
-        }
-        
-        /* Icon Button Styling */
-        .controls button.icon-btn {
-            padding: 0;
-            width: 2.5rem; /* Make them square and match height */
-        }
-
-        /* Back Button */
-        .back-link {
-            display: none; /* Hidden by default */
-            margin-bottom: 2rem;
-            color: var(--secondary-text);
-            text-decoration: none;
-            font-weight: 600;
-            font-size: 0.9rem;
-        }
-        .back-link:hover { text-decoration: underline; color: var(--text-color); }
-
-        /* --- Editor & Settings & Help Sections --- */
-        #editor-section, #settings-section, #help-section {
-            display: none;
-            background: var(--bg-color);
-            padding: 2rem;
-            border-radius: 12px;
-            margin-bottom: 4rem;
-            border: 1px solid var(--border-color);
-            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
-        }
-
-        #editor-section.visible, #settings-section.visible, #help-section.visible {
-            display: block;
-        }
-        
-        /* Help Section Specifics */
-        .help-grid {
-            display: grid;
-            grid-template-columns: 1fr;
-            gap: 1.5rem;
-            margin-bottom: 2rem;
-        }
-        
-        .help-item h3 {
-            font-size: 1.1rem;
-            margin-bottom: 0.5rem;
-            border-bottom: 1px solid var(--border-color);
-            padding-bottom: 0.25rem;
-            display: inline-block;
-        }
-        
-        .help-item p {
-            font-size: 0.95rem;
-            color: var(--secondary-text);
-            margin: 0;
-            line-height: 1.5;
-        }
-
-        .form-group {
-            margin-bottom: 1.5rem;
-        }
-
-        label {
-            display: block;
-            margin-bottom: 0.5rem;
-            font-size: 0.85rem;
-            font-weight: 700;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-        }
-
-        input[type="text"], input[type="date"], textarea {
-            width: 100%;
-            padding: 0.8rem 0;
-            border: none;
-            border-bottom: 2px solid var(--border-color);
-            background: transparent;
-            color: var(--text-color);
-            border-radius: 0;
-            font-family: inherit;
-            font-size: 1rem;
-            box-sizing: border-box;
-        }
-        
-        input[type="text"]:focus, input[type="date"]:focus, textarea:focus {
-            outline: none;
-            border-bottom-color: var(--text-color);
-        }
-
-        textarea {
-            min-height: 200px;
-            resize: vertical;
-            margin-top: 0.5rem;
-        }
-        
-        /* Data Management Section */
-        .data-management {
-            margin-top: 2rem;
-            padding-top: 2rem;
-            border-top: 1px solid var(--border-color);
-        }
-        
-        .data-management h3 {
-            margin-top: 0;
-            font-size: 1.2rem;
-            margin-bottom: 1rem;
-        }
-        
-        .data-help-text {
-            font-size: 0.9rem;
-            color: var(--secondary-text);
-            margin-bottom: 1.5rem;
-            line-height: 1.5;
-            background: var(--code-bg);
-            padding: 1rem;
-            border-radius: 6px;
-        }
-        
-        .data-buttons {
-            display: flex;
-            gap: 1rem;
-            flex-wrap: wrap;
-        }
-        
-        .settings-info {
-            text-align: center;
-            font-size: 0.85rem;
-            color: var(--secondary-text);
-            margin-top: 2rem;
-            padding-top: 1rem;
-            border-top: 1px dashed var(--border-color);
-        }
-        .settings-info a { color: inherit; text-decoration: underline; }
-
-        /* --- Blog Posts & VIEW MODES --- */
-        article {
-            position: relative;
-        }
-
-        /* == LIST VIEW (Default) == */
-        body.list-view article {
-            margin-bottom: 2rem;
-            padding-bottom: 1.5rem;
-            border-bottom: 1px solid var(--border-color);
-        }
-        
-        body.list-view article .content {
-            display: none; /* Hide full content in list view */
-        }
-        
-        body.list-view article .meta-row {
-            margin-bottom: 0;
-            border-top: none;
-            padding-top: 0.2rem;
-        }
-
-        body.list-view article h2 {
-            font-size: 1.8rem;
-            margin-bottom: 0.5rem;
-        }
-
-        /* == SINGLE VIEW == */
-        body.single-view #posts-container article {
-            display: none; /* Hide all articles by default */
-        }
-
-        body.single-view #posts-container article.active-post {
-            display: block; /* Show only active post */
-            margin-bottom: 4rem;
-        }
-        
-        body.single-view .intro {
-            display: none; /* Hide bio on single post pages */
-        }
-        
-        body.single-view .back-link {
-            display: inline-block;
-        }
-
-        article header {
-            margin-bottom: 1rem;
-            padding-bottom: 0;
-            display: block;
-        }
-
-        article h2 {
-            margin-top: 0;
-            margin-bottom: 0.8rem;
-            font-size: 2.2rem;
-            font-weight: 800;
-            line-height: 1.2;
-            position: relative;
-            letter-spacing: -0.5px;
-        }
-
-        /* Title Link Styling */
-        article h2 a {
-            text-decoration: none;
-            color: inherit;
-        }
-        
-        body.list-view article h2 a:hover {
-            color: var(--secondary-text);
-            text-decoration: underline;
-        }
-
-        .meta-row {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 1rem;
-            border-top: 1px solid var(--border-color);
-            padding-top: 0.5rem;
-        }
-
-        .meta {
-            font-size: 0.9rem;
-            font-weight: 500;
-            color: var(--secondary-text);
-            text-transform: uppercase;
-            letter-spacing: 1px;
-        }
-
-        .post-actions {
-            opacity: 0.5;
-        }
-        article:hover .post-actions { opacity: 1; }
-
-        .post-actions button {
-            background: none;
-            border: none;
-            color: var(--secondary-text);
-            cursor: pointer;
-            font-size: 0.85rem;
-            padding: 0 0 0 1rem;
-            font-weight: 600;
-            margin: 0;
-            z-index: 10;
-            position: relative;
-        }
-
-        .post-actions button:hover { color: var(--text-color); }
-        .post-actions button.delete-btn:hover { color: var(--danger-color); }
-
-        .content {
-            font-size: 1.125rem;
-            line-height: 1.8;
-        }
-        
-        .content p { margin-bottom: 1.5rem; }
-        .content img { max-width: 100%; height: auto; border-radius: 8px; margin: 2rem 0; }
-        .content pre { background: var(--code-bg); padding: 1.5rem; overflow-x: auto; border-radius: 8px; border: 1px solid var(--border-color); font-size: 0.95rem; }
-        .content blockquote { border-left: 4px solid var(--text-color); margin: 2rem 0; padding-left: 1.5rem; color: var(--secondary-text); font-style: italic; font-size: 1.2rem; }
-
-        footer {
-            text-align: left;
-            font-size: 0.9rem;
-            color: var(--secondary-text);
-            margin-top: 1rem;
-            padding-top: 1rem;
-            border-top: 1px solid var(--border-color);
-        }
-    </style>
-</head>
-<body class="list-view">
-
-<div class="container">
-    <header>
-        <h1><a href="?" id="blog-title">Henrics Louwhoff</a></h1>
-        <div class="controls">
-            <button onclick="toggleEditor()">+ New Post</button>
-            <button id="save-btn" class="primary" onclick="downloadStaticPage()" title="You have unsaved changes" disabled="">Save Blog</button>
-            <button class="icon-btn" onclick="toggleSettings()" title="Settings" aria-label="Settings">
-                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                    <circle cx="12" cy="12" r="3"></circle>
-                    <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path>
-                </svg>
-            </button>
-             <button class="icon-btn" onclick="toggleHelp()" title="Help" aria-label="Help">
-                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                    <circle cx="12" cy="12" r="10"></circle>
-                    <path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"></path>
-                    <line x1="12" y1="17" x2="12.01" y2="17"></line>
-                </svg>
-            </button>
-        </div>
-    </header>
-    
-    <a href="?" class="back-link">← Back to Articles</a>
-
-    <!-- Help Section -->
-    <div id="help-section">
-        <h2>About Autograph</h2>
-        <div class="help-grid">
-            <div class="help-item">
-                <h3>The "Quine" Concept</h3>
-                <p>Autograph works as a self-replicating file. When you click <strong>Save Blog</strong>, you download a new HTML file that contains the application logic PLUS all your new posts baked directly into the code. This new file is your updated master copy.</p>
-            </div>
-            <div class="help-item">
-                <h3>Writing Posts</h3>
-                <p>Click <strong>+ New Post</strong> to open the editor. You can write in Markdown. Clicking "Publish to Page" saves the post to your browser's local storage immediately.</p>
-            </div>
-            <div class="help-item">
-                <h3>Saving &amp; Publishing</h3>
-                <p>Changes in local storage are temporary. To make them permanent and shareable, you must click <strong>Save Blog</strong>. This generates the standalone HTML file that you can upload to any web host (like GitHub Pages or Netlify).</p>
-            </div>
-            <div class="help-item">
-                <h3>Navigation</h3>
-                <p>The homepage is a chronological list. Clicking a post title opens the <strong>Single View</strong> (?post=slug-id), which is URL-friendly and indexable by search engines.</p>
-            </div>
-            <div class="help-item">
-                <h3>Customization</h3>
-                <p>Use the <strong>Cog Icon</strong> to change the Blog Title, Author Bio, Page Title (for browser tabs), Footer text, and SEO Meta tags.</p>
-            </div>
-            <div class="help-item">
-                <h3>Backup &amp; Migration</h3>
-                <p>Use the <strong>Export Data</strong> button in settings to save a JSON backup. You can Import this JSON into a new version of Autograph to migrate your content.</p>
-            </div>
-        </div>
-        <div style="text-align: right;">
-            <button class="primary" onclick="toggleHelp()">Close</button>
-        </div>
-    </div>
-
-    <!-- Settings Section -->
-    <div id="settings-section">
-        <h2>Settings</h2>
-        
-        <div class="form-group">
-            <label for="settings-title">Blog Title (Header)</label>
-            <input type="text" id="settings-title" placeholder="Autograph" value="">
-        </div>
-
-        <div class="form-group">
-            <label for="settings-page-title">Page Title (Browser Tab)</label>
-            <input type="text" id="settings-page-title" placeholder="Leave empty to use Blog Title" value="">
-        </div>
-        
-        <div class="form-group">
-            <label for="settings-intro">Author Bio / Intro (Markdown supported)</label>
-            <textarea id="settings-intro" placeholder="Write a short introduction about yourself..."></textarea>
-        </div>
-
-        <div class="form-group">
-            <label for="settings-footer-text">Footer Text (Copyright Name)</label>
-            <input type="text" id="settings-footer-text" placeholder="Leave empty to use Blog Title" value="">
-        </div>
-
-        <div class="form-group">
-            <label for="settings-meta-author">Meta Author Name</label>
-            <input type="text" id="settings-meta-author" placeholder="John Doe" value="">
-        </div>
-
-        <div class="form-group">
-            <label for="settings-meta-desc">Meta Description (SEO)</label>
-            <textarea id="settings-meta-desc" style="min-height: 100px;" placeholder="A brief description of your blog for search engines..."></textarea>
-        </div>
-        
-        <div class="data-management">
-            <h3>Data Management</h3>
-            <div class="data-help-text">
-                <strong>Export:</strong> Download all posts and settings as a JSON file. Use this to backup your data or migrate to a new version of Autograph.<br><br>
-                <strong>Import:</strong> Load data from a JSON file. <span style="color: var(--danger-color); font-weight: bold;">Warning:</span> Importing will clear your current browser local storage to prevent conflicts.
-            </div>
-            <div class="data-buttons">
-                <button class="secondary" onclick="exportData()">Export Data (JSON)</button>
-                <input type="file" id="import-file" accept=".json" style="display: none;" onchange="importData(this)">
-                <button class="secondary" onclick="document.getElementById('import-file').click()">Import Data (JSON)</button>
-            </div>
-        </div>
-
-        <div style="text-align: right; margin-top: 2rem;">
-            <button class="secondary" onclick="toggleSettings()">Cancel</button>
-            <button class="primary" onclick="saveSettings()">Save Changes</button>
-        </div>
-        
-        <div class="settings-info">
-            <p>Autograph v1.0</p>
-            <p>Created by <a href="[https://github.com/hl](https://github.com/hl)" target="_blank">Henricus Louwhoff</a></p>
-        </div>
-    </div>
-
-    <!-- Editor Form -->
-    <div id="editor-section">
-        <input type="hidden" id="edit-post-id" value="">
-        <div class="form-group">
-            <label for="post-title">Post Title</label>
-            <input type="text" id="post-title" placeholder="Enter post title..." value="">
-        </div>
-        <div class="form-group">
-            <label for="post-date">Publish Date</label>
-            <input type="date" id="post-date" value="">
-        </div>
-        <div class="form-group">
-            <label for="post-content">Content (Markdown supported)</label>
-            <textarea id="post-content" placeholder="Write your thoughts here..."></textarea>
-        </div>
-        <div style="text-align: right;">
-            <button class="secondary" onclick="toggleEditor()">Cancel</button>
-            <button class="primary" id="publish-btn" onclick="savePost()">Publish to Page</button>
-        </div>
-    </div>
-
-    <!-- Posts Container -->
-    <main id="posts-container"><article id="post-1767968508423" data-raw="I've%20been%20experimenting%20with%20Quine%20apps%20recently%2C%20building%20a%20blog%20and%20a%20kanban%20board%20that%20work%20entirely%20offline.%20The%20approach%20is%20simple%20but%20powerful%2C%20and%20it's%20made%20me%20rethink%20how%20we%20build%20web%20applications.%0A%0AA%20Quine%20app%20is%20self-contained%20code%20that%20can%20modify%20itself.%20When%20you%20add%20or%20change%20items%20in%20my%20kanban%20board%2C%20they're%20temporarily%20stored%20in%20your%20browser's%20local%20storage.%20When%20you're%20ready%2C%20you%20save%20a%20new%20version%20of%20the%20app%20that%20includes%20those%20changes%20baked%20directly%20into%20the%20code.%20The%20app%20essentially%20rewrites%20itself%20with%20your%20data%20inside%20it.%0A%0AThis%20approach%20offers%20three%20major%20benefits.%20First%2C%20hosting%20is%20remarkably%20easy.%20You%20can%20put%20the%20app%20anywhere%20that%20serves%20static%20files%2C%20from%20GitHub%20Pages%20to%20a%20simple%20web%20server.%20There's%20no%20backend%20to%20maintain%2C%20no%20database%20to%20configure%2C%20and%20no%20server%20costs%20to%20worry%20about.%0A%0ASecond%2C%20you%20don't%20need%20accounts%20or%20authentication.%20There's%20no%20sign-up%20process%2C%20no%20passwords%20to%20remember%2C%20and%20no%20personal%20information%20to%20hand%20over.%20You%20simply%20open%20the%20app%20and%20start%20using%20it.%20This%20removes%20friction%20and%20makes%20the%20apps%20incredibly%20accessible.%0A%0AThird%2C%20and%20perhaps%20most%20importantly%2C%20you%20own%20your%20data%20completely.%20Everything%20lives%20in%20the%20app%20file%20itself.%20You%20can%20save%20it%2C%20back%20it%20up%2C%20or%20share%20it%20however%20you%20like.%20There's%20no%20company%20that%20can%20shut%20down%20and%20take%20your%20data%20with%20it%2C%20no%20terms%20of%20service%20that%20might%20change%2C%20and%20no%20privacy%20concerns%20about%20who%20can%20access%20your%20information.%0A%0AThe%20offline%20capability%20means%20these%20apps%20work%20anywhere%2C%20regardless%20of%20your%20internet%20connection.%20Once%20you've%20loaded%20the%20app%2C%20it's%20yours%20to%20use%20whenever%20and%20wherever%20you%20need%20it.%0A%0AQuine%20apps%20won't%20suit%20every%20use%20case%2C%20but%20for%20personal%20tools%2C%20small%20projects%2C%20and%20situations%20where%20simplicity%20and%20data%20ownership%20matter%2C%20they%20offer%20an%20elegant%20alternative%20to%20traditional%20web%20applications.">
-            <header>
-                <h2>
-                    <a href="?post=the-benefits-of-quine-apps-post-1767968508423">The Benefits of Quine Apps</a>
-                </h2>
-                <div class="meta-row">
-                    <span class="meta">JANUARY 2, 2026</span>
-                    <div class="post-actions">
-                        <button onclick="editPost('post-1767968508423')">Edit</button>
-                        <button class="delete-btn" onclick="deletePost('post-1767968508423')">Delete</button>
-                    </div>
-                </div>
-            </header>
-            <div class="content">
-                I've been experimenting with Quine apps recently, building a blog and a kanban board that work entirely offline. The approach is simple but powerful, and it's made me rethink how we build web applications.<br><br>A Quine app is self-contained code that can modify itself. When you add or change items in my kanban board, they're temporarily stored in your browser's local storage. When you're ready, you save a new version of the app that includes those changes baked directly into the code. The app essentially rewrites itself with your data inside it.<br><br>This approach offers three major benefits. First, hosting is remarkably easy. You can put the app anywhere that serves static files, from GitHub Pages to a simple web server. There's no backend to maintain, no database to configure, and no server costs to worry about.<br><br>Second, you don't need accounts or authentication. There's no sign-up process, no passwords to remember, and no personal information to hand over. You simply open the app and start using it. This removes friction and makes the apps incredibly accessible.<br><br>Third, and perhaps most importantly, you own your data completely. Everything lives in the app file itself. You can save it, back it up, or share it however you like. There's no company that can shut down and take your data with it, no terms of service that might change, and no privacy concerns about who can access your information.<br><br>The offline capability means these apps work anywhere, regardless of your internet connection. Once you've loaded the app, it's yours to use whenever and wherever you need it.<br><br>Quine apps won't suit every use case, but for personal tools, small projects, and situations where simplicity and data ownership matter, they offer an elegant alternative to traditional web applications.
-            </div>
-        </article><article id="post-1767968477520" data-raw="%23%23%20What%20Is%20Spec-Driven%20Development%3F%0A%0ASpec-driven%20development%20represents%20a%20fundamental%20shift%20in%20how%20we%20approach%20AI-assisted%20coding.%20Instead%20of%20the%20iterative%20%22vibe%20coding%22%20approach%20(where%20developers%20prompt%20an%20AI%2C%20review%20code%2C%20adjust%2C%20and%20repeat)%2C%20spec-driven%20development%20flips%20the%20traditional%20relationship%20between%20specifications%20and%20code.%20The%20specification%20becomes%20the%20source%20of%20truth%20that%20generates%20implementation.%0A%0AThe%20core%20idea%20is%20simple%3A%20create%20structured%20documents%20in%20natural%20language%20that%20describe%20what%20your%20software%20should%20do.%20These%20specifications%20guide%20AI%20coding%20agents%2C%20ensuring%20they%20understand%20what%20to%20build%2C%20why%20it%20matters%2C%20and%20what%20not%20to%20build.%20The%20workflow%20usually%20involves%20defining%20requirements%20with%20acceptance%20criteria%2C%20creating%20technical%20designs%20that%20outline%20architecture%2C%20and%20breaking%20work%20into%20trackable%20tasks.%0A%0AUnlike%20traditional%20documentation%20that%20becomes%20outdated%20once%20coding%20begins%2C%20these%20specifications%20stay%20at%20the%20centre%20of%20your%20engineering%20process.%20More%20importantly%2C%20specifications%20evolve%20alongside%20your%20software.%20When%20you%20add%20new%20features%2C%20you%20create%20new%20specs%20whilst%20keeping%20old%20ones%20as%20historical%20records.%20This%20creates%20an%20audit%20trail%20showing%20what%20was%20implemented%2C%20when%20it%20was%20built%2C%20and%20why%20decisions%20were%20made.%20Maintaining%20software%20means%20evolving%20specifications.%20Debugging%20means%20fixing%20the%20specifications%20that%20generated%20incorrect%20code.%20The%20code%20itself%20becomes%20an%20expression%20of%20intent%20you've%20defined%20at%20a%20higher%20level.%0A%0AThis%20living%20history%20of%20specifications%20becomes%20invaluable%20over%20time.%20Teams%20can%20trace%20back%20through%20spec%20versions%20to%20understand%20the%20reasoning%20behind%20architectural%20choices%2C%20see%20how%20requirements%20shifted%2C%20and%20maintain%20continuity%20as%20developers%20join%20or%20leave%20the%20project.%20The%20spec%20repository%20becomes%20your%20project's%20memory.%0A%0A%23%23%20Implementing%20Spec-Driven%20Development%20with%20Kiro%20and%20GitHub%20Spec-kit%0A%0ATwo%20tools%20have%20emerged%20to%20make%20spec-driven%20development%20practical%3A%20AWS's%20Kiro%20and%20GitHub's%20Spec-kit.%0A%0A**Kiro**%20is%20an%20AI-powered%20development%20environment%20built%20around%20specifications.%20When%20you%20start%20a%20project%2C%20Kiro%20offers%20two%20paths%3A%20%22vibe%22%20mode%20for%20quick%20prototyping%2C%20or%20%22spec%22%20mode%20for%20structured%20development.%20Spec%20mode%20guides%20you%20through%20three%20phases%3A%0A%0A1.%20**Requirements%20generation**%3A%20Kiro%20transforms%20your%20natural%20language%20prompt%20into%20detailed%20user%20stories%20with%20acceptance%20criteria%20in%20EARS%20notation%20(Easy%20Approach%20to%20Requirements%20Syntax)%0A2.%20**Design%20creation**%3A%20The%20agent%20analyses%20your%20codebase%20and%20proposes%20architecture%20and%20technical%20stack%0A3.%20**Implementation%20planning**%3A%20Requirements%20and%20design%20are%20broken%20down%20into%20specific%2C%20trackable%20tasks%0A%0AKiro%20also%20includes%20%22agent%20hooks%22%20(event-driven%20automation%20that%20executes%20actions%20when%20specific%20events%20occur)%20and%20one-click%20%22powers%22%20that%20provide%20pre-packaged%20expertise%20for%20specific%20technologies%20like%20Amazon%20Aurora.%0A%0A**GitHub%20Spec-kit**%20provides%20an%20open-source%20toolkit%20that%20works%20with%20various%20AI%20coding%20agents%20including%20GitHub%20Copilot%2C%20Claude%20Code%2C%20and%20Gemini%20CLI.%20Spec-kit%20follows%20a%20four-phase%20process%3A%0A%0A1.%20**Specification**%3A%20Create%20a%20contract%20defining%20how%20your%20code%20should%20behave%0A2.%20**Planning**%3A%20The%20coding%20agent%20transforms%20the%20spec%20into%20a%20structured%20plan%20with%20architectural%20decisions%0A3.%20**Tasks**%3A%20The%20plan%20is%20broken%20into%20small%2C%20reviewable%20chunks%0A4.%20**Implementation**%3A%20The%20coding%20agent%20tackles%20tasks%20whilst%20you%20review%20focused%20changes%0A%0ASpec-kit%20makes%20changing%20course%20simple%3A%20update%20the%20spec%2C%20regenerate%20the%20plan%2C%20and%20let%20the%20agent%20handle%20implementation.%20Your%20job%20is%20to%20steer%20whilst%20the%20agent%20writes.%0A%0A%23%23%20The%20Evolution%20Towards%20Agent%20Developers%20with%20Human%20Oversight%0A%0AWe're%20witnessing%20a%20role%20reversal%20in%20software%20development.%20The%20traditional%20model%20(humans%20write%20code%2C%20occasionally%20write%20specifications%20as%20an%20afterthought)%20is%20giving%20way%20to%20a%20new%20paradigm%20where%20AI%20agents%20write%20code%20and%20humans%20focus%20on%20specification%2C%20architecture%2C%20and%20review.%0A%0AThis%20shift%20transforms%20developers%20from%20programmers%20into%20engineers%20who%20manage%20context%2C%20craft%20specifications%2C%20and%20validate%20outcomes.%20As%20one%20developer%20described%20it%3A%20working%20with%20language%20models%20is%20like%20managing%20an%20intern%20who%20has%20read%20every%20textbook%20but%20has%20zero%20practical%20experience%20with%20your%20specific%20codebase%20and%20forgets%20anything%20beyond%20the%20most%20recent%20hour%20of%20conversation.%0A%0AThe%20implications%3A%0A%0A-%20**Humans%20move%20up%20the%20abstraction%20ladder**%3A%20Instead%20of%20manipulating%20code%2C%20developers%20express%20intent%20in%20natural%20language%2C%20define%20system%20behaviour%2C%20and%20establish%20architectural%20constraints%0A-%20**Quality%20through%20structure**%3A%20Forcing%20clear%20requirement%20definition%20upfront%20prevents%20costly%20rework%20and%20ensures%20AI-generated%20code%20aligns%20with%20organisational%20standards%0A-%20**Review%20becomes%20more%20meaningful**%3A%20Rather%20than%20reviewing%20sprawling%20code%20changes%20and%20attempting%20to%20reverse-engineer%20intent%2C%20reviews%20follow%20a%20clear%20path%20from%20specification%20to%20plan%20to%20task%20to%20implementation%0A-%20**Agents%20handle%20mechanical%20translation**%3A%20AI%20coding%20agents%20excel%20at%20translating%20specifications%20into%20working%20code%2C%20freeing%20humans%20to%20focus%20on%20creative%20problem-solving%0A%0AThis%20evolution%20doesn't%20diminish%20the%20role%20of%20developers.%20It%20elevates%20it.%20Developer%20expertise%20shifts%20from%20syntax%20and%20implementation%20details%20to%20system%20design%2C%20requirement%20clarity%2C%20and%20architectural%20decisions.%20The%20specification%20becomes%20the%20developer's%20primary%20output%2C%20and%20code%20becomes%20a%20continuously%20regenerated%20artefact.%0A%0AAs%20spec-driven%20development%20matures%2C%20software%20engineering%20means%20maintaining%20a%20clear%20understanding%20of%20what%20systems%20should%20do%2C%20with%20AI%20agents%20handling%20the%20increasingly%20automated%20work%20of%20making%20that%20understanding%20concrete%20in%20code.">
-            <header>
-                <h2>
-                    <a href="?post=the-shift-to-spec-driven-development-from-vibe-coding-to-agent-powered-precision-post-1767968477520">The Shift to Spec-Driven Development: From Vibe Coding to Agent-Powered Precision</a>
-                </h2>
-                <div class="meta-row">
-                    <span class="meta">DECEMBER 31, 2025</span>
-                    <div class="post-actions">
-                        <button onclick="editPost('post-1767968477520')">Edit</button>
-                        <button class="delete-btn" onclick="deletePost('post-1767968477520')">Delete</button>
-                    </div>
-                </div>
-            </header>
-            <div class="content">
-                <h2>What Is Spec-Driven Development?</h2><br>Spec-driven development represents a fundamental shift in how we approach AI-assisted coding. Instead of the iterative "vibe coding" approach (where developers prompt an AI, review code, adjust, and repeat), spec-driven development flips the traditional relationship between specifications and code. The specification becomes the source of truth that generates implementation.<br><br>The core idea is simple: create structured documents in natural language that describe what your software should do. These specifications guide AI coding agents, ensuring they understand what to build, why it matters, and what not to build. The workflow usually involves defining requirements with acceptance criteria, creating technical designs that outline architecture, and breaking work into trackable tasks.<br><br>Unlike traditional documentation that becomes outdated once coding begins, these specifications stay at the centre of your engineering process. More importantly, specifications evolve alongside your software. When you add new features, you create new specs whilst keeping old ones as historical records. This creates an audit trail showing what was implemented, when it was built, and why decisions were made. Maintaining software means evolving specifications. Debugging means fixing the specifications that generated incorrect code. The code itself becomes an expression of intent you've defined at a higher level.<br><br>This living history of specifications becomes invaluable over time. Teams can trace back through spec versions to understand the reasoning behind architectural choices, see how requirements shifted, and maintain continuity as developers join or leave the project. The spec repository becomes your project's memory.<br><br><h2>Implementing Spec-Driven Development with Kiro and GitHub Spec-kit</h2><br>Two tools have emerged to make spec-driven development practical: AWS's Kiro and GitHub's Spec-kit.<br><br><strong>Kiro</strong> is an AI-powered development environment built around specifications. When you start a project, Kiro offers two paths: "vibe" mode for quick prototyping, or "spec" mode for structured development. Spec mode guides you through three phases:<br><br>1. <strong>Requirements generation</strong>: Kiro transforms your natural language prompt into detailed user stories with acceptance criteria in EARS notation (Easy Approach to Requirements Syntax)<br>2. <strong>Design creation</strong>: The agent analyses your codebase and proposes architecture and technical stack<br>3. <strong>Implementation planning</strong>: Requirements and design are broken down into specific, trackable tasks<br><br>Kiro also includes "agent hooks" (event-driven automation that executes actions when specific events occur) and one-click "powers" that provide pre-packaged expertise for specific technologies like Amazon Aurora.<br><br><strong>GitHub Spec-kit</strong> provides an open-source toolkit that works with various AI coding agents including GitHub Copilot, Claude Code, and Gemini CLI. Spec-kit follows a four-phase process:<br><br>1. <strong>Specification</strong>: Create a contract defining how your code should behave<br>2. <strong>Planning</strong>: The coding agent transforms the spec into a structured plan with architectural decisions<br>3. <strong>Tasks</strong>: The plan is broken into small, reviewable chunks<br>4. <strong>Implementation</strong>: The coding agent tackles tasks whilst you review focused changes<br><br>Spec-kit makes changing course simple: update the spec, regenerate the plan, and let the agent handle implementation. Your job is to steer whilst the agent writes.<br><br><h2>The Evolution Towards Agent Developers with Human Oversight</h2><br>We're witnessing a role reversal in software development. The traditional model (humans write code, occasionally write specifications as an afterthought) is giving way to a new paradigm where AI agents write code and humans focus on specification, architecture, and review.<br><br>This shift transforms developers from programmers into engineers who manage context, craft specifications, and validate outcomes. As one developer described it: working with language models is like managing an intern who has read every textbook but has zero practical experience with your specific codebase and forgets anything beyond the most recent hour of conversation.<br><br>The implications:<br><br><ul><li><strong>Humans move up the abstraction ladder</strong>: Instead of manipulating code, developers express intent in natural language, define system behaviour, and establish architectural constraints</li><li><strong>Quality through structure</strong>: Forcing clear requirement definition upfront prevents costly rework and ensures AI-generated code aligns with organisational standards</li><li><strong>Review becomes more meaningful</strong>: Rather than reviewing sprawling code changes and attempting to reverse-engineer intent, reviews follow a clear path from specification to plan to task to implementation</li><li><strong>Agents handle mechanical translation</strong>: AI coding agents excel at translating specifications into working code, freeing humans to focus on creative problem-solving</li></ul><br>This evolution doesn't diminish the role of developers. It elevates it. Developer expertise shifts from syntax and implementation details to system design, requirement clarity, and architectural decisions. The specification becomes the developer's primary output, and code becomes a continuously regenerated artefact.<br><br>As spec-driven development matures, software engineering means maintaining a clear understanding of what systems should do, with AI agents handling the increasingly automated work of making that understanding concrete in code.
-            </div>
-        </article><article id="post-1767968435611" data-raw="I%20was%20challenged%20to%20design%20a%20workforce%20management%20system%20with%20a%20few%20constraints%3A%20make%20it%20highly%20customisable%20with%20fewer%20primitives%2C%20break%20it%20into%20smaller%20services%2C%20and%20design%20it%20to%20be%20built%2099.5%25%20by%20AI%20agents%20rather%20than%20people.%20What%20would%20you%20do%20differently%20if%20an%20agent%20was%20the%20primary%20developer%3F%0A%0AI'm%20building%20Mosaic%20to%20find%20out.%20It's%20a%20platform%20spanning%20HR%2C%20scheduling%2C%20engagement%2C%20and%20payroll.%20But%20really%20it's%20a%20proof%20of%20concept%20for%20myself.%20I%20want%20to%20explore%20what%20it%20means%20to%20architect%20a%20system%20and%20have%20it%20built%20by%20an%20agent%20whilst%20I%20stay%20in%20the%20leading%20and%20architectural%20role.%0A%0A%23%23%20Three%20Primitives%20Instead%20of%20Many%20Contexts%0A%0AThe%20system%20needed%20to%20work%20across%20different%20industries%20and%20countries%20without%20rewriting%20core%20logic.%20That%20drove%20me%20toward%20a%20small%20set%20of%20flexible%20primitives%3A%20entities%20(things%20that%20exist%20like%20people%20and%20locations)%2C%20events%20(things%20that%20happen%20like%20shifts%20and%20absences)%2C%20and%20participations%20(how%20entities%20relate%20to%20events%2C%20like%20being%20a%20worker%20or%20trainee).%0A%0AA%20shift%20is%20an%20event.%20An%20absence%20is%20an%20event.%20A%20training%20session%20is%20an%20event.%20The%20differences%20are%20in%20their%20configuration%2C%20their%20attributes%2C%20their%20status%20workflows.%20This%20makes%20the%20system%20adaptable%20without%20constant%20code%20changes.%0A%0ABut%20here's%20what%20changes%20with%20an%20agent%20as%20the%20primary%20developer.%20If%20I%20were%20implementing%20this%20myself%2C%20I'd%20still%20create%20a%20Shifts%20context.%20I'd%20build%20Shifts.create_shift()%20and%20Shifts.assign_worker()%20as%20conveniences.%20These%20domain-specific%20functions%20would%20help%20me%20keep%20track%20of%20business%20logic%20and%20make%20the%20codebase%20easier%20to%20navigate%20as%20a%20human.%0A%0AThe%20agent%20doesn't%20need%20that%20layer.%20It%20can%20work%20directly%20with%20Operations.execute(%3Acreate%2C%20%22event%22%2C%20nil%2C%20params%2C%20user)%20and%20understand%20from%20the%20configuration%20that%20this%20particular%20event%20is%20a%20shift.%20It%20doesn't%20need%20separate%20modules%20for%20each%20event%20type%20to%20keep%20the%20domain%20concepts%20straight.%0A%0A%23%23%20What%20Changes%20in%20the%20Architecture%0A%0AThe%20codebase%20looks%20different%20when%20an%20agent%20is%20the%20primary%20developer.%20Everything%20becomes%20introspectable.%20The%20agent%20reads%20JSON%20blueprints%20at%20runtime%20to%20discover%20what%20entity%20types%2C%20event%20types%2C%20and%20participation%20types%20exist.%20It%20doesn't%20need%20these%20encoded%20in%20separate%20modules.%0A%0AOperations%20are%20consistent%20and%20generic%20rather%20than%20domain-specific.%20There's%20no%20Shift.create()%20or%20Absence.approve().%20There's%20Operations.execute()%20with%20different%20parameters.%20Queries%20build%20from%20parameters%20instead%20of%20calling%20named%20functions.%20This%20isn't%20because%20agents%20struggle%20with%20multiple%20functions.%20It's%20because%20they%20don't%20need%20the%20convenience%20layer.%0A%0AError%20responses%20include%20enough%20structure%20for%20the%20agent%20to%20understand%20what%20went%20wrong%20and%20fix%20it.%20A%20validation%20error%20returns%20which%20fields%20failed%20and%20why.%20A%20permission%20error%20suggests%20what%20the%20user%20can%20do%20instead.%20A%20concurrency%20conflict%20returns%20the%20current%20state%20so%20the%20agent%20can%20retry%20with%20fresh%20data.%0A%0ADocumentation%20becomes%20more%20important%2C%20not%20less.%20Module%20docs%2C%20function%20docs%2C%20inline%20comments.%20When%20a%20human%20writes%20code%20they%20understand%20the%20context%20implicitly.%20When%20an%20agent%20writes%20code%2C%20that%20context%20needs%20to%20be%20explicit.%20Good%20documentation%20helps%20the%20agent%20make%20better%20decisions%20about%20edge%20cases%20and%20understand%20how%20pieces%20fit%20together.%0A%0AThe%20specifications%20explain%20why%20the%20system%20is%20shaped%20this%20way%2C%20not%20just%20what%20it%20does.%20When%20I%20write%20%22entities%20can%20form%20hierarchies%22%20or%20%22events%20have%20status%20workflows%22%2C%20the%20agent%20understands%20the%20implications%20without%20me%20detailing%20every%20case.%20It%20can%20figure%20out%20that%20hierarchies%20need%20parent%20references%20and%20recursive%20queries%2C%20that%20status%20transitions%20need%20validation%20and%20cascade%20rules.%0A%0A%23%23%20The%20Human's%20Job%0A%0AMy%20responsibility%20is%20the%20system's%20conceptual%20integrity.%20Getting%20the%20primitives%20right.%20Thinking%20through%20how%20entities%2C%20events%2C%20and%20participations%20compose%20to%20handle%20workforce%20management's%20full%20complexity%20across%20industries%20and%20jurisdictions.%0A%0AI%20write%20specifications%20that%20explain%20these%20decisions.%20The%20agent%20uses%20them%20to%20implement.%20When%20it%20gets%20stuck%20or%20heads%20in%20the%20wrong%20direction%2C%20I%20provide%20corrections.%20I%20review%20whether%20the%20implementation%20matches%20the%20intended%20architecture%2C%20not%20whether%20it%20follows%20style%20guides.%0A%0AThe%20valuable%20skill%20becomes%20architectural%20thinking.%20Understanding%20how%20to%20decompose%20problems.%20Recognising%20what's%20primitive%20and%20what's%20derived.%20Seeing%20where%20flexibility%20matters%20and%20where%20constraints%20help.%20These%20were%20always%20important%2C%20but%20now%20they're%20the%20primary%20value%20rather%20than%20implementation%20ability.%0A%0A%23%23%20What%20This%20Means%0A%0AIf%20an%20agent%20can%20implement%20most%20systems%20given%20clear%20specifications%2C%20then%20architecture%20becomes%20the%20core%20work.%20Not%20framework%20knowledge%20or%20implementation%20patterns%2C%20but%20designing%20systems%20that%20make%20sense%2C%20explaining%20them%20clearly%2C%20and%20verifying%20the%20implementation%20matches%20intent.%0A%0AThat's%20a%20different%20way%20of%20thinking%20about%20software%20development.%20The%20code%20quality%20is%20fine.%20The%20question%20is%20whether%20the%20architecture%20is%20sound%20and%20whether%20you%20can%20communicate%20it%20well%20enough%20for%20an%20agent%20to%20build%20correctly.%20%0A%0AWorth%20exploring%20what%20that%20changes%20about%20how%20we%20design%20systems.">
-            <header>
-                <h2>
-                    <a href="?post=what-happens-when-you-stop-writing-code-and-start-explaining-it-really-well-post-1767968435611">What Happens When You Stop Writing Code and Start Explaining It Really Well</a>
-                </h2>
-                <div class="meta-row">
-                    <span class="meta">NOVEMBER 28, 2025</span>
-                    <div class="post-actions">
-                        <button onclick="editPost('post-1767968435611')">Edit</button>
-                        <button class="delete-btn" onclick="deletePost('post-1767968435611')">Delete</button>
-                    </div>
-                </div>
-            </header>
-            <div class="content">
-                I was challenged to design a workforce management system with a few constraints: make it highly customisable with fewer primitives, break it into smaller services, and design it to be built 99.5% by AI agents rather than people. What would you do differently if an agent was the primary developer?<br><br>I'm building Mosaic to find out. It's a platform spanning HR, scheduling, engagement, and payroll. But really it's a proof of concept for myself. I want to explore what it means to architect a system and have it built by an agent whilst I stay in the leading and architectural role.<br><br><h2>Three Primitives Instead of Many Contexts</h2><br>The system needed to work across different industries and countries without rewriting core logic. That drove me toward a small set of flexible primitives: entities (things that exist like people and locations), events (things that happen like shifts and absences), and participations (how entities relate to events, like being a worker or trainee).<br><br>A shift is an event. An absence is an event. A training session is an event. The differences are in their configuration, their attributes, their status workflows. This makes the system adaptable without constant code changes.<br><br>But here's what changes with an agent as the primary developer. If I were implementing this myself, I'd still create a Shifts context. I'd build Shifts.create_shift() and Shifts.assign_worker() as conveniences. These domain-specific functions would help me keep track of business logic and make the codebase easier to navigate as a human.<br><br>The agent doesn't need that layer. It can work directly with Operations.execute(:create, "event", nil, params, user) and understand from the configuration that this particular event is a shift. It doesn't need separate modules for each event type to keep the domain concepts straight.<br><br><h2>What Changes in the Architecture</h2><br>The codebase looks different when an agent is the primary developer. Everything becomes introspectable. The agent reads JSON blueprints at runtime to discover what entity types, event types, and participation types exist. It doesn't need these encoded in separate modules.<br><br>Operations are consistent and generic rather than domain-specific. There's no Shift.create() or Absence.approve(). There's Operations.execute() with different parameters. Queries build from parameters instead of calling named functions. This isn't because agents struggle with multiple functions. It's because they don't need the convenience layer.<br><br>Error responses include enough structure for the agent to understand what went wrong and fix it. A validation error returns which fields failed and why. A permission error suggests what the user can do instead. A concurrency conflict returns the current state so the agent can retry with fresh data.<br><br>Documentation becomes more important, not less. Module docs, function docs, inline comments. When a human writes code they understand the context implicitly. When an agent writes code, that context needs to be explicit. Good documentation helps the agent make better decisions about edge cases and understand how pieces fit together.<br><br>The specifications explain why the system is shaped this way, not just what it does. When I write "entities can form hierarchies" or "events have status workflows", the agent understands the implications without me detailing every case. It can figure out that hierarchies need parent references and recursive queries, that status transitions need validation and cascade rules.<br><br><h2>The Human's Job</h2><br>My responsibility is the system's conceptual integrity. Getting the primitives right. Thinking through how entities, events, and participations compose to handle workforce management's full complexity across industries and jurisdictions.<br><br>I write specifications that explain these decisions. The agent uses them to implement. When it gets stuck or heads in the wrong direction, I provide corrections. I review whether the implementation matches the intended architecture, not whether it follows style guides.<br><br>The valuable skill becomes architectural thinking. Understanding how to decompose problems. Recognising what's primitive and what's derived. Seeing where flexibility matters and where constraints help. These were always important, but now they're the primary value rather than implementation ability.<br><br><h2>What This Means</h2><br>If an agent can implement most systems given clear specifications, then architecture becomes the core work. Not framework knowledge or implementation patterns, but designing systems that make sense, explaining them clearly, and verifying the implementation matches intent.<br><br>That's a different way of thinking about software development. The code quality is fine. The question is whether the architecture is sound and whether you can communicate it well enough for an agent to build correctly. <br><br>Worth exploring what that changes about how we design systems.
-            </div>
-        </article><article id="post-1767968228357" data-raw="*Inspired%20by%20%5Ba16z's%20exploration%20of%20the%20AI%20software%20development%20stack%5D(https%3A%2F%2Fa16z.com%2Fthe-trillion-dollar-ai-software-development-stack%2F)%2C%20I've%20built%20an%20approach%20that%20uses%20multiple%20AI%20models%2C%20each%20for%20what%20it%20does%20best.%20This%20is%20how%20I%20work%20through%20projects%20from%20start%20to%20finish.*%0A%0A%23%23%20The%20Planning%20Phase%0A%0AI%20begin%20every%20project%20by%20brainstorming%20with%20**GPT-5%20High**%2C%20which%20excels%20at%20big-picture%20thinking%20and%20structured%20planning.%20I%20ask%20it%20to%20create%20a%20comprehensive%20implementation%20plan%20with%20a%20detailed%20todo%20list%2C%20complete%20with%20checkmarks%2C%20saved%20as%20a%20markdown%20file%20in%20the%20project%20root.%20This%20plan%20is%20purely%20for%20tracking%20the%20implementation%20process%3A%20what%20needs%20to%20be%20built%20and%20in%20what%20order.%0A%0AAn%20important%20part%20of%20the%20plan%20includes%20creating%20specification%20files.%20These%20aren't%20the%20same%20as%20the%20plan%20itself.%20The%20plan%20details%20that%20specification%20files%20need%20to%20be%20created%2C%20and%20those%20files%20will%20document%20the%20actual%20behaviour%2C%20architecture%2C%20and%20requirements%20of%20the%20system.%0A%0AI%20iterate%20with%20GPT-5%20High%20until%20I'm%20satisfied%20with%20the%20scope%20and%20structure.%20By%20iteration%2C%20I%20mean%20I%20read%20through%20the%20plan%2C%20make%20corrections%20where%20needed%2C%20and%20ask%20questions%20to%20see%20if%20it%20can%20be%20improved.%20This%20review%20process%20ensures%20I've%20thought%20through%20edge%20cases%20and%20dependencies%20before%20writing%20a%20single%20line%20of%20code.%0A%0A%23%23%20Implementation%20with%20Claude%0A%0AOnce%20the%20plan%20is%20solid%2C%20I%20switch%20to%20**Claude%20Sonnet%204.5**%20for%20implementation.%20The%20todo%20list%20is%20ordered%20by%20impact%20and%20effort%2C%20ensuring%20I%20tackle%20work%20in%20the%20most%20logical%20sequence.%20I%20work%20through%20it%20item%20by%20item%2C%20where%20each%20task%20represents%20a%20small%20piece%20of%20work%20that%20can%20be%20completed%20and%20tested%20in%20isolation.%0A%0AFor%20each%20task%2C%20Claude%20delivers%20three%20things%3A%0A%0A1.%20**The%20specification%20file(s)**%20documenting%20what%20the%20feature%20does%2C%20its%20expected%20behaviour%2C%20edge%20cases%2C%20and%20architectural%20decisions%0A2.%20**The%20implementation%20code**%20that%20realizes%20the%20specification%0A3.%20**Automated%20tests**%20that%20verify%20the%20implementation%20matches%20the%20specification%0A%0AAs%20the%20code%20evolves%2C%20so%20does%20its%20documentation.%20The%20specification%20files%20aren't%20afterthoughts%20but%20deliverables%20created%20alongside%20the%20code.%20Claude%20only%20marks%20a%20task%20as%20complete%20when%20all%20three%20elements%20are%20in%20place%20and%20the%20tests%20pass.%20This%20keeps%20me%20focused%20and%20gives%20me%20confidence%20that%20each%20completed%20feature%20is%20properly%20documented%20and%20working.%0A%0A%23%23%20The%20Verification%20Loop%0A%0AAfter%20each%20task%2C%20I%20turn%20to%20**GPT-5%20Codex%20Medium**%20for%20verification.%20It%20acts%20as%20a%20fresh%20pair%20of%20eyes%2C%20reviewing%20all%20three%20deliverables%3A%0A%0A-%20Does%20the%20**specification%20file**%20clearly%20document%20the%20feature's%20behaviour%20and%20decisions%3F%0A-%20Does%20the%20**implementation**%20actually%20fulfil%20what%20the%20specification%20describes%3F%0A-%20Is%20the%20**implementation%20complete**%20with%20all%20the%20necessary%20components%20in%20place%3F%0A-%20Do%20the%20**tests**%20adequately%20cover%20the%20specified%20behaviour%3F%0A%0AIf%20Codex%20spots%20issues%20(whether%20in%20documentation%20clarity%2C%20missing%20implementation%20pieces%2C%20implementation%20correctness%2C%20or%20test%20coverage)%2C%20I%20feed%20that%20feedback%20back%20to%20Claude%20Sonnet%204.5%20for%20refinements.%20This%20might%20mean%20updating%20the%20specification%20for%20clarity%2C%20completing%20missing%20parts%2C%20fixing%20the%20implementation%2C%20or%20improving%20the%20tests.%0A%0AThis%20creates%20a%20feedback%20loop%20where%20the%20specification%2C%20implementation%2C%20and%20tests%20all%20stay%20aligned%20and%20complete%20before%20moving%20forwards.%0A%0A**A%20practical%20example**%3A%20I%20once%20had%20Claude%20Sonnet%204.5%20mark%20a%20task%20as%20complete%20with%20confidence.%20The%20code%20was%20written%2C%20tests%20passed%2C%20and%20the%20specification%20was%20thorough.%20But%20when%20GPT-5%20Codex%20Medium%20reviewed%20it%2C%20it%20quickly%20spotted%20that%20whilst%20everything%20was%20technically%20done%2C%20the%20new%20code%20wasn't%20wired%20up%20yet%20and%20wasn't%20actually%20in%20use.%20Codex%20then%20generated%20a%20prompt%20that%20I%20fed%20back%20to%20Claude%2C%20which%20correctly%20explained%20how%20to%20wire%20the%20newly%20generated%20code%20into%20the%20main%20workflow.%20Without%20this%20verification%20step%2C%20I%20would%20have%20moved%20on%20thinking%20the%20feature%20was%20complete%20when%20it%20wasn't%20actually%20functional.%0A%0A%23%23%20Final%20Quality%20Check%0A%0AWhen%20Claude%20has%20worked%20through%20the%20entire%20implementation%20plan%2C%20I%20do%20one%20final%20pass%20with%20GPT-5%20Codex%20Medium.%20This%20comprehensive%20review%20ensures%20all%20requirements%20are%20properly%20met%2C%20specification%20files%20accurately%20document%20the%20system%2C%20test%20coverage%20is%20adequate%2C%20and%20everything%20aligns.%0A%0AAt%20this%20point%2C%20I%20have%20working%20code%2C%20specification%20files%20that%20explain%20what%20was%20built%20and%20why%2C%20tested%20implementations%20that%20match%20those%20specifications%2C%20and%20multiple%20layers%20of%20verification.%20The%20plan%20in%20the%20root%20has%20served%20its%20purpose%20as%20an%20implementation%20tracker%2C%20whilst%20the%20specification%20files%20provide%20lasting%20documentation%20of%20the%20system.%0A%0A---%0A%0A%23%23%20Model%20Selection%0A%0AI%20choose%20models%20based%20on%20what%20they're%20good%20at.%20**GPT-5%20High**%20excels%20at%20complex%2C%20big%20tasks%20like%20initial%20planning%20and%20brainstorming.%20It%20can%20reason%20through%20architecture%2C%20dependencies%2C%20and%20project%20structure%20at%20a%20high%20level%2C%20making%20it%20the%20right%20choice%20for%20comprehensive%20implementation%20plans.%0A%0A**Claude%20Sonnet%204.5**%20is%20the%20best%20at%20implementing%20code.%20It%20translates%20specifications%20into%20clean%2C%20working%20implementations%2C%20generates%20thorough%20tests%2C%20and%20maintains%20consistency%20across%20all%20deliverables.%0A%0A**GPT-5%20Codex%20Medium**%20is%20better%20for%20faster%20verifications%20of%20smaller%20tasks.%20GPT-5%20Codex%20High%20takes%20longer%20to%20think%20more%20deeply%20about%20problems%2C%20but%20this%20extended%20reasoning%20isn't%20needed%20when%20verifying%20and%20reviewing%20a%20single%20task.%20A%20faster%20model%20works%20better%20for%20the%20tight%20feedback%20loop%20during%20iterative%20development.%0A%0A%23%23%20Optimising%20the%20Workflow%0A%0AThe%20tools%20work%20better%20when%20configured%20for%20this%20specific%20workflow.%20I%20maintain%20configuration%20files%20that%20finetune%20each%20model's%20behaviour%3A%0A%0A-%20**CLAUDE.md**%20for%20Claude%20Sonnet%204.5%20-%20defines%20how%20it%20should%20approach%20implementation%2C%20testing%2C%20and%20documentation%0A-%20**AGENTS.md**%20for%20GPT-5%20Codex%20-%20configures%20verification%20patterns%20and%20review%20focus%20areas%0A%0AYou%20can%20see%20examples%20of%20these%20configuration%20files%20here%3A%0A-%20%5BAGENTS.md%20example%5D(https%3A%2F%2Fgithub.com%2Fhl%2Fcodex%2Fblob%2Fmain%2FAGENTS.md)%0A-%20%5BCLAUDE.md%20example%5D(https%3A%2F%2Fgithub.com%2Fhl%2Fclaude%2Fblob%2Fmain%2FCLAUDE.md)%0A%0AThese%20configuration%20files%20ensure%20each%20model%20understands%20its%20role%20in%20the%20workflow%20and%20follows%20consistent%20patterns%20across%20projects.%0A%0A---%0A%0A%23%23%20Why%20This%20Works%0A%0AEach%20AI%20does%20what%20it's%20good%20at%3A%0A%0A-%20**GPT-5%20High**%3A%20Strategic%20planning%20and%20implementation%20roadmaps%0A-%20**Claude%20Sonnet%204.5**%3A%20Creating%20specification%20files%2C%20detailed%20implementation%2C%20test%20generation%2C%20and%20marking%20off%20completed%20tasks%0A-%20**GPT-5%20Codex%20Medium**%3A%20Verification%20across%20specifications%2C%20code%2C%20and%20tests%0A%0AThe%20result%20is%20cleaner%20code%2C%20comprehensive%20test%20coverage%2C%20proper%20documentation%20through%20specification%20files%2C%20and%20a%20collaborative%20development%20process.%20By%20treating%20AI%20models%20as%20specialist%20team%20members%20rather%20than%20all-purpose%20tools%2C%20I%20get%20quality%20results%20whilst%20keeping%20development%20efficient.%0A%0AThe%20separation%20of%20concerns%20matters.%20The%20plan%20tracks%20implementation%20progress%2C%20the%20specification%20files%20document%20what%20was%20built%2C%20the%20tests%20verify%20correctness%2C%20and%20multiple%20verification%20layers%20catch%20issues%20before%20they%20become%20problems.%20It%20scales%20from%20small%20features%20to%20complex%20projects.%0A%0A---%0A%0A*This%20workflow%20was%20inspired%20by%20%5Ba16z's%20article%20on%20the%20trillion-dollar%20AI%20software%20development%20stack%5D(https%3A%2F%2Fa16z.com%2Fthe-trillion-dollar-ai-software-development-stack%2F)%2C%20which%20provides%20an%20excellent%20overview%20of%20the%20emerging%20AI%20coding%20ecosystem.*">
-            <header>
-                <h2>
-                    <a href="?post=my-ai-supported-development-workflow-post-1767968228357">My AI-Supported Development Workflow</a>
-                </h2>
-                <div class="meta-row">
-                    <span class="meta">OCTOBER 14, 2025</span>
-                    <div class="post-actions">
-                        <button onclick="editPost('post-1767968228357')">Edit</button>
-                        <button class="delete-btn" onclick="deletePost('post-1767968228357')">Delete</button>
-                    </div>
-                </div>
-            </header>
-            <div class="content">
-                <em>Inspired by <a href="https://a16z.com/the-trillion-dollar-ai-software-development-stack/">a16z's exploration of the AI software development stack</a>, I've built an approach that uses multiple AI models, each for what it does best. This is how I work through projects from start to finish.</em><br><br><h2>The Planning Phase</h2><br>I begin every project by brainstorming with <strong>GPT-5 High</strong>, which excels at big-picture thinking and structured planning. I ask it to create a comprehensive implementation plan with a detailed todo list, complete with checkmarks, saved as a markdown file in the project root. This plan is purely for tracking the implementation process: what needs to be built and in what order.<br><br>An important part of the plan includes creating specification files. These aren't the same as the plan itself. The plan details that specification files need to be created, and those files will document the actual behaviour, architecture, and requirements of the system.<br><br>I iterate with GPT-5 High until I'm satisfied with the scope and structure. By iteration, I mean I read through the plan, make corrections where needed, and ask questions to see if it can be improved. This review process ensures I've thought through edge cases and dependencies before writing a single line of code.<br><br><h2>Implementation with Claude</h2><br>Once the plan is solid, I switch to <strong>Claude Sonnet 4.5</strong> for implementation. The todo list is ordered by impact and effort, ensuring I tackle work in the most logical sequence. I work through it item by item, where each task represents a small piece of work that can be completed and tested in isolation.<br><br>For each task, Claude delivers three things:<br><br>1. <strong>The specification file(s)</strong> documenting what the feature does, its expected behaviour, edge cases, and architectural decisions<br>2. <strong>The implementation code</strong> that realizes the specification<br>3. <strong>Automated tests</strong> that verify the implementation matches the specification<br><br>As the code evolves, so does its documentation. The specification files aren't afterthoughts but deliverables created alongside the code. Claude only marks a task as complete when all three elements are in place and the tests pass. This keeps me focused and gives me confidence that each completed feature is properly documented and working.<br><br><h2>The Verification Loop</h2><br>After each task, I turn to <strong>GPT-5 Codex Medium</strong> for verification. It acts as a fresh pair of eyes, reviewing all three deliverables:<br><br><ul><li>Does the <strong>specification file</strong> clearly document the feature's behaviour and decisions?</li><li>Does the <strong>implementation</strong> actually fulfil what the specification describes?</li><li>Is the <strong>implementation complete</strong> with all the necessary components in place?</li><li>Do the <strong>tests</strong> adequately cover the specified behaviour?</li></ul><br>If Codex spots issues (whether in documentation clarity, missing implementation pieces, implementation correctness, or test coverage), I feed that feedback back to Claude Sonnet 4.5 for refinements. This might mean updating the specification for clarity, completing missing parts, fixing the implementation, or improving the tests.<br><br>This creates a feedback loop where the specification, implementation, and tests all stay aligned and complete before moving forwards.<br><br><strong>A practical example</strong>: I once had Claude Sonnet 4.5 mark a task as complete with confidence. The code was written, tests passed, and the specification was thorough. But when GPT-5 Codex Medium reviewed it, it quickly spotted that whilst everything was technically done, the new code wasn't wired up yet and wasn't actually in use. Codex then generated a prompt that I fed back to Claude, which correctly explained how to wire the newly generated code into the main workflow. Without this verification step, I would have moved on thinking the feature was complete when it wasn't actually functional.<br><br><h2>Final Quality Check</h2><br>When Claude has worked through the entire implementation plan, I do one final pass with GPT-5 Codex Medium. This comprehensive review ensures all requirements are properly met, specification files accurately document the system, test coverage is adequate, and everything aligns.<br><br>At this point, I have working code, specification files that explain what was built and why, tested implementations that match those specifications, and multiple layers of verification. The plan in the root has served its purpose as an implementation tracker, whilst the specification files provide lasting documentation of the system.<br><br><hr><br><br><h2>Model Selection</h2><br>I choose models based on what they're good at. <strong>GPT-5 High</strong> excels at complex, big tasks like initial planning and brainstorming. It can reason through architecture, dependencies, and project structure at a high level, making it the right choice for comprehensive implementation plans.<br><br><strong>Claude Sonnet 4.5</strong> is the best at implementing code. It translates specifications into clean, working implementations, generates thorough tests, and maintains consistency across all deliverables.<br><br><strong>GPT-5 Codex Medium</strong> is better for faster verifications of smaller tasks. GPT-5 Codex High takes longer to think more deeply about problems, but this extended reasoning isn't needed when verifying and reviewing a single task. A faster model works better for the tight feedback loop during iterative development.<br><br><h2>Optimising the Workflow</h2><br>The tools work better when configured for this specific workflow. I maintain configuration files that finetune each model's behaviour:<br><br><ul><li><strong>CLAUDE.md</strong> for Claude Sonnet 4.5 - defines how it should approach implementation, testing, and documentation</li><li><strong>AGENTS.md</strong> for GPT-5 Codex - configures verification patterns and review focus areas</li></ul><br>You can see examples of these configuration files here:<br><ul><li><a href="https://github.com/hl/codex/blob/main/AGENTS.md">AGENTS.md example</a></li><li><a href="https://github.com/hl/claude/blob/main/CLAUDE.md">CLAUDE.md example</a></li></ul><br>These configuration files ensure each model understands its role in the workflow and follows consistent patterns across projects.<br><br><hr><br><br><h2>Why This Works</h2><br>Each AI does what it's good at:<br><br><ul><li><strong>GPT-5 High</strong>: Strategic planning and implementation roadmaps</li><li><strong>Claude Sonnet 4.5</strong>: Creating specification files, detailed implementation, test generation, and marking off completed tasks</li><li><strong>GPT-5 Codex Medium</strong>: Verification across specifications, code, and tests</li></ul><br>The result is cleaner code, comprehensive test coverage, proper documentation through specification files, and a collaborative development process. By treating AI models as specialist team members rather than all-purpose tools, I get quality results whilst keeping development efficient.<br><br>The separation of concerns matters. The plan tracks implementation progress, the specification files document what was built, the tests verify correctness, and multiple verification layers catch issues before they become problems. It scales from small features to complex projects.<br><br><hr><br><br><em>This workflow was inspired by <a href="https://a16z.com/the-trillion-dollar-ai-software-development-stack/">a16z's article on the trillion-dollar AI software development stack</a>, which provides an excellent overview of the emerging AI coding ecosystem.</em>
-            </div>
-        </article><article id="post-1767968096774" data-raw="In%20our%20previous%20post%20about%20building%20an%20AI%20toolkit%20for%20our%20team%2C%20we%20explored%20how%20AI%20agents%20are%20becoming%20integral%20to%20our%20development%20workflow.%20Today%2C%20let's%20dive%20into%20a%20critical%20foundation%20that%20makes%20AI-assisted%20development%20truly%20effective%3A%20automated%20code%20style%20enforcement.%0A%0A%23%23%20The%20Challenge%3A%20Teaching%20AI%20Agents%20Your%20Team's%20Style%0A%0AWhen%20AI%20agents%20contribute%20to%20your%20codebase%2C%20they%20need%20clear%2C%20consistent%20patterns%20to%20follow.%20Without%20automated%20enforcement%2C%20agents%20struggle%20to%20understand%20and%20replicate%20your%20team's%20style%20preferences.%20They%20might%20generate%20code%20that's%20functionally%20correct%20but%20looks%20foreign%20in%20your%20codebase%E2%80%94using%20different%20alias%20patterns%2C%20inconsistent%20pipe%20usage%2C%20or%20varying%20module%20organisation.%0A%0AThe%20result%3F%20Code%20that%20works%20but%20doesn't%20feel%20like%20it%20belongs%2C%20making%20the%20codebase%20harder%20to%20maintain%20and%20understand%20over%20time.%0A%0A%23%23%20The%20Solution%3A%20Automated%20Style%20Enforcement%0A%0ATools%20like%20**Credo**%20and%20**Dialyzer**%20don't%20just%20catch%20bugs%E2%80%94they%20teach.%20When%20your%20codebase%20follows%20strict%2C%20automated%20style%20guidelines%2C%20AI%20agents%20learn%20from%20consistent%20examples%20throughout%20your%20project.%20Every%20function%2C%20every%20module%2C%20every%20pattern%20follows%20the%20same%20rules%2C%20creating%20a%20coherent%20style%20language%20that%20agents%20can%20understand%20and%20replicate.%0A%0AThis%20automated%20consistency%20becomes%20the%20foundation%20for%20effective%20AI%20collaboration%3A%0A%0A%23%23%23%201.%20**Create%20Predictable%20Patterns%20for%20AI%20Agents**%0AAI%20agents%20excel%20at%20pattern%20recognition.%20When%20your%20codebase%20consistently%20uses%20the%20same%20alias%20organisation%2C%20pipe%20patterns%2C%20and%20module%20structure%2C%20agents%20can%20generate%20code%20that%20seamlessly%20fits%20your%20existing%20style.%0A%0A%23%23%23%202.%20**Eliminate%20Style%20Guesswork**%0AWithout%20clear%20rules%2C%20AI%20agents%20make%20inconsistent%20choices%20about%20formatting%20and%20structure.%20Automated%20enforcement%20removes%20this%20ambiguity%2C%20ensuring%20every%20piece%20of%20generated%20code%20follows%20your%20team's%20standards.%0A%0A%23%23%23%203.%20**Scale%20Your%20Team's%20Style**%0AAs%20AI%20agents%20become%20more%20prevalent%20in%20development%2C%20automated%20style%20enforcement%20lets%20you%20scale%20your%20team's%20coding%20standards%20without%20manually%20reviewing%20every%20AI%20contribution.%0A%0A%23%23%23%204.%20**Maintain%20Codebase%20Coherence**%0AA%20consistent%20style%20creates%20a%20unified%20voice%20across%20your%20entire%20codebase%2C%20whether%20written%20by%20humans%20or%20AI%20agents.%0A%0A%23%23%20A%20Practical%20Example%3A%20Credo%20Configuration%0A%0AHere's%20how%20we%20configure%20Credo%20to%20enforce%20consistency%20that%20works%20well%20with%20AI-assisted%20development%3A%0A%0A%60%60%60elixir%0A%25%7B%0A%20%20configs%3A%20%5B%0A%20%20%20%20%25%7B%0A%20%20%20%20%20%20name%3A%20%22default%22%2C%0A%20%20%20%20%20%20strict%3A%20true%2C%0A%20%20%20%20%20%20files%3A%20%25%7B%0A%20%20%20%20%20%20%20%20included%3A%20%5B%22lib%2F%22%2C%20%22test%2F%22%5D%2C%0A%20%20%20%20%20%20%20%20excluded%3A%20%5B%22_build%2F%22%2C%20%22deps%2F%22%2C%20%22.elixir_ls%2F%22%2C%20%22lib%2Frules_engine%2Fdsl%2Fparser.ex%22%5D%0A%20%20%20%20%20%20%7D%2C%0A%20%20%20%20%20%20checks%3A%20%5B%0A%20%20%20%20%20%20%20%20%23%20Strict%20readability%20around%20pipes%0A%20%20%20%20%20%20%20%20%7BCredo.Check.Readability.SinglePipe%2C%20%5B%5D%7D%2C%0A%20%20%20%20%20%20%20%20%7BCredo.Check.Refactor.PipeChainStart%2C%20%5B%5D%7D%2C%0A%0A%20%20%20%20%20%20%20%20%23%20Additional%20readability%20checks%0A%20%20%20%20%20%20%20%20%7BCredo.Check.Readability.MultiAlias%2C%20%5B%5D%7D%2C%0A%20%20%20%20%20%20%20%20%7BCredo.Check.Readability.SeparateAliasRequire%2C%20%5B%5D%7D%2C%0A%20%20%20%20%20%20%20%20%7BCredo.Check.Readability.AliasAs%2C%20%5B%5D%7D%0A%20%20%20%20%20%20%5D%0A%20%20%20%20%7D%0A%20%20%5D%0A%7D%0A%60%60%60%0A%0AThese%20specific%20checks%20ensure%3A%0A-%20**Consistent%20pipe%20usage**%3A%20AI%20agents%20learn%20clear%20patterns%20for%20data%20transformation%0A-%20**Organized%20imports**%3A%20Aliases%20and%20requires%20follow%20predictable%20structures%0A-%20**Readable%20code%20flow**%3A%20Single%20pipes%20and%20proper%20chain%20starts%20make%20code%20easier%20to%20parse%0A%0A%23%23%20Additional%20Benefits%20for%20Human%20Developers%0A%0AWhilst%20the%20primary%20goal%20is%20enabling%20consistent%20AI-generated%20code%2C%20automated%20style%20enforcement%20brings%20several%20benefits%20for%20human%20developers%20too%3A%0A%0A%23%23%23%20**Streamlined%20Code%20Reviews**%0AWith%20style%20automatically%20enforced%2C%20PR%20reviews%20can%20focus%20on%20logic%2C%20architecture%2C%20and%20business%20requirements%20rather%20than%20formatting%20debates.%0A%0A%23%23%23%20**Reduced%20Cognitive%20Load**%0ADevelopers%20don't%20need%20to%20remember%20style%20preferences%E2%80%94the%20tools%20handle%20consistency%20whilst%20they%20focus%20on%20solving%20complex%20problems.%0A%0A%23%23%23%20**Faster%20Onboarding**%0ANew%20team%20members%20can%20immediately%20understand%20the%20codebase%20standards%20through%20automated%20feedback%20rather%20than%20tribal%20knowledge.%0A%0A%23%23%23%20**Early%20Bug%20Detection**%0ATools%20like%20Dialyzer%20catch%20type%20inconsistencies%20and%20potential%20runtime%20errors%20before%20they%20reach%20production%2C%20creating%20a%20safety%20net%20for%20both%20human%20and%20AI-generated%20code.%0A%0A%23%23%23%20**Documentation%20Through%20Code**%0AConsistent%20patterns%20serve%20as%20implicit%20documentation%2C%20making%20the%20codebase%20self-explaining%20for%20new%20contributors.%0A%0A%23%23%23%20**Reduced%20Technical%20Debt**%0AAutomated%20checks%20prevent%20style%20inconsistencies%20from%20accumulating%20over%20time%2C%20keeping%20the%20codebase%20maintainable.%0A%0A%23%23%23%20**Improved%20Refactoring%20Confidence**%0AWhen%20style%20is%20consistent%2C%20large-scale%20refactoring%20becomes%20more%20predictable%20and%20less%20error-prone.%0A%0A%23%23%23%20**Better%20Tooling%20Integration**%0AIDEs%20and%20AI%20assistants%20work%20more%20effectively%20with%20consistently%20formatted%20code%2C%20providing%20better%20autocomplete%20and%20suggestions.%0A%0A%23%23%20Making%20It%20Work%20in%20Practice%0A%0ATo%20successfully%20implement%20automated%20code%20style%20enforcement%3A%0A%0A1.%20**Run%20checks%20in%20CI%2FCD**%3A%20Make%20style%20compliance%20a%20requirement%20for%20merging%0A2.%20**Integrate%20with%20editors**%3A%20Provide%20immediate%20feedback%20during%20development%0A3.%20**Start%20strict**%3A%20It's%20easier%20to%20begin%20with%20strict%20rules%20than%20to%20tighten%20them%20later%0A4.%20**Document%20exceptions**%3A%20When%20you%20exclude%20files%20or%20disable%20checks%2C%20document%20why%0A%0A%23%23%20The%20Bottom%20Line%0A%0AAI%20agents%20are%20becoming%20essential%20development%20partners%2C%20but%20they%20need%20consistent%20patterns%20to%20generate%20code%20that%20truly%20fits%20your%20codebase.%20Automated%20code%20style%20enforcement%20creates%20this%20consistency%2C%20teaching%20agents%20your%20team's%20standards%20whilst%20ensuring%20every%20contribution%E2%80%94human%20or%20AI%E2%80%94follows%20the%20same%20rules.%0A%0AThe%20goal%20isn't%20just%20cleaner%20code%20reviews%20or%20fewer%20style%20debates.%20It's%20about%20creating%20a%20codebase%20that%20speaks%20with%20one%20voice%2C%20where%20AI%20agents%20can%20contribute%20meaningfully%20because%20they%20understand%20exactly%20how%20your%20team%20writes%20code.%0A%0ALet%20your%20tools%20teach%20your%20agents.%20Let%20consistency%20drive%20collaboration.%0A%0A---%0A%0A*What%20tools%20does%20your%20team%20use%20for%20automated%20code%20quality%3F%20Share%20your%20configuration%20strategies%20and%20experiences%20in%20the%20comments%20below.*">
-            <header>
-                <h2>
-                    <a href="?post=let-the-tools-do-the-talking-why-automated-code-style-enforcement-is-essential-for-ai-assisted-development-post-1767968096774">Let the Tools Do the Talking: Why Automated Code Style Enforcement is Essential for AI-Assisted Development</a>
-                </h2>
-                <div class="meta-row">
-                    <span class="meta">SEPTEMBER 3, 2025</span>
-                    <div class="post-actions">
-                        <button onclick="editPost('post-1767968096774')">Edit</button>
-                        <button class="delete-btn" onclick="deletePost('post-1767968096774')">Delete</button>
-                    </div>
-                </div>
-            </header>
-            <div class="content">
-                In our previous post about building an AI toolkit for our team, we explored how AI agents are becoming integral to our development workflow. Today, let's dive into a critical foundation that makes AI-assisted development truly effective: automated code style enforcement.<br><br><h2>The Challenge: Teaching AI Agents Your Team's Style</h2><br>When AI agents contribute to your codebase, they need clear, consistent patterns to follow. Without automated enforcement, agents struggle to understand and replicate your team's style preferences. They might generate code that's functionally correct but looks foreign in your codebase—using different alias patterns, inconsistent pipe usage, or varying module organisation.<br><br>The result? Code that works but doesn't feel like it belongs, making the codebase harder to maintain and understand over time.<br><br><h2>The Solution: Automated Style Enforcement</h2><br>Tools like <strong>Credo</strong> and <strong>Dialyzer</strong> don't just catch bugs—they teach. When your codebase follows strict, automated style guidelines, AI agents learn from consistent examples throughout your project. Every function, every module, every pattern follows the same rules, creating a coherent style language that agents can understand and replicate.<br><br>This automated consistency becomes the foundation for effective AI collaboration:<br><br><h3>1. <strong>Create Predictable Patterns for AI Agents</strong></h3>AI agents excel at pattern recognition. When your codebase consistently uses the same alias organisation, pipe patterns, and module structure, agents can generate code that seamlessly fits your existing style.<br><br><h3>2. <strong>Eliminate Style Guesswork</strong></h3>Without clear rules, AI agents make inconsistent choices about formatting and structure. Automated enforcement removes this ambiguity, ensuring every piece of generated code follows your team's standards.<br><br><h3>3. <strong>Scale Your Team's Style</strong></h3>As AI agents become more prevalent in development, automated style enforcement lets you scale your team's coding standards without manually reviewing every AI contribution.<br><br><h3>4. <strong>Maintain Codebase Coherence</strong></h3>A consistent style creates a unified voice across your entire codebase, whether written by humans or AI agents.<br><br><h2>A Practical Example: Credo Configuration</h2><br>Here's how we configure Credo to enforce consistency that works well with AI-assisted development:<br><br><pre><code>elixir
-%{
-  configs: [
-    %{
-      name: "default",
-      strict: true,
-      files: %{
-        included: ["lib/", "test/"],
-        excluded: ["_build/", "deps/", ".elixir_ls/", "lib/rules_engine/dsl/parser.ex"]
-      },
-      checks: [
-        # Strict readability around pipes
-        {Credo.Check.Readability.SinglePipe, []},
-        {Credo.Check.Refactor.PipeChainStart, []},
-
-        # Additional readability checks
-        {Credo.Check.Readability.MultiAlias, []},
-        {Credo.Check.Readability.SeparateAliasRequire, []},
-        {Credo.Check.Readability.AliasAs, []}
-      ]
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --bg: #111110;
+      --fg: #e8e6e1;
+      --fg-muted: #666;
+      --fg-faint: #444;
+      --border: #2a2a28;
+      --accent: #e05a4b;
     }
-  ]
-}</code></pre><br><br>These specific checks ensure:<br><ul><li><strong>Consistent pipe usage</strong>: AI agents learn clear patterns for data transformation</li><li><strong>Organized imports</strong>: Aliases and requires follow predictable structures</li><li><strong>Readable code flow</strong>: Single pipes and proper chain starts make code easier to parse</li></ul><br><h2>Additional Benefits for Human Developers</h2><br>Whilst the primary goal is enabling consistent AI-generated code, automated style enforcement brings several benefits for human developers too:<br><br><h3><strong>Streamlined Code Reviews</strong></h3>With style automatically enforced, PR reviews can focus on logic, architecture, and business requirements rather than formatting debates.<br><br><h3><strong>Reduced Cognitive Load</strong></h3>Developers don't need to remember style preferences—the tools handle consistency whilst they focus on solving complex problems.<br><br><h3><strong>Faster Onboarding</strong></h3>New team members can immediately understand the codebase standards through automated feedback rather than tribal knowledge.<br><br><h3><strong>Early Bug Detection</strong></h3>Tools like Dialyzer catch type inconsistencies and potential runtime errors before they reach production, creating a safety net for both human and AI-generated code.<br><br><h3><strong>Documentation Through Code</strong></h3>Consistent patterns serve as implicit documentation, making the codebase self-explaining for new contributors.<br><br><h3><strong>Reduced Technical Debt</strong></h3>Automated checks prevent style inconsistencies from accumulating over time, keeping the codebase maintainable.<br><br><h3><strong>Improved Refactoring Confidence</strong></h3>When style is consistent, large-scale refactoring becomes more predictable and less error-prone.<br><br><h3><strong>Better Tooling Integration</strong></h3>IDEs and AI assistants work more effectively with consistently formatted code, providing better autocomplete and suggestions.<br><br><h2>Making It Work in Practice</h2><br>To successfully implement automated code style enforcement:<br><br>1. <strong>Run checks in CI/CD</strong>: Make style compliance a requirement for merging<br>2. <strong>Integrate with editors</strong>: Provide immediate feedback during development<br>3. <strong>Start strict</strong>: It's easier to begin with strict rules than to tighten them later<br>4. <strong>Document exceptions</strong>: When you exclude files or disable checks, document why<br><br><h2>The Bottom Line</h2><br>AI agents are becoming essential development partners, but they need consistent patterns to generate code that truly fits your codebase. Automated code style enforcement creates this consistency, teaching agents your team's standards whilst ensuring every contribution—human or AI—follows the same rules.<br><br>The goal isn't just cleaner code reviews or fewer style debates. It's about creating a codebase that speaks with one voice, where AI agents can contribute meaningfully because they understand exactly how your team writes code.<br><br>Let your tools teach your agents. Let consistency drive collaboration.<br><br><hr><br><br><em>What tools does your team use for automated code quality? Share your configuration strategies and experiences in the comments below.</em>
-            </div>
-        </article><article id="post-1767967537138" data-raw="As%20AI%20agents%20become%20increasingly%20integrated%20into%20software%20development%20workflows%2C%20establishing%20a%20structured%20approach%20to%20agent%20configuration%20is%20crucial%20for%20team%20efficiency%20and%20consistency.%20This%20guide%20outlines%20a%20comprehensive%20system%20for%20organizing%20AI%20agent%20instructions%20through%20strategic%20file%20placement%20and%20content%20organization.%0A%0A%23%23%20The%20Three-Tier%20Configuration%20System%0A%0A%23%23%23%20Personal%20Configuration%3A%20%60~%2F.claude%2FCLAUDE.md%60%20or%20%60~%2FAGENTS.md%60%0A%0A**Location**%3A%20A%20dedicated%20%60.claude%60%20directory%20in%20your%20home%20directory%20(for%20Claude-specific%20configs)%20or%20your%20home%20directory%20root%20(for%20general%20AI%20agent%20configs)%0A**Purpose**%3A%20Contains%20your%20individual%20preferences%2C%20coding%20style%2C%20and%20personal%20workflow%20requirements%0A%0A**Content%20Structure**%3A%0A%60%60%60markdown%0A%23%20Personal%20AI%20Agent%20Configuration%0A%0A%23%23%20Coding%20Preferences%0A-%20Language%3A%20%5BPrimary%20languages%20and%20frameworks%5D%0A-%20Code%20Style%3A%20%5BFormatting%20preferences%2C%20naming%20conventions%5D%0A-%20Testing%20Approach%3A%20%5BPreferred%20testing%20frameworks%20and%20methodologies%5D%0A-%20Documentation%20Style%3A%20%5BComment%20style%2C%20README%20preferences%5D%0A%0A%23%23%20Communication%20Style%0A-%20Response%20Format%3A%20%5BDetailed%20vs.%20concise%2C%20technical%20level%5D%0A-%20Explanation%20Depth%3A%20%5BHow%20much%20context%20you%20typically%20need%5D%0A-%20Code%20Review%20Focus%3A%20%5BSecurity%2C%20performance%2C%20readability%20priorities%5D%0A%0A%23%23%20Development%20Environment%0A-%20IDE%2FEditor%3A%20%5BYour%20preferred%20development%20tools%5D%0A-%20OS%3A%20%5BOperating%20system%20considerations%5D%0A-%20Shell%3A%20%5BCommand%20line%20preferences%5D%0A-%20Package%20Managers%3A%20%5Bnpm%2C%20yarn%2C%20pip%2C%20etc.%5D%0A%0A%23%23%20Personal%20Workflows%0A-%20Git%20practices%3A%20%5BBranch%20naming%2C%20commit%20message%20style%5D%0A-%20Debugging%20preferences%3A%20%5BTools%20and%20approaches%20you%20favor%5D%0A-%20Deployment%20considerations%3A%20%5BPlatforms%20you%20work%20with%5D%0A%60%60%60%0A%0A**Why%20Personal%20Configuration%20Matters**%3A%0APersonal%20configuration%20files%20ensure%20that%20AI%20agents%20adapt%20to%20your%20individual%20working%20style%20across%20all%20projects.%20This%20creates%20consistency%20in%20how%20agents%20interact%20with%20you%2C%20regardless%20of%20the%20project%20context.%20It's%20particularly%20valuable%20for%20maintaining%20your%20coding%20standards%20and%20receiving%20responses%20in%20your%20preferred%20format.%0A%0A%23%23%23%20Project%20Configuration%3A%20%60.%2FAGENTS.md%60%20or%20%60.%2FCLAUDE.md%60%0A%0A**Location**%3A%20Project%20root%20directory%0A**Purpose**%3A%20Contains%20project-specific%20context%2C%20architecture%20decisions%2C%20and%20team%20standards%0A%0A**Content%20Structure**%3A%0A%60%60%60markdown%0A%23%20Project%20AI%20Agent%20Configuration%0A%0A%23%23%20Project%20Overview%0A-%20Name%3A%20%5BProject%20name%5D%0A-%20Description%3A%20%5BBrief%20project%20description%5D%0A-%20Architecture%3A%20%5BHigh-level%20architecture%20overview%5D%0A-%20Tech%20Stack%3A%20%5BLanguages%2C%20frameworks%2C%20databases%5D%0A-%20Target%20Audience%3A%20%5BWho%20uses%20this%20software%5D%0A%0A%23%23%20Development%20Standards%0A-%20Code%20Style%3A%20%5BProject-specific%20style%20guide%5D%0A-%20Testing%20Requirements%3A%20%5BCoverage%20expectations%2C%20test%20types%5D%0A-%20Documentation%20Standards%3A%20%5BAPI%20docs%2C%20code%20comments%5D%0A-%20Performance%20Requirements%3A%20%5BSpeed%2C%20memory%2C%20scalability%20needs%5D%0A%0A%23%23%20Project%20Structure%0A%60%60%60%0Alib%2F%0A%20%20my_app%2F%0A%20%20%20%20accounts%2F%20%20%20%20%20%20%23%20User%20management%20context%0A%20%20%20%20blog%2F%20%20%20%20%20%20%20%20%20%20%23%20Blog%20context%0A%20%20%20%20repo.ex%20%20%20%20%20%20%20%20%23%20Database%20repository%0A%20%20my_app_web%2F%0A%20%20%20%20controllers%2F%20%20%20%23%20Phoenix%20controllers%0A%20%20%20%20live%2F%20%20%20%20%20%20%20%20%20%20%23%20LiveView%20modules%0A%20%20%20%20templates%2F%20%20%20%20%20%23%20EEx%20templates%0A%20%20%20%20views%2F%20%20%20%20%20%20%20%20%20%23%20Phoenix%20views%0A%20%20%20%20router.ex%20%20%20%20%20%20%23%20Application%20routes%0A%20%20%20%20endpoint.ex%20%20%20%20%23%20HTTP%20endpoint%0Aconfig%2F%20%20%20%20%20%20%20%20%20%20%20%20%23%20Application%20configuration%0Apriv%2F%0A%20%20repo%2F%0A%20%20%20%20migrations%2F%20%20%20%20%23%20Database%20migrations%0A%20%20%20%20seeds.exs%20%20%20%20%20%20%23%20Database%20seeds%0A%20%20static%2F%20%20%20%20%20%20%20%20%20%20%23%20Static%20assets%0Atest%2F%20%20%20%20%20%20%20%20%20%20%20%20%20%20%23%20Test%20files%0A%20%20my_app%2F%20%20%20%20%20%20%20%20%20%20%23%20Context%20tests%0A%20%20my_app_web%2F%20%20%20%20%20%20%23%20Web%20layer%20tests%0A%20%20support%2F%20%20%20%20%20%20%20%20%20%23%20Test%20helpers%0Adeps%2F%20%20%20%20%20%20%20%20%20%20%20%20%20%20%23%20Dependencies%0A%60%60%60%0A%0A%23%23%20Key%20Dependencies%0A-%20%5BList%20critical%20dependencies%20and%20their%20purposes%5D%0A-%20%5BNote%20any%20deprecated%20or%20problematic%20dependencies%5D%0A-%20%5BMention%20version%20constraints%5D%0A%0A%23%23%20Domain%20Knowledge%0A-%20%5BBusiness%20logic%20explanations%5D%0A-%20%5BIndustry-specific%20terminology%5D%0A-%20%5BRegulatory%20or%20compliance%20requirements%5D%0A%0A%23%23%20Common%20Tasks%0A-%20%5BFrequent%20development%20patterns%20in%20this%20project%5D%0A-%20%5BTypical%20debugging%20scenarios%5D%0A-%20%5BDeployment%20procedures%5D%0A%60%60%60%0A%0A%23%23%23%20Feature%2FModule%20Configuration%3A%20%60.%2Ffeature-name%2FAGENTS.md%60%20or%20%60.%2Ffeature-name%2FCLAUDE.md%60%0A%0A**Location**%3A%20Within%20specific%20feature%20directories%20or%20modules%0A**Purpose**%3A%20Contains%20highly%20specific%20context%20for%20particular%20features%20or%20subsystems%0A%0A**Content%20Structure**%3A%0A%60%60%60markdown%0A%23%20Feature-Specific%20Agent%20Configuration%0A%0A%23%23%20Feature%20Overview%0A-%20Purpose%3A%20%5BWhat%20this%20feature%20does%5D%0A-%20Dependencies%3A%20%5BOther%20features%2Fmodules%20this%20relies%20on%5D%0A-%20Data%20Flow%3A%20%5BHow%20data%20moves%20through%20this%20feature%5D%0A%0A%23%23%20Implementation%20Details%0A-%20Key%20Files%3A%20%5BMost%20important%20files%20to%20understand%5D%0A-%20Design%20Patterns%3A%20%5BPatterns%20used%20in%20this%20feature%5D%0A-%20External%20Integrations%3A%20%5BAPIs%2C%20services%2C%20databases%5D%0A%0A%23%23%20Testing%20Strategy%0A-%20Test%20Types%3A%20%5BUnit%2C%20integration%2C%20e2e%20specific%20to%20this%20feature%5D%0A-%20Mock%20Data%3A%20%5BWhere%20to%20find%20or%20how%20to%20generate%20test%20data%5D%0A-%20Edge%20Cases%3A%20%5BKnown%20edge%20cases%20and%20how%20they're%20handled%5D%0A%0A%23%23%20Known%20Issues%0A-%20%5BCurrent%20bugs%20or%20limitations%5D%0A-%20%5BTechnical%20debt%20items%5D%0A-%20%5BFuture%20refactoring%20plans%5D%0A%60%60%60%0A%0A%23%23%20The%20Power%20of%20Technical%20Specification%20Files%0A%0A%23%23%23%20Why%20Technical%20Specifications%20Matter%20for%20AI%20Agents%0A%0ATechnical%20specification%20files%20serve%20as%20concentrated%20knowledge%20bases%20that%20enable%20AI%20agents%20to%20understand%20complex%20codebases%20without%20exhaustive%20code%20scanning.%20Here's%20why%20they're%20invaluable%3A%0A%0A**Contextual%20Understanding**%3A%20Rather%20than%20inferring%20patterns%20from%20code%2C%20agents%20receive%20explicit%20explanations%20of%20architectural%20decisions%2C%20design%20patterns%2C%20and%20business%20logic.%20This%20leads%20to%20more%20accurate%20suggestions%20and%20reduces%20the%20likelihood%20of%20recommendations%20that%20conflict%20with%20established%20patterns.%0A%0A**Efficiency**%3A%20Instead%20of%20analysing%20thousands%20of%20lines%20of%20code%20to%20understand%20system%20architecture%2C%20agents%20can%20quickly%20reference%20specification%20files%20to%20grasp%20the%20overall%20structure%20and%20make%20informed%20decisions%20about%20code%20changes.%0A%0A**Consistency**%3A%20Specifications%20ensure%20that%20AI%20suggestions%20align%20with%20established%20project%20standards%20and%20architectural%20decisions%2C%20maintaining%20code%20consistency%20across%20the%20team.%0A%0A%23%23%23%20Essential%20Technical%20Specification%20Files%0A%0A**%60.%2Fspecs%2FARCHITECTURE.md%60**%0A%60%60%60markdown%0A%23%20System%20Architecture%0A%0A%23%23%20High-Level%20Design%0A%5BSystem%20overview%20with%20diagrams%5D%0A%0A%23%23%20Data%20Flow%0A%5BHow%20data%20moves%20through%20the%20system%5D%0A%0A%23%23%20Integration%20Points%0A%5BExternal%20services%2C%20APIs%2C%20databases%5D%0A%0A%23%23%20Security%20Considerations%0A%5BAuthentication%2C%20authorization%2C%20data%20protection%5D%0A%0A%23%23%20Scalability%20Approach%0A%5BHow%20the%20system%20handles%20growth%5D%0A%60%60%60%0A%0A**%60.%2Fspecs%2FAPI_SPEC.md%60**%0A%60%60%60markdown%0A%23%20API%20Specification%0A%0A%23%23%20Endpoints%0A%5BDetailed%20endpoint%20documentation%5D%0A%0A%23%23%20Authentication%0A%5BHow%20API%20authentication%20works%5D%0A%0A%23%23%20Data%20Models%0A%5BRequest%2Fresponse%20schemas%5D%0A%0A%23%23%20Error%20Handling%0A%5BStandard%20error%20responses%5D%0A%0A%23%23%20Rate%20Limiting%0A%5BAPI%20usage%20constraints%5D%0A%60%60%60%0A%0A**%60.%2Fspecs%2FDATABASE_SCHEMA.md%60**%0A%60%60%60markdown%0A%23%20Database%20Design%0A%0A%23%23%20Entity%20Relationships%0A%5BTables%20and%20their%20relationships%5D%0A%0A%23%23%20Indexing%20Strategy%0A%5BPerformance%20optimization%20details%5D%0A%0A%23%23%20Migration%20Approach%0A%5BHow%20schema%20changes%20are%20handled%5D%0A%0A%23%23%20Data%20Validation%0A%5BConstraints%20and%20validation%20rules%5D%0A%60%60%60%0A%0A%23%23%23%20Agent%20Integration%20Benefits%0A%0AWhen%20AI%20agents%20have%20access%20to%20these%20specification%20files%2C%20they%20can%3A%0A%0A1.%20**Generate%20Contextually%20Appropriate%20Code**%3A%20Understanding%20the%20existing%20architecture%20ensures%20new%20code%20follows%20established%20patterns%0A2.%20**Suggest%20Relevant%20Tests**%3A%20Knowing%20the%20testing%20strategy%20helps%20generate%20appropriate%20test%20cases%0A3.%20**Identify%20Integration%20Points**%3A%20Understanding%20system%20boundaries%20helps%20with%20API%20integration%20and%20service%20communication%0A4.%20**Maintain%20Consistency**%3A%20Adhering%20to%20documented%20standards%20prevents%20architectural%20drift%0A5.%20**Optimize%20Performance**%3A%20Understanding%20performance%20requirements%20guides%20optimization%20suggestions%0A%0A%23%23%20Specialized%20Project%20Agents%0A%0A%23%23%23%20Defining%20Specialized%20Agent%20Roles%0A%0ADifferent%20aspects%20of%20software%20development%20benefit%20from%20specialized%20AI%20agents%20configured%20for%20specific%20tasks%3A%0A%0A**Test%20Agent%20Configuration**%0A%60%60%60markdown%0A%23%20Test%20Agent%20Specialization%0A%0A%23%23%20Primary%20Responsibilities%0A-%20Generate%20comprehensive%20test%20suites%0A-%20Identify%20edge%20cases%20and%20boundary%20conditions%0A-%20Suggest%20test%20data%20scenarios%0A-%20Recommend%20testing%20strategies%0A%0A%23%23%20Configuration%20Focus%0A-%20Testing%20frameworks%20used%20in%20project%0A-%20Coverage%20requirements%20and%20standards%0A-%20Mock%20data%20generation%20approaches%0A-%20Performance%20testing%20considerations%0A%0A%23%23%20Prompt%20Enhancements%0A%22When%20generating%20tests%2C%20prioritize%3A%0A1.%20Edge%20cases%20and%20error%20conditions%0A2.%20Integration%20between%20components%0A3.%20Performance%20under%20load%0A4.%20Security%20vulnerabilities%0A5.%20Backwards%20compatibility%22%0A%60%60%60%0A%0A**Code%20Review%20Agent%20Configuration**%0A%60%60%60markdown%0A%23%20Code%20Review%20Agent%20Specialization%0A%0A%23%23%20Primary%20Responsibilities%0A-%20Security%20vulnerability%20identification%0A-%20Performance%20optimization%20suggestions%0A-%20Code%20style%20and%20consistency%20checks%0A-%20Architecture%20compliance%20verification%0A%0A%23%23%20Configuration%20Focus%0A-%20Security%20best%20practices%20for%20the%20tech%20stack%0A-%20Performance%20benchmarks%20and%20optimization%20patterns%0A-%20Code%20quality%20metrics%20and%20standards%0A-%20Accessibility%20requirements%0A%0A%23%23%20Review%20Checklist%0A-%20%5B%20%5D%20Security%20vulnerabilities%0A-%20%5B%20%5D%20Performance%20implications%0A-%20%5B%20%5D%20Code%20maintainability%0A-%20%5B%20%5D%20Test%20coverage%0A-%20%5B%20%5D%20Documentation%20completeness%0A%60%60%60%0A%0A**Documentation%20Agent%20Configuration**%0A%60%60%60markdown%0A%23%20Documentation%20Agent%20Specialization%0A%0A%23%23%20Primary%20Responsibilities%0A-%20Generate%20comprehensive%20API%20documentation%0A-%20Create%20user%20guides%20and%20tutorials%0A-%20Maintain%20architectural%20documentation%0A-%20Produce%20code%20comments%20and%20inline%20documentation%0A%0A%23%23%20Configuration%20Focus%0A-%20Documentation%20standards%20and%20formats%0A-%20Audience-specific%20writing%20styles%0A-%20Visual%20diagram%20generation%0A-%20Version%20control%20for%20documentation%0A%0A%23%23%20Documentation%20Types%0A-%20API%20reference%20documentation%0A-%20User%20guides%20and%20tutorials%0A-%20Architectural%20decision%20records%0A-%20Code%20comments%20and%20inline%20docs%0A%60%60%60%0A%0A%23%23%23%20Implementation%20Strategy%0A%0A**1.%20Agent%20Role%20Definition**%0ACreate%20specific%20configuration%20files%20for%20each%20specialized%20agent%2C%20clearly%20defining%20their%20scope%20and%20responsibilities.%0A%0A**2.%20Context%20Isolation**%0AEnsure%20each%20specialized%20agent%20has%20access%20to%20relevant%20specification%20files%20while%20filtering%20out%20unnecessary%20information%20that%20might%20dilute%20their%20focus.%0A%0A**3.%20Workflow%20Integration**%0AIntegrate%20specialized%20agents%20into%20your%20development%20workflow%20at%20appropriate%20points%20(pre-commit%20hooks%2C%20code%20review%20processes%2C%20deployment%20pipelines).%0A%0A**4.%20Feedback%20Loops**%0AEstablish%20mechanisms%20for%20agents%20to%20learn%20from%20team%20feedback%20and%20improve%20their%20specialized%20knowledge%20over%20time.%0A%0A%23%23%20Best%20Practices%20for%20Implementation%0A%0A%23%23%23%20Getting%20Started%0A%0A1.%20**Begin%20with%20Personal%20Configuration**%3A%20Start%20by%20creating%20your%20personal%20agent%20configuration%20file%20to%20establish%20individual%20preferences%0A2.%20**Establish%20Project%20Standards**%3A%20Work%20with%20your%20team%20to%20define%20project-level%20configuration%20standards%0A3.%20**Iterate%20and%20Refine**%3A%20Continuously%20update%20configuration%20files%20based%20on%20agent%20performance%20and%20team%20feedback%0A4.%20**Document%20the%20Process**%3A%20Create%20team%20guidelines%20for%20maintaining%20and%20updating%20agent%20configuration%20files%0A%0A%23%23%23%20Maintenance%20Guidelines%0A%0A**Regular%20Updates**%3A%20Schedule%20regular%20reviews%20of%20configuration%20files%20to%20ensure%20they%20remain%20current%20with%20project%20evolution.%0A%0A**Version%20Control**%3A%20Treat%20agent%20configuration%20files%20as%20part%20of%20your%20codebase%2C%20with%20proper%20version%20control%20and%20change%20tracking.%0A%0A**Team%20Alignment**%3A%20Ensure%20all%20team%20members%20understand%20and%20contribute%20to%20agent%20configuration%20maintenance.%0A%0A**Performance%20Monitoring**%3A%20Track%20how%20agent%20configurations%20impact%20development%20velocity%20and%20code%20quality.%0A%0A%23%23%20Conclusion%0A%0AImplementing%20a%20structured%20AI%20agent%20toolkit%20through%20thoughtful%20configuration%20files%20transforms%20AI%20from%20a%20generic%20assistant%20into%20a%20specialized%20team%20member%20that%20understands%20your%20codebase%2C%20follows%20your%20standards%2C%20and%20contributes%20meaningfully%20to%20your%20development%20process.%20By%20establishing%20clear%20configuration%20hierarchies%2C%20maintaining%20comprehensive%20technical%20specifications%2C%20and%20deploying%20specialized%20agents%2C%20development%20teams%20can%20significantly%20enhance%20their%20productivity%20while%20maintaining%20code%20quality%20and%20consistency.%0A%0AThe%20investment%20in%20setting%20up%20these%20configuration%20files%20pays%20dividends%20through%20improved%20AI%20suggestions%2C%20reduced%20onboarding%20time%20for%20new%20team%20members%2C%20and%20more%20consistent%20development%20practices%20across%20projects.%20As%20AI%20continues%20to%20evolve%2C%20teams%20with%20well-structured%20agent%20configurations%20will%20be%20better%20positioned%20to%20leverage%20new%20capabilities%20effectively.">
-            <header>
-                <h2>
-                    <a href="?post=building-an-ai-toolkit-for-development-teams-a-comprehensive-guide-to-agent-configuration-files-post-1767967537138">Building an AI Toolkit for Development Teams: A Comprehensive Guide to Agent Configuration Files</a>
-                </h2>
-                <div class="meta-row">
-                    <span class="meta">SEPTEMBER 2, 2025</span>
-                    <div class="post-actions">
-                        <button onclick="editPost('post-1767967537138')">Edit</button>
-                        <button class="delete-btn" onclick="deletePost('post-1767967537138')">Delete</button>
-                    </div>
-                </div>
-            </header>
-            <div class="content">
-                As AI agents become increasingly integrated into software development workflows, establishing a structured approach to agent configuration is crucial for team efficiency and consistency. This guide outlines a comprehensive system for organizing AI agent instructions through strategic file placement and content organization.<br><br><h2>The Three-Tier Configuration System</h2><br><h3>Personal Configuration: <code>~/.claude/CLAUDE.md</code> or <code>~/AGENTS.md</code></h3><br><strong>Location</strong>: A dedicated <code>.claude</code> directory in your home directory (for Claude-specific configs) or your home directory root (for general AI agent configs)<br><strong>Purpose</strong>: Contains your individual preferences, coding style, and personal workflow requirements<br><br><strong>Content Structure</strong>:<br><pre><code>markdown
-# Personal AI Agent Configuration
+  }
 
-## Coding Preferences
-- Language: [Primary languages and frameworks]
-- Code Style: [Formatting preferences, naming conventions]
-- Testing Approach: [Preferred testing frameworks and methodologies]
-- Documentation Style: [Comment style, README preferences]
+  * { box-sizing: border-box; margin: 0; padding: 0; }
 
-## Communication Style
-- Response Format: [Detailed vs. concise, technical level]
-- Explanation Depth: [How much context you typically need]
-- Code Review Focus: [Security, performance, readability priorities]
+  body {
+    font-family: 'Lora', Georgia, serif;
+    background: var(--bg);
+    color: var(--fg);
+    line-height: 1.75;
+    padding: 3rem 1.5rem 6rem;
+    min-height: 100vh;
+  }
 
-## Development Environment
-- IDE/Editor: [Your preferred development tools]
-- OS: [Operating system considerations]
-- Shell: [Command line preferences]
-- Package Managers: [npm, yarn, pip, etc.]
+  .container { max-width: var(--max-w); margin: 0 auto; }
 
-## Personal Workflows
-- Git practices: [Branch naming, commit message style]
-- Debugging preferences: [Tools and approaches you favor]
-- Deployment considerations: [Platforms you work with]</code></pre><br><br><strong>Why Personal Configuration Matters</strong>:<br>Personal configuration files ensure that AI agents adapt to your individual working style across all projects. This creates consistency in how agents interact with you, regardless of the project context. It's particularly valuable for maintaining your coding standards and receiving responses in your preferred format.<br><br><h3>Project Configuration: <code>./AGENTS.md</code> or <code>./CLAUDE.md</code></h3><br><strong>Location</strong>: Project root directory<br><strong>Purpose</strong>: Contains project-specific context, architecture decisions, and team standards<br><br><strong>Content Structure</strong>:<br><pre><code>markdown
-# Project AI Agent Configuration
+  header {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    margin-bottom: 3rem;
+    padding-bottom: 1.25rem;
+    border-bottom: 1px solid var(--border);
+  }
 
-## Project Overview
-- Name: [Project name]
-- Description: [Brief project description]
-- Architecture: [High-level architecture overview]
-- Tech Stack: [Languages, frameworks, databases]
-- Target Audience: [Who uses this software]
+  header h1 { font-size: 1.1rem; font-weight: 500; letter-spacing: 0.02em; }
 
-## Development Standards
-- Code Style: [Project-specific style guide]
-- Testing Requirements: [Coverage expectations, test types]
-- Documentation Standards: [API docs, code comments]
-- Performance Requirements: [Speed, memory, scalability needs]
+  .header-actions { display: flex; gap: 1.25rem; align-items: center; }
 
-## Project Structure</code></pre><br>lib/<br>  my_app/<br>    accounts/      # User management context<br>    blog/          # Blog context<br>    repo.ex        # Database repository<br>  my_app_web/<br>    controllers/   # Phoenix controllers<br>    live/          # LiveView modules<br>    templates/     # EEx templates<br>    views/         # Phoenix views<br>    router.ex      # Application routes<br>    endpoint.ex    # HTTP endpoint<br>config/            # Application configuration<br>priv/<br>  repo/<br>    migrations/    # Database migrations<br>    seeds.exs      # Database seeds<br>  static/          # Static assets<br>test/              # Test files<br>  my_app/          # Context tests<br>  my_app_web/      # Web layer tests<br>  support/         # Test helpers<br>deps/              # Dependencies<br><pre><code>## Key Dependencies
-- [List critical dependencies and their purposes]
-- [Note any deprecated or problematic dependencies]
-- [Mention version constraints]
+  .hdr-btn {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.65rem;
+    color: var(--fg-faint);
+    background: none;
+    border: none;
+    cursor: pointer;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    padding: 0;
+    transition: color 0.15s;
+  }
+  .hdr-btn:hover { color: var(--fg-muted); }
 
-## Domain Knowledge
-- [Business logic explanations]
-- [Industry-specific terminology]
-- [Regulatory or compliance requirements]
+  /* No-JS notice */
+  .no-js-notice {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.75rem;
+    color: var(--fg-muted);
+    border: 1px solid var(--border);
+    padding: 0.75rem 1rem;
+    margin-bottom: 2.5rem;
+    display: none;
+  }
 
-## Common Tasks
-- [Frequent development patterns in this project]
-- [Typical debugging scenarios]
-- [Deployment procedures]</code></pre><br><br><h3>Feature/Module Configuration: <code>./feature-name/AGENTS.md</code> or <code>./feature-name/CLAUDE.md</code></h3><br><strong>Location</strong>: Within specific feature directories or modules<br><strong>Purpose</strong>: Contains highly specific context for particular features or subsystems<br><br><strong>Content Structure</strong>:<br><pre><code>markdown
-# Feature-Specific Agent Configuration
+  /* Compose */
+  .compose { margin-bottom: 3.5rem; display: none; }
 
-## Feature Overview
-- Purpose: [What this feature does]
-- Dependencies: [Other features/modules this relies on]
-- Data Flow: [How data moves through this feature]
+  .compose input[type="text"] {
+    width: 100%;
+    font-family: 'Lora', Georgia, serif;
+    font-size: 1rem;
+    font-style: italic;
+    background: none;
+    border: none;
+    border-bottom: 1px solid var(--border);
+    color: var(--fg);
+    padding: 0.25rem 0 0.5rem;
+    margin-bottom: 0.75rem;
+    outline: none;
+    transition: border-color 0.15s;
+  }
+  .compose input[type="text"]:focus { border-color: var(--fg-muted); }
+  .compose input[type="text"]::placeholder { color: var(--fg-faint); }
 
-## Implementation Details
-- Key Files: [Most important files to understand]
-- Design Patterns: [Patterns used in this feature]
-- External Integrations: [APIs, services, databases]
+  .compose textarea {
+    width: 100%;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.8rem;
+    line-height: 1.7;
+    background: none;
+    border: none;
+    color: var(--fg);
+    padding: 0;
+    resize: none;
+    outline: none;
+    min-height: 80px;
+    overflow: hidden;
+  }
+  .compose textarea::placeholder { color: var(--fg-faint); }
 
-## Testing Strategy
-- Test Types: [Unit, integration, e2e specific to this feature]
-- Mock Data: [Where to find or how to generate test data]
-- Edge Cases: [Known edge cases and how they're handled]
+  .compose-footer { display: flex; justify-content: space-between; align-items: center; margin-top: 0.75rem; }
 
-## Known Issues
-- [Current bugs or limitations]
-- [Technical debt items]
-- [Future refactoring plans]</code></pre><br><br><h2>The Power of Technical Specification Files</h2><br><h3>Why Technical Specifications Matter for AI Agents</h3><br>Technical specification files serve as concentrated knowledge bases that enable AI agents to understand complex codebases without exhaustive code scanning. Here's why they're invaluable:<br><br><strong>Contextual Understanding</strong>: Rather than inferring patterns from code, agents receive explicit explanations of architectural decisions, design patterns, and business logic. This leads to more accurate suggestions and reduces the likelihood of recommendations that conflict with established patterns.<br><br><strong>Efficiency</strong>: Instead of analysing thousands of lines of code to understand system architecture, agents can quickly reference specification files to grasp the overall structure and make informed decisions about code changes.<br><br><strong>Consistency</strong>: Specifications ensure that AI suggestions align with established project standards and architectural decisions, maintaining code consistency across the team.<br><br><h3>Essential Technical Specification Files</h3><br><strong><code>./specs/ARCHITECTURE.md</code></strong><br><pre><code>markdown
-# System Architecture
+  .compose-hint {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.6rem;
+    color: var(--fg-faint);
+    letter-spacing: 0.03em;
+  }
 
-## High-Level Design
-[System overview with diagrams]
+  .post-btn {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.7rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--bg);
+    background: var(--fg);
+    border: none;
+    padding: 0.45rem 1rem;
+    cursor: pointer;
+    transition: opacity 0.15s;
+  }
+  .post-btn:hover { opacity: 0.75; }
 
-## Data Flow
-[How data moves through the system]
+  /* Notes */
+  article.note { padding: 1.5rem 0; border-bottom: 1px solid var(--border); }
+  article.note:first-of-type { border-top: 1px solid var(--border); }
 
-## Integration Points
-[External services, APIs, databases]
+  .note-header { display: flex; justify-content: space-between; align-items: flex-start; gap: 1rem; margin-bottom: 0.5rem; }
 
-## Security Considerations
-[Authentication, authorization, data protection]
+  .note-title { font-size: 0.95rem; font-weight: 500; font-style: italic; flex: 1; }
 
-## Scalability Approach
-[How the system handles growth]</code></pre><br><br><strong><code>./specs/API_SPEC.md</code></strong><br><pre><code>markdown
-# API Specification
+  .note-anchor {
+    color: inherit;
+    text-decoration: none;
+  }
+  .note-anchor:hover::after {
+    content: ' #';
+    color: var(--fg-faint);
+    font-style: normal;
+    font-weight: 400;
+  }
 
-## Endpoints
-[Detailed endpoint documentation]
+  .note-time {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.62rem;
+    color: var(--fg-faint);
+    white-space: pre;
+    text-align: right;
+    flex-shrink: 0;
+    line-height: 1.6;
+  }
 
-## Authentication
-[How API authentication works]
+  .note-body { font-size: 0.95rem; }
+  .note-body p { margin-bottom: 0.6em; }
+  .note-body p:last-child { margin-bottom: 0; }
+  .note-body h1, .note-body h2, .note-body h3 { font-size: 1rem; font-weight: 500; margin: 0.8em 0 0.4em; }
+  .note-body code { font-family: 'JetBrains Mono', monospace; font-size: 0.8em; background: var(--border); padding: 0.1em 0.35em; }
+  .note-body pre { background: var(--border); padding: 0.75rem 1rem; overflow-x: auto; margin: 0.6em 0; }
+  .note-body pre code { background: none; padding: 0; }
+  .note-body a { color: var(--accent); text-decoration: none; }
+  .note-body a:hover { text-decoration: underline; }
+  .note-body ul, .note-body ol { padding-left: 1.4em; margin-bottom: 0.6em; }
+  .note-body li { margin-bottom: 0.2em; }
+  .note-body blockquote { border-left: 2px solid var(--fg-faint); padding-left: 1rem; color: var(--fg-muted); font-style: italic; margin: 0.6em 0; }
+  .note-body strong { font-weight: 600; }
+  .note-body em { font-style: italic; }
+  .note-body hr { border: none; border-top: 1px solid var(--border); margin: 0.8em 0; }
 
-## Data Models
-[Request/response schemas]
+  .note-actions { display: none; gap: 1rem; margin-top: 0.75rem; }
 
-## Error Handling
-[Standard error responses]
+  .note-action {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.62rem;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    color: var(--fg-faint);
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 0;
+    transition: color 0.15s;
+  }
+  .note-action:hover { color: var(--fg-muted); }
+  .note-action.delete:hover { color: var(--accent); }
 
-## Rate Limiting
-[API usage constraints]</code></pre><br><br><strong><code>./specs/DATABASE_SCHEMA.md</code></strong><br><pre><code>markdown
-# Database Design
+  .edit-area { margin-top: 0.75rem; display: none; }
 
-## Entity Relationships
-[Tables and their relationships]
+  .edit-title {
+    width: 100%;
+    font-family: 'Lora', Georgia, serif;
+    font-size: 0.95rem;
+    font-style: italic;
+    background: none;
+    border: none;
+    border-bottom: 1px solid var(--border);
+    color: var(--fg);
+    padding: 0.2rem 0 0.4rem;
+    margin-bottom: 0.6rem;
+    outline: none;
+  }
 
-## Indexing Strategy
-[Performance optimization details]
+  .edit-textarea {
+    width: 100%;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.8rem;
+    line-height: 1.7;
+    background: none;
+    border: none;
+    color: var(--fg);
+    padding: 0;
+    resize: none;
+    outline: none;
+    min-height: 60px;
+    overflow: hidden;
+  }
 
-## Migration Approach
-[How schema changes are handled]
+  .edit-footer { display: flex; gap: 0.75rem; margin-top: 0.6rem; }
 
-## Data Validation
-[Constraints and validation rules]</code></pre><br><br><h3>Agent Integration Benefits</h3><br>When AI agents have access to these specification files, they can:<br><br>1. <strong>Generate Contextually Appropriate Code</strong>: Understanding the existing architecture ensures new code follows established patterns<br>2. <strong>Suggest Relevant Tests</strong>: Knowing the testing strategy helps generate appropriate test cases<br>3. <strong>Identify Integration Points</strong>: Understanding system boundaries helps with API integration and service communication<br>4. <strong>Maintain Consistency</strong>: Adhering to documented standards prevents architectural drift<br>5. <strong>Optimize Performance</strong>: Understanding performance requirements guides optimization suggestions<br><br><h2>Specialized Project Agents</h2><br><h3>Defining Specialized Agent Roles</h3><br>Different aspects of software development benefit from specialized AI agents configured for specific tasks:<br><br><strong>Test Agent Configuration</strong><br><pre><code>markdown
-# Test Agent Specialization
+  .save-btn {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.65rem;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--bg);
+    background: var(--fg);
+    border: none;
+    padding: 0.35rem 0.8rem;
+    cursor: pointer;
+    transition: opacity 0.15s;
+  }
+  .save-btn:hover { opacity: 0.75; }
 
-## Primary Responsibilities
-- Generate comprehensive test suites
-- Identify edge cases and boundary conditions
-- Suggest test data scenarios
-- Recommend testing strategies
+  .cancel-btn {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.65rem;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--fg-faint);
+    background: none;
+    border: none;
+    cursor: pointer;
+    transition: color 0.15s;
+  }
+  .cancel-btn:hover { color: var(--fg-muted); }
 
-## Configuration Focus
-- Testing frameworks used in project
-- Coverage requirements and standards
-- Mock data generation approaches
-- Performance testing considerations
+  .empty-state { font-size: 0.875rem; color: var(--fg-faint); font-style: italic; padding: 2rem 0; }
 
-## Prompt Enhancements
-"When generating tests, prioritize:
-1. Edge cases and error conditions
-2. Integration between components
-3. Performance under load
-4. Security vulnerabilities
-5. Backwards compatibility"</code></pre><br><br><strong>Code Review Agent Configuration</strong><br><pre><code>markdown
-# Code Review Agent Specialization
+  /* Bio */
+  .bio {
+    margin-top: 4rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid var(--border);
+  }
 
-## Primary Responsibilities
-- Security vulnerability identification
-- Performance optimization suggestions
-- Code style and consistency checks
-- Architecture compliance verification
+  .bio-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.62rem;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--fg-faint);
+    margin-bottom: 0.75rem;
+  }
 
-## Configuration Focus
-- Security best practices for the tech stack
-- Performance benchmarks and optimization patterns
-- Code quality metrics and standards
-- Accessibility requirements
+  .bio-body { font-size: 0.9rem; color: var(--fg-muted); }
+  .bio-body p { margin-bottom: 0.6em; }
+  .bio-body p:last-child { margin-bottom: 0; }
+  .bio-body a { color: var(--accent); text-decoration: none; }
+  .bio-body a:hover { text-decoration: underline; }
+  .bio-body strong { font-weight: 600; }
+  .bio-body em { font-style: italic; }
+  .bio-body code { font-family: 'JetBrains Mono', monospace; font-size: 0.8em; background: var(--border); padding: 0.1em 0.35em; }
 
-## Review Checklist
-- [ ] Security vulnerabilities
-- [ ] Performance implications
-- [ ] Code maintainability
-- [ ] Test coverage
-- [ ] Documentation completeness</code></pre><br><br><strong>Documentation Agent Configuration</strong><br><pre><code>markdown
-# Documentation Agent Specialization
+  /* Settings modal */
+  .modal-backdrop {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.4);
+    z-index: 100;
+    align-items: center;
+    justify-content: center;
+    padding: 1.5rem;
+  }
+  .modal-backdrop.open { display: flex; }
 
-## Primary Responsibilities
-- Generate comprehensive API documentation
-- Create user guides and tutorials
-- Maintain architectural documentation
-- Produce code comments and inline documentation
+  .modal {
+    background: var(--bg);
+    border: 1px solid var(--border);
+    padding: 2rem;
+    width: 100%;
+    max-width: 480px;
+  }
 
-## Configuration Focus
-- Documentation standards and formats
-- Audience-specific writing styles
-- Visual diagram generation
-- Version control for documentation
+  .modal h2 {
+    font-size: 0.9rem;
+    font-weight: 500;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    font-family: 'JetBrains Mono', monospace;
+    color: var(--fg-muted);
+    margin-bottom: 1.5rem;
+  }
 
-## Documentation Types
-- API reference documentation
-- User guides and tutorials
-- Architectural decision records
-- Code comments and inline docs</code></pre><br><br><h3>Implementation Strategy</h3><br><strong>1. Agent Role Definition</strong><br>Create specific configuration files for each specialized agent, clearly defining their scope and responsibilities.<br><br><strong>2. Context Isolation</strong><br>Ensure each specialized agent has access to relevant specification files while filtering out unnecessary information that might dilute their focus.<br><br><strong>3. Workflow Integration</strong><br>Integrate specialized agents into your development workflow at appropriate points (pre-commit hooks, code review processes, deployment pipelines).<br><br><strong>4. Feedback Loops</strong><br>Establish mechanisms for agents to learn from team feedback and improve their specialized knowledge over time.<br><br><h2>Best Practices for Implementation</h2><br><h3>Getting Started</h3><br>1. <strong>Begin with Personal Configuration</strong>: Start by creating your personal agent configuration file to establish individual preferences<br>2. <strong>Establish Project Standards</strong>: Work with your team to define project-level configuration standards<br>3. <strong>Iterate and Refine</strong>: Continuously update configuration files based on agent performance and team feedback<br>4. <strong>Document the Process</strong>: Create team guidelines for maintaining and updating agent configuration files<br><br><h3>Maintenance Guidelines</h3><br><strong>Regular Updates</strong>: Schedule regular reviews of configuration files to ensure they remain current with project evolution.<br><br><strong>Version Control</strong>: Treat agent configuration files as part of your codebase, with proper version control and change tracking.<br><br><strong>Team Alignment</strong>: Ensure all team members understand and contribute to agent configuration maintenance.<br><br><strong>Performance Monitoring</strong>: Track how agent configurations impact development velocity and code quality.<br><br><h2>Conclusion</h2><br>Implementing a structured AI agent toolkit through thoughtful configuration files transforms AI from a generic assistant into a specialized team member that understands your codebase, follows your standards, and contributes meaningfully to your development process. By establishing clear configuration hierarchies, maintaining comprehensive technical specifications, and deploying specialized agents, development teams can significantly enhance their productivity while maintaining code quality and consistency.<br><br>The investment in setting up these configuration files pays dividends through improved AI suggestions, reduced onboarding time for new team members, and more consistent development practices across projects. As AI continues to evolve, teams with well-structured agent configurations will be better positioned to leverage new capabilities effectively.
-            </div>
-        </article>
-        <!-- HARDCODED_POSTS_START -->
-        <!-- existing posts will be baked in here by the save function -->
-        <!-- HARDCODED_POSTS_END -->
-    </main>
+  .field { margin-bottom: 1.25rem; }
 
-    <div class="intro" id="blog-intro">Henricus is a backend software developer with a passion for complex systems and elegant code architecture. Specializing in Elixir and Rust, he thrives on solving challenging technical problems and untangling intricate backend logic, though he openly admits frontend development isn't his forte. When he's not deep in code, Henricus enjoys analog and digital photography and considers being a dad his greatest achievement and defining characteristic.</div>
+  .field label {
+    display: block;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.65rem;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: var(--fg-faint);
+    margin-bottom: 0.4rem;
+  }
 
-    <footer>
-        <p>© <span id="year">2026</span> <span id="footer-author">Henrics Louwhoff</span>. All rights reserved.</p>
-    </footer>
+  .field input, .field textarea {
+    width: 100%;
+    font-family: 'Lora', Georgia, serif;
+    font-size: 0.9rem;
+    background: none;
+    border: none;
+    border-bottom: 1px solid var(--border);
+    color: var(--fg);
+    padding: 0.25rem 0 0.4rem;
+    outline: none;
+  }
+  .field input:focus { border-color: var(--fg-muted); }
+  .field textarea {
+    border: 1px solid var(--border);
+    border-radius: 0;
+    padding: 0.5rem 0.6rem;
+    resize: vertical;
+    min-height: 80px;
+    overflow: auto;
+    height: auto;
+    transition: border-color 0.15s;
+  }
+  .field textarea:focus { border-color: var(--fg-muted); outline: none; }
+
+  .modal-footer { display: flex; justify-content: flex-end; gap: 0.75rem; margin-top: 1.75rem; }
+
+  .modal-divider {
+    border: none;
+    border-top: 1px solid var(--border);
+    margin: 1.75rem 0 1.25rem;
+  }
+
+  .modal-section-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.65rem;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: var(--fg-faint);
+    margin-bottom: 0.75rem;
+  }
+
+  .data-actions { display: flex; gap: 1rem; }
+
+  .data-btn {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.65rem;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--fg-muted);
+    background: none;
+    border: 1px solid var(--border);
+    padding: 0.4rem 0.75rem;
+    cursor: pointer;
+    transition: color 0.15s, border-color 0.15s;
+  }
+  .data-btn:hover { color: var(--fg); border-color: var(--fg-muted); }
+
+  .import-label { display: inline-block; }
+
+  .import-feedback {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.65rem;
+    margin-top: 0.6rem;
+    min-height: 1rem;
+    letter-spacing: 0.03em;
+  }
+  .import-feedback.ok  { color: #4a9e6b; }
+  .import-feedback.err { color: var(--accent); }
+</style>
+</head>
+<body>
+<div class="container">
+  <header>
+    <!-- HEADER_TITLE_START --><h1>Henricus's Notes</h1><!-- HEADER_TITLE_END -->
+    <div class="header-actions">
+      <button class="hdr-btn" id="settings-btn" style="display: inline;" onclick="openSettings()">settings</button>
+      <button class="hdr-btn" id="download-btn" style="display: inline;" onclick="downloadQuine()">↓ save</button>
+    </div>
+  </header>
+
+  <noscript>
+    <div class="no-js-notice" style="display:block">
+      JavaScript is required to post and edit notes.
+    </div>
+  </noscript>
+
+  <div class="compose" id="compose" style="display: block;">
+    <input type="text" id="compose-title" placeholder="Title (optional)">
+    <textarea id="compose-body" placeholder="Write something…" oninput="autoResize(this)"></textarea>
+    <div class="compose-footer">
+      <span class="compose-hint">⌘↵ to post</span>
+      <button class="post-btn" onclick="postNote()">Post</button>
+    </div>
+  </div>
+
+  <main id="notes-list"><article class="note" id="n-mlz1rjkb5qmdn" data-id="mlz1rjkb5qmdn" data-title="Instructions" data-body="Frontline LLM's are capable of following ~150-200 instructions. Before `CLAUDE.md` is read, `claude` already gets ~50 instructions. This means that the amount of instructions in your personal `CLAUDE.md` file plus any in your project, ideally need to stay below ~150.">
+  <div class="note-view">
+    <div class="note-header">
+      <h2 class="note-title"><a class="note-anchor" href="#instructions" id="instructions">Instructions</a></h2>
+      <time class="note-time" datetime="2026-02-23T10:42:00.011Z">23 Feb 2026
+11:42
+edited 23 Feb 2026
+13:34</time>
+    </div>
+    <div class="note-body"><p>Frontline LLM's are capable of following ~150-200 instructions. Before <code>CLAUDE.md</code> is read, <code>claude</code> already gets ~50 instructions. This means that the amount of instructions in your personal <code>CLAUDE.md</code> file plus any in your project, ideally need to stay below ~150.</p></div>
+    <div class="note-actions" style="display: flex;">
+      <button class="note-action" onclick="startEdit('mlz1rjkb5qmdn')">edit</button>
+      <button class="note-action delete" onclick="deleteNote('mlz1rjkb5qmdn')">delete</button>
+    </div>
+  </div>
+  <div class="edit-area" id="e-mlz1rjkb5qmdn">
+    <input class="edit-title" type="text" placeholder="Title (optional)">
+    <textarea class="edit-textarea" oninput="autoResize(this)"></textarea>
+    <div class="edit-footer">
+      <button class="save-btn" onclick="saveEdit('mlz1rjkb5qmdn')">Save</button>
+      <button class="cancel-btn" onclick="cancelEdit('mlz1rjkb5qmdn')">Cancel</button>
+    </div>
+  </div>
+</article></main>
+
+<!-- BIO_HTML_START -->
+<aside class="bio">
+  <div class="bio-label">About</div>
+  <div class="bio-body"><p>Henricus is a backend software developer with a passion for complex systems and elegant code architecture. Specializing in Elixir and Rust, he thrives on solving challenging technical problems and untangling intricate backend logic, though he openly admits frontend development isn't his forte. When he's not deep in code, Henricus enjoys analog and digital photography and considers being a dad his greatest achievement and defining characteristic.</p></div>
+</aside>
+<!-- BIO_HTML_END -->
+<div id="bio-section"><aside class="bio">
+  <div class="bio-label">About</div>
+  <div class="bio-body"><p>Henricus is a backend software developer with a passion for complex systems and elegant code architecture. Specializing in Elixir and Rust, he thrives on solving challenging technical problems and untangling intricate backend logic, though he openly admits frontend development isn't his forte. When he's not deep in code, Henricus enjoys analog and digital photography and considers being a dad his greatest achievement and defining characteristic.</p></div>
+</aside></div></div>
+
+<!-- Settings modal -->
+<div class="modal-backdrop" id="settings-modal" onclick="maybeCloseSettings(event)">
+  <div class="modal">
+    <h2>Settings</h2>
+    <div class="field">
+      <label>Site title</label>
+      <input type="text" id="s-title">
+    </div>
+    <div class="field">
+      <label>Description (meta tag)</label>
+      <textarea id="s-desc"></textarea>
+    </div>
+    <div class="field">
+      <label>Bio / About (markdown)</label>
+      <textarea id="s-bio" style="min-height:120px"></textarea>
+    </div>
+    <div class="modal-footer">
+      <button class="cancel-btn" onclick="closeSettings()">Cancel</button>
+      <button class="save-btn" onclick="saveSettings()">Save</button>
+    </div>
+
+    <div class="modal-divider"></div>
+
+    <div class="modal-section-label">Data</div>
+    <div class="data-actions">
+      <button class="data-btn" onclick="exportNotes()">↓ export json</button>
+      <label class="data-btn import-label">
+        ↑ import json
+        <input type="file" id="import-input" accept=".json,application/json" style="display:none" onchange="importNotes(this)">
+      </label>
+    </div>
+    <div id="import-feedback" class="import-feedback"></div>
+  </div>
 </div>
 
 <script>
-    // --- 1. Constants & Setup ---
-    const STORAGE_KEY = 'blog_draft_posts';
-    const SETTINGS_KEY = 'blog_settings';
-    const DELETED_KEY = 'blog_deleted_ids';
-    const CONFIG_ID = 'blog-configuration';
-    
-    const CONTAINER = document.getElementById('posts-container');
-    const SAVE_BTN = document.getElementById('save-btn');
-    document.getElementById('year').textContent = new Date().getFullYear();
+// ── Markdown ──────────────────────────────────────────────────────────────────
+function md(src) {
+  if (!src) return '';
+  let s = src
+    .replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+  s = s.replace(/```([^`]*?)```/gs, (_,c) => `<pre><code>${c.replace(/^\n/,'')}</code></pre>`);
+  s = s.replace(/`([^`\n]+)`/g, '<code>$1</code>');
+  s = s.replace(/^[-*_]{3,}\s*$/gm, '<hr>');
+  s = s.replace(/^### (.+)$/gm,'<h3>$1</h3>');
+  s = s.replace(/^## (.+)$/gm,'<h2>$1</h2>');
+  s = s.replace(/^# (.+)$/gm,'<h1>$1</h1>');
+  s = s.replace(/^&gt; (.+)$/gm,'<blockquote>$1</blockquote>');
+  s = s.replace(/\*\*\*(.+?)\*\*\*/g,'<strong><em>$1</em></strong>');
+  s = s.replace(/\*\*(.+?)\*\*/g,'<strong>$1</strong>');
+  s = s.replace(/\*(.+?)\*/g,'<em>$1</em>');
+  s = s.replace(/__(.+?)__/g,'<strong>$1</strong>');
+  s = s.replace(/_(.+?)_/g,'<em>$1</em>');
+  s = s.replace(/\[([^\]]+)\]\(([^)]+)\)/g,'<a href="$2" target="_blank" rel="noopener">$1</a>');
+  s = s.replace(/((?:^[-*] .+\n?)+)/gm, m => {
+    const items = m.trim().split('\n').map(l=>`<li>${l.replace(/^[-*] /,'')}</li>`).join('');
+    return `<ul>${items}</ul>`;
+  });
+  s = s.replace(/((?:^\d+\. .+\n?)+)/gm, m => {
+    const items = m.trim().split('\n').map(l=>`<li>${l.replace(/^\d+\. /,'')}</li>`).join('');
+    return `<ol>${items}</ol>`;
+  });
+  s = s.split(/\n\n+/).map(b => {
+    b = b.trim();
+    if (!b) return '';
+    if (/^<(h[1-6]|ul|ol|pre|blockquote|hr)/.test(b)) return b;
+    return `<p>${b.replace(/\n/g,'<br>')}</p>`;
+  }).join('\n');
+  return s;
+}
 
-    // --- 2. Load Content & Router ---
-    window.addEventListener('DOMContentLoaded', () => {
-        loadSettings();
-        loadPosts();
-        updateSaveButtonState();
-        handleRoute(); // Run router on load
-    });
-    
-    // --- 3. Slug Helper ---
-    function slugify(text) {
-        return text.toString().toLowerCase()
-            .trim()
-            .replace(/\s+/g, '-')     // Replace spaces with -
-            .replace(/[^\w\-]+/g, '') // Remove all non-word chars
-            .replace(/\-\-+/g, '-');  // Replace multiple - with single -
+function esc(s) {
+  return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+
+function autoResize(el) {
+  el.style.height = 'auto';
+  el.style.height = el.scrollHeight + 'px';
+}
+
+function fmtDate(ts) {
+  const d = new Date(ts);
+  return d.toLocaleDateString('en-GB',{day:'numeric',month:'short',year:'numeric'})
+    + '\n'
+    + d.toLocaleTimeString('en-GB',{hour:'2-digit',minute:'2-digit'});
+}
+
+function fmtDatetime(ts) {
+  return new Date(ts).toISOString();
+}
+
+function slugify(str) {
+  return str.toLowerCase()
+    .replace(/[^\w\s-]/g,'')
+    .trim()
+    .replace(/\s+/g,'-')
+    .replace(/-+/g,'-');
+}
+
+// ── Data ──────────────────────────────────────────────────────────────────────
+const LSKEY  = 'microblog_v1';
+const SETKEY = 'microblog_settings';
+
+// QUINE_NOTES_START
+var EMBEDDED_NOTES = [{"id":"mlz1rjkb5qmdn","title":"Instructions","body":"Frontline LLM's are capable of following ~150-200 instructions. Before `CLAUDE.md` is read, `claude` already gets ~50 instructions. This means that the amount of instructions in your personal `CLAUDE.md` file plus any in your project, ideally need to stay below ~150.","createdAt":1771843320011,"editedAt":1771850093565}];
+// QUINE_NOTES_END
+
+// QUINE_SETTINGS_START
+var EMBEDDED_SETTINGS = {"title":"Henricus's Notes","description":"Henricus Louwhoff","bio":"Henricus is a backend software developer with a passion for complex systems and elegant code architecture. Specializing in Elixir and Rust, he thrives on solving challenging technical problems and untangling intricate backend logic, though he openly admits frontend development isn't his forte. When he's not deep in code, Henricus enjoys analog and digital photography and considers being a dad his greatest achievement and defining characteristic."};
+// QUINE_SETTINGS_END
+
+function loadNotes() {
+  try { const r = localStorage.getItem(LSKEY); if (r) return JSON.parse(r); } catch(e) {}
+  return EMBEDDED_NOTES;
+}
+
+function loadSettings() {
+  try { const r = localStorage.getItem(SETKEY); if (r) return JSON.parse(r); } catch(e) {}
+  return Object.assign({}, EMBEDDED_SETTINGS);
+}
+
+function persistNotes() { localStorage.setItem(LSKEY, JSON.stringify(notes)); }
+function persistSettings() { localStorage.setItem(SETKEY, JSON.stringify(settings)); }
+
+let notes    = loadNotes();
+let settings = loadSettings();
+
+// ── Note HTML builder (used for render + quine) ───────────────────────────────
+function noteToHtml(n) {
+  const editedLine = n.editedAt ? `\nedited ${fmtDate(n.editedAt)}` : '';
+  const anchor = n.title ? slugify(n.title) : n.id;
+  const titleHtml = n.title
+    ? `<h2 class="note-title"><a class="note-anchor" href="#${anchor}" id="${anchor}">${esc(n.title)}</a></h2>`
+    : `<div id="${n.id}"></div>`;
+
+  // Textarea values are set via JS after render to avoid HTML entity issues.
+  // Raw note data is stored in data attributes (HTML-escaped for safety).
+  return `<article class="note" id="n-${n.id}" data-id="${n.id}" data-title="${esc(n.title||'')}" data-body="${esc(n.body)}">
+  <div class="note-view">
+    <div class="note-header">
+      ${titleHtml}
+      <time class="note-time" datetime="${fmtDatetime(n.createdAt)}">${esc(fmtDate(n.createdAt))}${esc(editedLine)}</time>
+    </div>
+    <div class="note-body">${md(n.body)}</div>
+    <div class="note-actions">
+      <button class="note-action" onclick="startEdit('${n.id}')">edit</button>
+      <button class="note-action delete" onclick="deleteNote('${n.id}')">delete</button>
+    </div>
+  </div>
+  <div class="edit-area" id="e-${n.id}">
+    <input class="edit-title" type="text" placeholder="Title (optional)" />
+    <textarea class="edit-textarea" oninput="autoResize(this)"></textarea>
+    <div class="edit-footer">
+      <button class="save-btn" onclick="saveEdit('${n.id}')">Save</button>
+      <button class="cancel-btn" onclick="cancelEdit('${n.id}')">Cancel</button>
+    </div>
+  </div>
+</article>`;
+}
+
+// ── Render ────────────────────────────────────────────────────────────────────
+function render() {
+  const el = document.getElementById('notes-list');
+  const sorted = [...notes].sort((a,b) => b.createdAt - a.createdAt);
+  if (!sorted.length) {
+    el.innerHTML = '<p class="empty-state">Nothing yet.</p>';
+    return;
+  }
+  el.innerHTML = sorted.map(noteToHtml).join('\n');
+  el.querySelectorAll('.note-actions').forEach(a => a.style.display = 'flex');
+}
+
+// ── Actions ───────────────────────────────────────────────────────────────────
+function genId() {
+  return Date.now().toString(36) + Math.random().toString(36).slice(2,7);
+}
+
+function postNote() {
+  const title = document.getElementById('compose-title').value.trim();
+  const body  = document.getElementById('compose-body').value.trim();
+  if (!body) return;
+  notes.unshift({ id: genId(), title, body, createdAt: Date.now(), editedAt: null });
+  persistNotes();
+  render();
+  document.getElementById('compose-title').value = '';
+  const ta = document.getElementById('compose-body');
+  ta.value = '';
+  ta.style.height = '';
+}
+
+function deleteNote(id) {
+  notes = notes.filter(n => n.id !== id);
+  persistNotes();
+  render();
+}
+
+function startEdit(id) {
+  const article = document.getElementById(`n-${id}`);
+  // Populate edit fields from data attributes — these hold the raw unescaped text
+  const rawTitle = article.dataset.title || '';
+  const rawBody  = article.dataset.body  || '';
+  const ea = document.getElementById(`e-${id}`);
+  ea.querySelector('.edit-title').value    = rawTitle;
+  const ta = ea.querySelector('.edit-textarea');
+  ta.value = rawBody;
+  // Show edit area, hide rendered view
+  article.querySelector('.note-view').style.display = 'none';
+  ea.style.display = 'block';
+  autoResize(ta);
+  ta.focus();
+}
+
+function cancelEdit(id) {
+  document.getElementById(`n-${id}`).querySelector('.note-view').style.display = '';
+  document.getElementById(`e-${id}`).style.display = 'none';
+}
+
+function saveEdit(id) {
+  const ea    = document.getElementById(`e-${id}`);
+  const title = ea.querySelector('.edit-title').value.trim();
+  const body  = ea.querySelector('.edit-textarea').value.trim();
+  if (!body) return;
+  const note = notes.find(n => n.id === id);
+  if (!note) return;
+  note.title    = title;
+  note.body     = body;
+  note.editedAt = Date.now();
+  persistNotes();
+  render();
+}
+
+// ── Bio ──────────────────────────────────────────────────────────────────────
+function bioStaticHtml() {
+  if (!settings.bio) return '';
+  return `<aside class="bio">
+  <div class="bio-label">About</div>
+  <div class="bio-body">${md(settings.bio)}</div>
+</aside>`;
+}
+
+function renderBio() {
+  const container = document.querySelector('.container');
+  let existing = document.getElementById('bio-section');
+  if (existing) existing.remove();
+  if (!settings.bio) return;
+  const aside = document.createElement('div');
+  aside.id = 'bio-section';
+  aside.innerHTML = bioStaticHtml();
+  container.appendChild(aside);
+}
+
+// ── Settings ──────────────────────────────────────────────────────────────────
+function openSettings() {
+  document.getElementById('s-title').value = settings.title || '';
+  document.getElementById('s-desc').value = settings.description || '';
+  document.getElementById('s-bio').value = settings.bio || '';
+  document.getElementById('settings-modal').classList.add('open');
+}
+
+function closeSettings() {
+  document.getElementById('settings-modal').classList.remove('open');
+}
+
+function maybeCloseSettings(e) {
+  if (e.target === document.getElementById('settings-modal')) closeSettings();
+}
+
+function saveSettings() {
+  settings.title       = document.getElementById('s-title').value.trim();
+  settings.description = document.getElementById('s-desc').value.trim();
+  settings.bio         = document.getElementById('s-bio').value.trim();
+  persistSettings();
+  document.querySelector('header h1').textContent = settings.title || 'Notes';
+  document.title = settings.title || 'Notes';
+  renderBio();
+  closeSettings();
+}
+
+// ── Export / Import ───────────────────────────────────────────────────────────
+function exportNotes() {
+  const payload = { version: 1, exportedAt: Date.now(), notes };
+  const blob = new Blob([JSON.stringify(payload, null, 2)], { type: 'application/json' });
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = 'notes-export.json';
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+  URL.revokeObjectURL(a.href);
+}
+
+function importNotes(input) {
+  const file = input.files[0];
+  if (!file) return;
+  const feedback = document.getElementById('import-feedback');
+  feedback.className = 'import-feedback';
+  feedback.textContent = '';
+
+  const reader = new FileReader();
+  reader.onload = e => {
+    try {
+      const parsed = JSON.parse(e.target.result);
+      const incoming = Array.isArray(parsed) ? parsed : parsed.notes;
+      if (!Array.isArray(incoming)) throw new Error('No notes array found.');
+      for (const n of incoming) {
+        if (!n.id || typeof n.body !== 'string') throw new Error('Invalid note structure.');
+      }
+      // Merge: overwrite by ID
+      const map = new Map(notes.map(n => [n.id, n]));
+      for (const n of incoming) map.set(n.id, n);
+      notes = [...map.values()];
+      localStorage.removeItem(LSKEY);
+      persistNotes();
+      render();
+      const count = incoming.length;
+      feedback.className = 'import-feedback ok';
+      feedback.textContent = `✓ imported ${count} note${count === 1 ? '' : 's'}.`;
+    } catch(err) {
+      feedback.className = 'import-feedback err';
+      feedback.textContent = `Error: ${err.message}`;
     }
+    input.value = '';
+  };
+  reader.readAsText(file);
+}
 
-    // --- 4. Routing Logic ---
-    function handleRoute() {
-        const params = new URLSearchParams(window.location.search);
-        const urlParam = params.get('post');
-        
-        if (urlParam) {
-            // Single Post View
-            document.body.classList.remove('list-view');
-            document.body.classList.add('single-view');
-            
-            // Extract ID from slug (format: slug-post-TIMESTAMP)
-            let targetId = urlParam;
-            // Robust regex to find 'post-NUMBERS' at the end of the string
-            const match = urlParam.match(/(post-\d+)$/);
-            if (match) {
-                targetId = match[1];
-            }
-            
-            // Mark the active post
-            const articles = document.querySelectorAll('article');
-            let found = false;
-            articles.forEach(art => {
-                if (art.id === targetId) {
-                    art.classList.add('active-post');
-                    found = true;
-                    // Update Page Title if possible
-                    const title = art.querySelector('h2').innerText;
-                    document.title = title + " - " + (document.getElementById('blog-title').innerText);
-                } else {
-                    art.classList.remove('active-post');
-                }
-            });
-            
-            if (!found) {
-                // Handle 404 - post not found, revert to list
-                document.body.classList.add('list-view');
-                document.body.classList.remove('single-view');
-                // Clean URL
-                window.history.replaceState(null, null, window.location.pathname);
-            }
-        } else {
-            // List View
-            document.body.classList.add('list-view');
-            document.body.classList.remove('single-view');
-            const articles = document.querySelectorAll('article');
-            articles.forEach(art => art.classList.remove('active-post'));
-            
-            // Re-apply global page title settings
-            const settings = JSON.parse(localStorage.getItem(SETTINGS_KEY));
-            if(settings && settings.pageTitle) document.title = settings.pageTitle;
-            else if(settings && settings.title) document.title = settings.title;
-        }
-    }
+// ── Quine ─────────────────────────────────────────────────────────────────────
+function notesStaticHtml() {
+  const sorted = [...notes].sort((a,b) => b.createdAt - a.createdAt);
+  if (!sorted.length) return '<p class="empty-state">Nothing yet.</p>';
+  return sorted.map(noteToHtml).join('\n');
+}
 
-    // --- 5. Panel Toggling Logic ---
-    function closeAllPanels() {
-        document.getElementById('settings-section').classList.remove('visible');
-        document.getElementById('editor-section').classList.remove('visible');
-        document.getElementById('help-section').classList.remove('visible');
-    }
+function downloadQuine() {
+  let src = document.documentElement.outerHTML;
 
-    function toggleHelp() {
-        const panel = document.getElementById('help-section');
-        const isVisible = panel.classList.contains('visible');
-        closeAllPanels();
-        if (!isVisible) panel.classList.add('visible');
-    }
+  src = src.replace(
+    /\/\/ QUINE_NOTES_START[\s\S]*?\/\/ QUINE_NOTES_END/,
+    `// QUINE_NOTES_START\nvar EMBEDDED_NOTES = ${JSON.stringify(notes)};\n// QUINE_NOTES_END`
+  );
+  src = src.replace(
+    /\/\/ QUINE_SETTINGS_START[\s\S]*?\/\/ QUINE_SETTINGS_END/,
+    `// QUINE_SETTINGS_START\nvar EMBEDDED_SETTINGS = ${JSON.stringify(settings)};\n// QUINE_SETTINGS_END`
+  );
+  src = src.replace(
+    /<!-- NOTES_HTML_START -->
+<article class="note" id="n-mlz1rjkb5qmdn" data-id="mlz1rjkb5qmdn" data-title="Instructions" data-body="Frontline LLM's are capable of following ~150-200 instructions. Before `CLAUDE.md` is read, `claude` already gets ~50 instructions. This means that the amount of instructions in your personal `CLAUDE.md` file plus any in your project, ideally need to stay below ~150.">
+  <div class="note-view">
+    <div class="note-header">
+      <h2 class="note-title"><a class="note-anchor" href="#instructions" id="instructions">Instructions</a></h2>
+      <time class="note-time" datetime="2026-02-23T10:42:00.011Z">23 Feb 2026
+11:42
+edited 23 Feb 2026
+13:34</time>
+    </div>
+    <div class="note-body"><p>Frontline LLM's are capable of following ~150-200 instructions. Before <code>CLAUDE.md</code> is read, <code>claude</code> already gets ~50 instructions. This means that the amount of instructions in your personal <code>CLAUDE.md</code> file plus any in your project, ideally need to stay below ~150.</p></div>
+    <div class="note-actions">
+      <button class="note-action" onclick="startEdit('mlz1rjkb5qmdn')">edit</button>
+      <button class="note-action delete" onclick="deleteNote('mlz1rjkb5qmdn')">delete</button>
+    </div>
+  </div>
+  <div class="edit-area" id="e-mlz1rjkb5qmdn">
+    <input class="edit-title" type="text" placeholder="Title (optional)" />
+    <textarea class="edit-textarea" oninput="autoResize(this)"></textarea>
+    <div class="edit-footer">
+      <button class="save-btn" onclick="saveEdit('mlz1rjkb5qmdn')">Save</button>
+      <button class="cancel-btn" onclick="cancelEdit('mlz1rjkb5qmdn')">Cancel</button>
+    </div>
+  </div>
+</article>
+<!-- NOTES_HTML_END -->/,
+    `<!-- NOTES_HTML_START -->\n${notesStaticHtml()}\n<!-- NOTES_HTML_END -->`
+  );
+  const siteTitle = settings.title || 'Notes';
+  const siteDesc  = settings.description || '';
+  src = src.replace(
+    /<!-- SITE_META_START -->[\s\S]*?<!-- SITE_META_END -->/,
+    `<!-- SITE_META_START -->\n<title>${esc(siteTitle)}</title>\n<meta name="description" content="${esc(siteDesc)}">\n<!-- SITE_META_END -->`
+  );
+  src = src.replace(
+    /<!-- HEADER_TITLE_START -->[\s\S]*?<!-- HEADER_TITLE_END -->/,
+    `<!-- HEADER_TITLE_START --><h1>${esc(siteTitle)}</h1><!-- HEADER_TITLE_END -->`
+  );
+  src = src.replace(
+    /<!-- BIO_HTML_START -->[\s\S]*?<!-- BIO_HTML_END -->/,
+    `<!-- BIO_HTML_START -->\n${bioStaticHtml()}\n<!-- BIO_HTML_END -->`
+  );
 
-    function toggleSettings() {
-        const panel = document.getElementById('settings-section');
-        const isVisible = panel.classList.contains('visible');
-        
-        closeAllPanels();
-        
-        if (!isVisible) {
-            // Load current values
-            document.getElementById('settings-title').value = document.getElementById('blog-title').innerText;
-            document.getElementById('settings-page-title').value = document.title;
-            document.getElementById('settings-footer-text').value = document.getElementById('footer-author').innerText;
-            
-            const metaAuthorTag = document.querySelector('meta[name="author"]');
-            const metaDescTag = document.querySelector('meta[name="description"]');
-            
-            let saved = JSON.parse(localStorage.getItem(SETTINGS_KEY));
-            if (!saved) {
-                try {
-                    saved = JSON.parse(document.getElementById(CONFIG_ID).textContent);
-                } catch(e) { saved = {}; }
-            }
-            
-            if(saved.rawIntro) document.getElementById('settings-intro').value = saved.rawIntro;
-            if(saved.pageTitle) document.getElementById('settings-page-title').value = saved.pageTitle;
-            if(saved.footerText) document.getElementById('settings-footer-text').value = saved.footerText;
-            document.getElementById('settings-meta-author').value = saved.metaAuthor || (metaAuthorTag ? metaAuthorTag.content : '');
-            document.getElementById('settings-meta-desc').value = saved.metaDescription || (metaDescTag ? metaDescTag.content : '');
+  const blob = new Blob([src], { type: 'text/html;charset=utf-8' });
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = 'notes.html';
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+  URL.revokeObjectURL(a.href);
+}
 
-            panel.classList.add('visible');
-        }
-    }
+// ── Init ──────────────────────────────────────────────────────────────────────
+document.getElementById('compose-body').addEventListener('keydown', e => {
+  if ((e.metaKey || e.ctrlKey) && e.key === 'Enter') postNote();
+});
 
-    function toggleEditor(reset = true) {
-        const panel = document.getElementById('editor-section');
-        const isVisible = panel.classList.contains('visible');
-        
-        closeAllPanels();
+document.getElementById('compose').style.display = 'block';
+document.getElementById('settings-btn').style.display = 'inline';
+document.getElementById('download-btn').style.display = 'inline';
 
-        if (!isVisible) {
-            panel.classList.add('visible');
-            document.getElementById('post-title').focus();
-            if (reset) resetForm();
-        } else if (reset) {
-             resetForm();
-        }
-    }
+document.querySelector('header h1').textContent = settings.title || 'Notes';
+document.title = settings.title || 'Notes';
 
-    // --- 6. Settings Save Logic ---
-    function saveSettings() {
-        const title = document.getElementById('settings-title').value.trim();
-        const pageTitle = document.getElementById('settings-page-title').value.trim();
-        const rawIntro = document.getElementById('settings-intro').value.trim();
-        const footerText = document.getElementById('settings-footer-text').value.trim();
-        const metaAuthor = document.getElementById('settings-meta-author').value.trim();
-        const metaDesc = document.getElementById('settings-meta-desc').value.trim();
-        
-        if (!title) {
-            alert("Blog Title cannot be empty");
-            return;
-        }
-
-        const settings = {
-            title: title,
-            pageTitle: pageTitle,
-            introHtml: marked.parse(rawIntro),
-            rawIntro: rawIntro,
-            footerText: footerText,
-            metaAuthor: metaAuthor,
-            metaDescription: metaDesc
-        };
-
-        localStorage.setItem(SETTINGS_KEY, JSON.stringify(settings));
-        
-        applySettings(settings);
-
-        document.getElementById('settings-section').classList.remove('visible');
-        updateSaveButtonState();
-    }
-
-    function loadSettings() {
-        let settings = JSON.parse(localStorage.getItem(SETTINGS_KEY));
-        if (!settings) {
-            try {
-                settings = JSON.parse(document.getElementById(CONFIG_ID).textContent);
-            } catch(e) { /* ignore */ }
-        }
-        if (settings) {
-            applySettings(settings);
-        }
-    }
-
-    function applySettings(settings) {
-        if (settings.title) {
-            document.getElementById('blog-title').innerText = settings.title;
-            if (!settings.footerText) {
-                document.getElementById('footer-author').innerText = settings.title;
-            }
-            
-            const ogTitle = document.querySelector('meta[property="og:title"]');
-            if(ogTitle) ogTitle.content = settings.pageTitle || settings.title;
-            const twTitle = document.querySelector('meta[name="twitter:title"]');
-            if(twTitle) twTitle.content = settings.pageTitle || settings.title;
-        }
-
-        if (settings.footerText) {
-             document.getElementById('footer-author').innerText = settings.footerText;
-        }
-
-        if (!document.body.classList.contains('single-view')) {
-            if (settings.pageTitle) {
-                document.title = settings.pageTitle;
-            } else if (settings.title) {
-                document.title = settings.title;
-            }
-        }
-        
-        if (settings.introHtml) {
-            document.getElementById('blog-intro').innerHTML = settings.introHtml;
-        }
-
-        if (settings.metaAuthor) {
-            let tag = document.querySelector('meta[name="author"]');
-            if (tag) tag.content = settings.metaAuthor;
-        }
-
-        if (settings.metaDescription) {
-            let tag = document.querySelector('meta[name="description"]');
-            if (tag) tag.content = settings.metaDescription;
-            let ogDesc = document.querySelector('meta[property="og:description"]');
-            if(ogDesc) ogDesc.content = settings.metaDescription;
-            let twDesc = document.querySelector('meta[name="twitter:description"]');
-            if(twDesc) twDesc.content = settings.metaDescription;
-        }
-        
-        // Critical: Update the persistent config script for the next save
-        document.getElementById(CONFIG_ID).textContent = JSON.stringify(settings, null, 2);
-    }
-    
-    // --- Data Management (Import/Export) ---
-    function exportData() {
-        let settings = JSON.parse(localStorage.getItem(SETTINGS_KEY));
-        if(!settings) {
-             try { settings = JSON.parse(document.getElementById(CONFIG_ID).textContent); } catch(e) {}
-        }
-        if(!settings) {
-             settings = {
-                title: document.getElementById('blog-title').innerText,
-                introHtml: document.getElementById('blog-intro').innerHTML
-             };
-        }
-        
-        const articles = document.querySelectorAll('article');
-        const posts = [];
-        
-        articles.forEach(art => {
-            posts.push({
-                id: art.id,
-                title: art.querySelector('h2 a').innerText,
-                date: art.querySelector('.meta').innerText,
-                raw: art.dataset.raw ? decodeURIComponent(art.dataset.raw) : ""
-            });
-        });
-        
-        const data = {
-            version: "1.0",
-            settings: settings,
-            posts: posts
-        };
-        
-        const blob = new Blob([JSON.stringify(data, null, 2)], { type: "application/json" });
-        const url = URL.createObjectURL(blob);
-        const a = document.createElement('a');
-        a.href = url;
-        a.download = `autograph-backup-${new Date().toISOString().slice(0,10)}.json`;
-        document.body.appendChild(a);
-        a.click();
-        document.body.removeChild(a);
-    }
-    
-    function importData(input) {
-        const file = input.files[0];
-        if (!file) return;
-        
-        const reader = new FileReader();
-        reader.onload = function(e) {
-            try {
-                const data = JSON.parse(e.target.result);
-                
-                if (!confirm("This will overwrite your current browser local storage for this blog. Are you sure?")) {
-                    input.value = ''; // Reset input
-                    return;
-                }
-                
-                localStorage.removeItem(STORAGE_KEY);
-                localStorage.removeItem(SETTINGS_KEY);
-                localStorage.removeItem(DELETED_KEY);
-                
-                if (data.settings) {
-                    localStorage.setItem(SETTINGS_KEY, JSON.stringify(data.settings));
-                    document.getElementById(CONFIG_ID).textContent = JSON.stringify(data.settings, null, 2);
-                }
-                
-                if (data.posts && Array.isArray(data.posts)) {
-                    // Reverse the array during import.
-                    // Export grabs them Top-to-Bottom (Newest-to-Oldest).
-                    // loadPosts uses prepend(), so it expects Oldest-to-Newest to stack them correctly.
-                    const drafts = data.posts.map(p => {
-                        return {
-                            id: p.id,
-                            title: p.title,
-                            date: p.date,
-                            raw: p.raw,
-                            content: marked.parse(p.raw)
-                        };
-                    }).reverse(); 
-                    
-                    localStorage.setItem(STORAGE_KEY, JSON.stringify(drafts));
-                }
-                
-                alert("Import successful! The page will now reload.");
-                window.location.reload();
-                
-            } catch (err) {
-                alert("Error parsing JSON file: " + err.message);
-            }
-        };
-        reader.readAsText(file);
-    }
-
-    // --- 7. Post Logic ---
-    function loadPosts() {
-        const deletedIds = JSON.parse(localStorage.getItem(DELETED_KEY) || '[]');
-        const drafts = JSON.parse(localStorage.getItem(STORAGE_KEY) || '[]');
-        
-        deletedIds.forEach(id => {
-            const el = document.getElementById(id);
-            if (el) el.remove();
-        });
-
-        drafts.forEach(post => {
-            const existingEl = document.getElementById(post.id);
-            const newEl = createPostElement(post);
-            if (existingEl) {
-                CONTAINER.replaceChild(newEl, existingEl);
-            } else {
-                CONTAINER.prepend(newEl);
-            }
-        });
-    }
-
-    function resetForm() {
-        document.getElementById('post-title').value = '';
-        document.getElementById('post-content').value = '';
-        document.getElementById('edit-post-id').value = '';
-        const today = new Date().toISOString().split('T')[0];
-        document.getElementById('post-date').value = today;
-        document.getElementById('publish-btn').textContent = 'Publish to Page';
-    }
-
-    function savePost() {
-        const idInput = document.getElementById('edit-post-id');
-        const titleInput = document.getElementById('post-title');
-        const contentInput = document.getElementById('post-content');
-        const dateInput = document.getElementById('post-date');
-        
-        const title = titleInput.value.trim();
-        const rawContent = contentInput.value.trim();
-        const editingId = idInput.value;
-        const dateVal = dateInput.value;
-
-        if (!title || !rawContent) {
-            alert("Please fill in both title and content.");
-            return;
-        }
-
-        const contentHtml = marked.parse(rawContent);
-        
-        let postId = editingId;
-        let postDateStr;
-        
-        if (dateVal) {
-            const d = new Date(dateVal + "T12:00:00");
-            postDateStr = d.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
-        } else {
-            postDateStr = new Date().toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
-        }
-        
-        if (!postId) {
-            postId = 'post-' + Date.now();
-        }
-
-        const postData = {
-            id: postId,
-            title: title,
-            date: postDateStr,
-            content: contentHtml,
-            raw: rawContent
-        };
-
-        updateLocalStorage(postData);
-
-        const newEl = createPostElement(postData);
-        const existingEl = document.getElementById(postId);
-        
-        if (existingEl) CONTAINER.replaceChild(newEl, existingEl);
-        else CONTAINER.prepend(newEl);
-
-        toggleEditor(true);
-        updateSaveButtonState();
-        handleRoute();
-    }
-
-    function editPost(id) {
-        const el = document.getElementById(id);
-        if (!el) return;
-
-        let rawContent = "";
-        if (el.dataset.raw) {
-            rawContent = decodeURIComponent(el.dataset.raw);
-        } else {
-            rawContent = el.querySelector('.content').innerText; 
-            alert("Note: Editing simplified text.");
-        }
-
-        const title = el.querySelector('h2').innerText;
-        const dateStr = el.querySelector('.meta').innerText;
-
-        document.getElementById('post-title').value = title;
-        document.getElementById('post-content').value = rawContent;
-        document.getElementById('edit-post-id').value = id;
-        
-        const d = new Date(dateStr);
-        if (!isNaN(d.getTime())) {
-            // Use local time components to avoid timezone shifts (e.g. previous day)
-            const year = d.getFullYear();
-            const month = String(d.getMonth() + 1).padStart(2, '0');
-            const day = String(d.getDate()).padStart(2, '0');
-            document.getElementById('post-date').value = `${year}-${month}-${day}`;
-        }
-
-        document.getElementById('publish-btn').textContent = 'Update Post';
-
-        const panel = document.getElementById('editor-section');
-        closeAllPanels();
-        panel.classList.add('visible');
-        panel.scrollIntoView({ behavior: 'smooth' });
-    }
-
-    function deletePost(id) {
-        if(!confirm("Are you sure you want to delete this post?")) return;
-
-        const el = document.getElementById(id);
-        if (el) el.remove();
-
-        let drafts = JSON.parse(localStorage.getItem(STORAGE_KEY) || '[]');
-        drafts = drafts.filter(p => p.id !== id);
-        localStorage.setItem(STORAGE_KEY, JSON.stringify(drafts));
-
-        let deletedIds = JSON.parse(localStorage.getItem(DELETED_KEY) || '[]');
-        if (!deletedIds.includes(id)) {
-            deletedIds.push(id);
-            localStorage.setItem(DELETED_KEY, JSON.stringify(deletedIds));
-        }
-        updateSaveButtonState();
-        
-        const params = new URLSearchParams(window.location.search);
-        if (params.get('post') === id) {
-             window.location.href = window.location.pathname;
-        }
-    }
-
-    function updateLocalStorage(post) {
-        let drafts = JSON.parse(localStorage.getItem(STORAGE_KEY) || '[]');
-        drafts = drafts.filter(p => p.id !== post.id);
-        drafts.push(post);
-        localStorage.setItem(STORAGE_KEY, JSON.stringify(drafts));
-    }
-    
-    function updateSaveButtonState() {
-        const drafts = JSON.parse(localStorage.getItem(STORAGE_KEY) || '[]');
-        const deletedIds = JSON.parse(localStorage.getItem(DELETED_KEY) || '[]');
-        const settings = JSON.parse(localStorage.getItem(SETTINGS_KEY));
-        
-        if (drafts.length > 0 || deletedIds.length > 0 || settings) {
-            SAVE_BTN.disabled = false;
-            SAVE_BTN.title = "You have unsaved changes";
-        } else {
-            SAVE_BTN.disabled = true;
-            SAVE_BTN.title = "No changes to save";
-        }
-    }
-
-    function createPostElement(post) {
-        const article = document.createElement('article');
-        article.id = post.id;
-        article.dataset.raw = encodeURIComponent(post.raw);
-        
-        const slug = slugify(post.title);
-        const permalink = slug ? `${slug}-${post.id}` : post.id;
-        
-        article.innerHTML = `
-            <header>
-                <h2>
-                    <a href="?post=${permalink}">${post.title}</a>
-                </h2>
-                <div class="meta-row">
-                    <span class="meta">${post.date}</span>
-                    <div class="post-actions">
-                        <button onclick="editPost('${post.id}')">Edit</button>
-                        <button class="delete-btn" onclick="deletePost('${post.id}')">Delete</button>
-                    </div>
-                </div>
-            </header>
-            <div class="content">
-                ${post.content}
-            </div>
-        `;
-        return article;
-    }
-
-    // --- 8. Save Blog (Quine) ---
-    function downloadStaticPage() {
-        const docClone = document.documentElement.cloneNode(true);
-        
-        const currentContent = CONTAINER.innerHTML;
-        const cloneContainer = docClone.querySelector('#posts-container');
-        cloneContainer.innerHTML = currentContent;
-        
-        docClone.querySelector('body').classList.add('list-view');
-        docClone.querySelector('body').classList.remove('single-view');
-        
-        const articles = cloneContainer.querySelectorAll('article');
-        articles.forEach(article => article.classList.remove('active-post'));
-
-        docClone.querySelector('#editor-section').classList.remove('visible');
-        docClone.querySelector('#settings-section').classList.remove('visible');
-        docClone.querySelector('#help-section').classList.remove('visible');
-        
-        docClone.querySelector('#post-title').setAttribute('value', '');
-        docClone.querySelector('#post-content').innerHTML = '';
-        docClone.querySelector('#post-date').setAttribute('value', '');
-        docClone.querySelector('#settings-title').setAttribute('value', '');
-        docClone.querySelector('#settings-page-title').setAttribute('value', '');
-        docClone.querySelector('#settings-intro').innerHTML = '';
-        docClone.querySelector('#settings-footer-text').setAttribute('value', '');
-        docClone.querySelector('#settings-meta-author').setAttribute('value', '');
-        docClone.querySelector('#settings-meta-desc').innerHTML = '';
-        
-        // Correct way to target the element in the clone (fix for crash)
-        const currentConfig = document.getElementById(CONFIG_ID).textContent;
-        docClone.querySelector('#' + CONFIG_ID).textContent = currentConfig;
-        
-        const cloneSaveBtn = docClone.querySelector('#save-btn');
-        cloneSaveBtn.disabled = true;
-
-        let htmlContent = "<!DOCTYPE html>\n" + docClone.outerHTML;
-
-        const blob = new Blob([htmlContent], { type: 'text/html' });
-        const url = URL.createObjectURL(blob);
-        const a = document.createElement('a');
-        
-        const date = new Date().toISOString().slice(0, 10);
-        a.href = url;
-        a.download = `autograph-${date}.html`;
-        document.body.appendChild(a);
-        a.click();
-        
-        document.body.removeChild(a);
-        URL.revokeObjectURL(url);
-    }
+render();
+renderBio();
 </script>
 
 
