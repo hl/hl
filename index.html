@@ -406,8 +406,8 @@
   <header>
     <!-- HEADER_TITLE_START --><h1>Henricus's Notes</h1><!-- HEADER_TITLE_END -->
     <div class="header-actions">
-      <button class="hdr-btn" id="settings-btn" style="display: inline;">settings</button>
-      <button class="hdr-btn" id="download-btn" style="display: inline;">↓ save</button>
+      <button class="hdr-btn" id="settings-btn" style="display:none">settings</button>
+      <button class="hdr-btn" id="download-btn" style="display:none">↓ save</button>
     </div>
   </header>
 
@@ -417,7 +417,7 @@
     </div>
   </noscript>
 
-  <div class="compose" id="compose" style="display: block;">
+  <div class="compose" id="compose">
     <input type="text" id="compose-title" placeholder="Title (optional)">
     <textarea id="compose-body" placeholder="Write something…"></textarea>
     <div class="compose-footer">
@@ -426,7 +426,9 @@
     </div>
   </div>
 
-  <main id="notes-list"><article class="note" id="n-mlz1rjkb5qmdn" data-id="mlz1rjkb5qmdn" data-title="Instructions" data-body="Frontline LLM's are capable of following ~150-200 instructions. Before `CLAUDE.md` is read, `claude` already gets ~50 instructions. This means that the amount of instructions in your personal `CLAUDE.md` file plus any in your project, ideally need to stay below ~150.">
+  <main id="notes-list">
+<!-- NOTES_HTML_START -->
+<article class="note" id="n-mlz1rjkb5qmdn" data-id="mlz1rjkb5qmdn" data-title="Instructions" data-body="Frontline LLM's are capable of following ~150-200 instructions. Before `CLAUDE.md` is read, `claude` already gets ~50 instructions. This means that the amount of instructions in your personal `CLAUDE.md` file plus any in your project, ideally need to stay below ~150.">
   <div class="note-view">
     <div class="note-header">
       <h2 class="note-title"><a class="note-anchor" href="#instructions" id="instructions">Instructions</a></h2>
@@ -436,25 +438,29 @@ edited 23 Feb 2026
 13:34</time>
     </div>
     <div class="note-body"><p>Frontline LLM's are capable of following ~150-200 instructions. Before <code>CLAUDE.md</code> is read, <code>claude</code> already gets ~50 instructions. This means that the amount of instructions in your personal <code>CLAUDE.md</code> file plus any in your project, ideally need to stay below ~150.</p></div>
-    <div class="note-actions" style="display: flex;">
+    <div class="note-actions">
       <button class="note-action" data-action="edit" data-id="mlz1rjkb5qmdn">edit</button>
       <button class="note-action delete" data-action="delete" data-id="mlz1rjkb5qmdn">delete</button>
     </div>
   </div>
   <div class="edit-area" id="e-mlz1rjkb5qmdn">
-    <input class="edit-title" type="text" placeholder="Title (optional)">
+    <input class="edit-title" type="text" placeholder="Title (optional)" />
     <textarea class="edit-textarea"></textarea>
     <div class="edit-footer">
       <button class="save-btn" data-action="save" data-id="mlz1rjkb5qmdn">Save</button>
       <button class="cancel-btn" data-action="cancel" data-id="mlz1rjkb5qmdn">Cancel</button>
     </div>
   </div>
-</article></main>
+</article>
+<!-- NOTES_HTML_END -->
+  </main>
 
-<div id="bio-section"><aside class="bio">
+<div id="bio-section"><!-- BIO_HTML_START -->
+<aside class="bio">
   <div class="bio-label">About</div>
   <div class="bio-body"><p>Henricus is a backend software developer with a passion for complex systems and elegant code architecture. Specializing in Elixir and Rust, he thrives on solving challenging technical problems and untangling intricate backend logic, though he openly admits frontend development isn't his forte. When he's not deep in code, Henricus enjoys analog and digital photography and considers being a dad his greatest achievement and defining characteristic.</p></div>
-</aside></div>
+</aside>
+<!-- BIO_HTML_END --></div>
 </div>
 
 <!-- Settings modal -->
@@ -493,7 +499,6 @@ edited 23 Feb 2026
 </div>
 
 <script>
-// <![CDATA[
 // ── Markdown ──────────────────────────────────────────────────────────────────
 function md(src) {
   if (!src) return '';
@@ -780,13 +785,18 @@ function importNotes(input) {
 // ── Quine ─────────────────────────────────────────────────────────────────────
 function notesStaticHtml() {
   const sorted = [...notes].sort((a,b) => b.createdAt - a.createdAt);
-  if (!sorted.length) return '<p class="empty-state">Nothing yet.\x3C/p>';
+  if (!sorted.length) return '<p class="empty-state">Nothing yet.<' + '/p>';
   return sorted.map(noteToHtml).join('\n');
 }
 
-function downloadQuine() {
-  let src = document.documentElement.outerHTML;
+function bioStaticHtml() {
+  if (!settings.bio) return '';
+  return '<aside class="bio">\n  <div class="bio-label">About<' + '/div>\n  <div class="bio-body">' + md(settings.bio) + '<' + '/div>\n<' + '/aside>';
+}
 
+function applyQuineReplacements(src) {
+  const siteTitle = settings.title || 'Notes';
+  const siteDesc  = settings.description || '';
   src = src.replace(
     new RegExp('// QUINE_NOTES_START[\\s\\S]*?// QUINE_NOTES_END'),
     '// QUINE_NOTES_START\nvar EMBEDDED_NOTES = ' + JSON.stringify(notes) + ';\n// QUINE_NOTES_END'
@@ -796,54 +806,25 @@ function downloadQuine() {
     '// QUINE_SETTINGS_START\nvar EMBEDDED_SETTINGS = ' + JSON.stringify(settings) + ';\n// QUINE_SETTINGS_END'
   );
   src = src.replace(
-    new RegExp('<!-- NOTES_HTML_START -->
-<article class="note" id="n-mlz1rjkb5qmdn" data-id="mlz1rjkb5qmdn" data-title="Instructions" data-body="Frontline LLM's are capable of following ~150-200 instructions. Before `CLAUDE.md` is read, `claude` already gets ~50 instructions. This means that the amount of instructions in your personal `CLAUDE.md` file plus any in your project, ideally need to stay below ~150.">
-  <div class="note-view">
-    <div class="note-header">
-      <h2 class="note-title"><a class="note-anchor" href="#instructions" id="instructions">Instructions</a></h2>
-      <time class="note-time" datetime="2026-02-23T10:42:00.011Z">23 Feb 2026
-11:42
-edited 23 Feb 2026
-13:34</time>
-    </div>
-    <div class="note-body"><p>Frontline LLM's are capable of following ~150-200 instructions. Before <code>CLAUDE.md</code> is read, <code>claude</code> already gets ~50 instructions. This means that the amount of instructions in your personal <code>CLAUDE.md</code> file plus any in your project, ideally need to stay below ~150.</p></div>
-    <div class="note-actions">
-      <button class="note-action" data-action="edit" data-id="mlz1rjkb5qmdn">edit</button>
-      <button class="note-action delete" data-action="delete" data-id="mlz1rjkb5qmdn">delete</button>
-    </div>
-  </div>
-  <div class="edit-area" id="e-mlz1rjkb5qmdn">
-    <input class="edit-title" type="text" placeholder="Title (optional)" />
-    <textarea class="edit-textarea"></textarea>
-    <div class="edit-footer">
-      <button class="save-btn" data-action="save" data-id="mlz1rjkb5qmdn">Save</button>
-      <button class="cancel-btn" data-action="cancel" data-id="mlz1rjkb5qmdn">Cancel</button>
-    </div>
-  </div>
-</article>
-<!-- NOTES_HTML_END -->'),
+    new RegExp('<!-- NOTES_HTML_START -->[\\s\\S]*?<!-- NOTES_HTML_END -->'),
     '<!-- NOTES_HTML_START -->\n' + notesStaticHtml() + '\n<!-- NOTES_HTML_END -->'
   );
-  const siteTitle = settings.title || 'Notes';
-  const siteDesc  = settings.description || '';
   src = src.replace(
     new RegExp('<!-- SITE_META_START -->[\\s\\S]*?<!-- SITE_META_END -->'),
-    '<!-- SITE_META_START -->\n<title>' + esc(siteTitle) + '\x3C/title>\n<meta name="description" content="' + esc(siteDesc) + '">\n<!-- SITE_META_END -->'
+    '<!-- SITE_META_START -->\n<title>' + esc(siteTitle) + '<' + '/title>\n<meta name="description" content="' + esc(siteDesc) + '">\n<!-- SITE_META_END -->'
   );
   src = src.replace(
     new RegExp('<!-- HEADER_TITLE_START -->[\\s\\S]*?<!-- HEADER_TITLE_END -->'),
-    '<!-- HEADER_TITLE_START --><h1>' + esc(siteTitle) + '\x3C/h1><!-- HEADER_TITLE_END -->'
+    '<!-- HEADER_TITLE_START --><h1>' + esc(siteTitle) + '<' + '/h1><!-- HEADER_TITLE_END -->'
   );
   src = src.replace(
-    new RegExp('<!-- BIO_HTML_START -->
-<aside class="bio">
-  <div class="bio-label">About</div>
-  <div class="bio-body"><p>Henricus is a backend software developer with a passion for complex systems and elegant code architecture. Specializing in Elixir and Rust, he thrives on solving challenging technical problems and untangling intricate backend logic, though he openly admits frontend development isn't his forte. When he's not deep in code, Henricus enjoys analog and digital photography and considers being a dad his greatest achievement and defining characteristic.</p></div>
-</aside>
-<!-- BIO_HTML_END -->'),
+    new RegExp('<!-- BIO_HTML_START -->[\\s\\S]*?<!-- BIO_HTML_END -->'),
     '<!-- BIO_HTML_START -->\n' + bioStaticHtml() + '\n<!-- BIO_HTML_END -->'
   );
+  return src;
+}
 
+function triggerDownload(src) {
   const blob = new Blob([src], { type: 'text/html;charset=utf-8' });
   const a = document.createElement('a');
   a.href = URL.createObjectURL(blob);
@@ -854,7 +835,24 @@ edited 23 Feb 2026
   URL.revokeObjectURL(a.href);
 }
 
+function downloadQuine() {
+  if (location.protocol === 'file:') {
+    // file:// protocol — fetch is blocked, use the original source captured at load time
+    triggerDownload(applyQuineReplacements(window.__originalSource));
+  } else {
+    // Served over HTTP — fetch the clean unmodified source file
+    fetch(location.href)
+      .then(r => r.text())
+      .then(src => triggerDownload(applyQuineReplacements(src)))
+      .catch(err => alert('Download failed: ' + err.message));
+  }
+}
+
+
 // ── Init ──────────────────────────────────────────────────────────────────────
+// Capture original source before any DOM mutation (used as file:// quine fallback)
+window.__originalSource = document.documentElement.outerHTML;
+
 
 // Event delegation for dynamically rendered note buttons
 document.getElementById('notes-list').addEventListener('click', e => {
@@ -903,8 +901,4 @@ document.title = settings.title || 'Notes';
 
 render();
 renderBio();
-// ]]>
-</script>
-
-
-</body></html>
+</script></body></html>
