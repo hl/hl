@@ -499,32 +499,32 @@ function md(src) {
   if (!src) return '';
   let s = src
     .replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
-  s = s.replace(/```([^`]*?)```/gs, (_,c) => `<pre><code>${c.replace(/^\n/,'')}</code></pre>`);
-  s = s.replace(/`([^`\n]+)`/g, '<code>$1</code>');
+  s = s.replace(/```([^`]*?)```/gs, (_,c) => `<pre><code>${c.replace(/^\n/,'')}\x3C/code>\x3C/pre>`);
+  s = s.replace(/`([^`\n]+)`/g, '<code>$1\x3C/code>');
   s = s.replace(/^[-*_]{3,}\s*$/gm, '<hr>');
-  s = s.replace(/^### (.+)$/gm,'<h3>$1</h3>');
-  s = s.replace(/^## (.+)$/gm,'<h2>$1</h2>');
-  s = s.replace(/^# (.+)$/gm,'<h1>$1</h1>');
-  s = s.replace(/^&gt; (.+)$/gm,'<blockquote>$1</blockquote>');
-  s = s.replace(/\*\*\*(.+?)\*\*\*/g,'<strong><em>$1</em></strong>');
-  s = s.replace(/\*\*(.+?)\*\*/g,'<strong>$1</strong>');
-  s = s.replace(/\*(.+?)\*/g,'<em>$1</em>');
-  s = s.replace(/__(.+?)__/g,'<strong>$1</strong>');
-  s = s.replace(/_(.+?)_/g,'<em>$1</em>');
-  s = s.replace(/\[([^\]]+)\]\(([^)]+)\)/g,'<a href="$2" target="_blank" rel="noopener">$1</a>');
+  s = s.replace(/^### (.+)$/gm,'<h3>$1\x3C/h3>');
+  s = s.replace(/^## (.+)$/gm,'<h2>$1\x3C/h2>');
+  s = s.replace(/^# (.+)$/gm,'<h1>$1\x3C/h1>');
+  s = s.replace(/^&gt; (.+)$/gm,'<blockquote>$1\x3C/blockquote>');
+  s = s.replace(/\*\*\*(.+?)\*\*\*/g,'<strong><em>$1\x3C/em>\x3C/strong>');
+  s = s.replace(/\*\*(.+?)\*\*/g,'<strong>$1\x3C/strong>');
+  s = s.replace(/\*(.+?)\*/g,'<em>$1\x3C/em>');
+  s = s.replace(/__(.+?)__/g,'<strong>$1\x3C/strong>');
+  s = s.replace(/_(.+?)_/g,'<em>$1\x3C/em>');
+  s = s.replace(/\[([^\]]+)\]\(([^)]+)\)/g,'<a href="$2" target="_blank" rel="noopener">$1\x3C/a>');
   s = s.replace(/((?:^[-*] .+\n?)+)/gm, m => {
-    const items = m.trim().split('\n').map(l=>`<li>${l.replace(/^[-*] /,'')}</li>`).join('');
-    return `<ul>${items}</ul>`;
+    const items = m.trim().split('\n').map(l=>`<li>${l.replace(/^[-*] /,'')}\x3C/li>`).join('');
+    return `<ul>${items}\x3C/ul>`;
   });
   s = s.replace(/((?:^\d+\. .+\n?)+)/gm, m => {
-    const items = m.trim().split('\n').map(l=>`<li>${l.replace(/^\d+\. /,'')}</li>`).join('');
-    return `<ol>${items}</ol>`;
+    const items = m.trim().split('\n').map(l=>`<li>${l.replace(/^\d+\. /,'')}\x3C/li>`).join('');
+    return `<ol>${items}\x3C/ol>`;
   });
   s = s.split(/\n\n+/).map(b => {
     b = b.trim();
     if (!b) return '';
     if (/^<(h[1-6]|ul|ol|pre|blockquote|hr)/.test(b)) return b;
-    return `<p>${b.replace(/\n/g,'<br>')}</p>`;
+    return `<p>${b.replace(/\n/g,'<br>')}\x3C/p>`;
   }).join('\n');
   return s;
 }
@@ -590,8 +590,8 @@ function noteToHtml(n) {
   const editedLine = n.editedAt ? `\nedited ${fmtDate(n.editedAt)}` : '';
   const anchor = n.title ? slugify(n.title) : n.id;
   const titleHtml = n.title
-    ? `<h2 class="note-title"><a class="note-anchor" href="#${anchor}" id="${anchor}">${esc(n.title)}</a></h2>`
-    : `<div id="${n.id}"></div>`;
+    ? `<h2 class="note-title"><a class="note-anchor" href="#${anchor}" id="${anchor}">${esc(n.title)}\x3C/a>\x3C/h2>`
+    : `<div id="${n.id}">\x3C/div>`;
 
   // Textarea values are set via JS after render to avoid HTML entity issues.
   // Raw note data is stored in data attributes (HTML-escaped for safety).
@@ -599,23 +599,23 @@ function noteToHtml(n) {
   <div class="note-view">
     <div class="note-header">
       ${titleHtml}
-      <time class="note-time" datetime="${fmtDatetime(n.createdAt)}">${esc(fmtDate(n.createdAt))}${esc(editedLine)}</time>
-    </div>
-    <div class="note-body">${md(n.body)}</div>
+      <time class="note-time" datetime="${fmtDatetime(n.createdAt)}">${esc(fmtDate(n.createdAt))}${esc(editedLine)}\x3C/time>
+    \x3C/div>
+    <div class="note-body">${md(n.body)}\x3C/div>
     <div class="note-actions">
-      <button class="note-action" data-action="edit" data-id="${n.id}">edit</button>
-      <button class="note-action delete" data-action="delete" data-id="${n.id}">delete</button>
-    </div>
-  </div>
+      <button class="note-action" data-action="edit" data-id="${n.id}">edit\x3C/button>
+      <button class="note-action delete" data-action="delete" data-id="${n.id}">delete\x3C/button>
+    \x3C/div>
+  \x3C/div>
   <div class="edit-area" id="e-${n.id}">
     <input class="edit-title" type="text" placeholder="Title (optional)" />
-    <textarea class="edit-textarea"></textarea>
+    <textarea class="edit-textarea">\x3C/textarea>
     <div class="edit-footer">
-      <button class="save-btn" data-action="save" data-id="${n.id}">Save</button>
-      <button class="cancel-btn" data-action="cancel" data-id="${n.id}">Cancel</button>
-    </div>
-  </div>
-</article>`;
+      <button class="save-btn" data-action="save" data-id="${n.id}">Save\x3C/button>
+      <button class="cancel-btn" data-action="cancel" data-id="${n.id}">Cancel\x3C/button>
+    \x3C/div>
+  \x3C/div>
+\x3C/article>`;
 }
 
 // ── Render ────────────────────────────────────────────────────────────────────
@@ -623,7 +623,7 @@ function render() {
   const el = document.getElementById('notes-list');
   const sorted = [...notes].sort((a,b) => b.createdAt - a.createdAt);
   if (!sorted.length) {
-    el.innerHTML = '<p class="empty-state">Nothing yet.</p>';
+    el.innerHTML = '<p class="empty-state">Nothing yet.\x3C/p>';
     return;
   }
   el.innerHTML = sorted.map(noteToHtml).join('\n');
@@ -693,9 +693,9 @@ function saveEdit(id) {
 function bioStaticHtml() {
   if (!settings.bio) return '';
   return `<aside class="bio">
-  <div class="bio-label">About</div>
-  <div class="bio-body">${md(settings.bio)}</div>
-</aside>`;
+  <div class="bio-label">About\x3C/div>
+  <div class="bio-body">${md(settings.bio)}\x3C/div>
+\x3C/aside>`;
 }
 
 function renderBio() {
@@ -780,7 +780,7 @@ function importNotes(input) {
 // ── Quine ─────────────────────────────────────────────────────────────────────
 function notesStaticHtml() {
   const sorted = [...notes].sort((a,b) => b.createdAt - a.createdAt);
-  if (!sorted.length) return '<p class="empty-state">Nothing yet.</p>';
+  if (!sorted.length) return '<p class="empty-state">Nothing yet.\x3C/p>';
   return sorted.map(noteToHtml).join('\n');
 }
 
@@ -828,11 +828,11 @@ edited 23 Feb 2026
   const siteDesc  = settings.description || '';
   src = src.replace(
     new RegExp('<!-- SITE_META_START -->[\\s\\S]*?<!-- SITE_META_END -->'),
-    '<!-- SITE_META_START -->\n<title>' + esc(siteTitle) + '</title>\n<meta name="description" content="' + esc(siteDesc) + '">\n<!-- SITE_META_END -->'
+    '<!-- SITE_META_START -->\n<title>' + esc(siteTitle) + '\x3C/title>\n<meta name="description" content="' + esc(siteDesc) + '">\n<!-- SITE_META_END -->'
   );
   src = src.replace(
     new RegExp('<!-- HEADER_TITLE_START -->[\\s\\S]*?<!-- HEADER_TITLE_END -->'),
-    '<!-- HEADER_TITLE_START --><h1>' + esc(siteTitle) + '</h1><!-- HEADER_TITLE_END -->'
+    '<!-- HEADER_TITLE_START --><h1>' + esc(siteTitle) + '\x3C/h1><!-- HEADER_TITLE_END -->'
   );
   src = src.replace(
     new RegExp('<!-- BIO_HTML_START -->
