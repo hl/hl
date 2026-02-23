@@ -406,8 +406,8 @@
   <header>
     <!-- HEADER_TITLE_START --><h1>Henricus's Notes</h1><!-- HEADER_TITLE_END -->
     <div class="header-actions">
-      <button class="hdr-btn" id="settings-btn" style="display: inline;" onclick="openSettings()">settings</button>
-      <button class="hdr-btn" id="download-btn" style="display: inline;" onclick="downloadQuine()">↓ save</button>
+      <button class="hdr-btn" id="settings-btn" style="display: inline;">settings</button>
+      <button class="hdr-btn" id="download-btn" style="display: inline;">↓ save</button>
     </div>
   </header>
 
@@ -419,10 +419,10 @@
 
   <div class="compose" id="compose" style="display: block;">
     <input type="text" id="compose-title" placeholder="Title (optional)">
-    <textarea id="compose-body" placeholder="Write something…" oninput="autoResize(this)"></textarea>
+    <textarea id="compose-body" placeholder="Write something…"></textarea>
     <div class="compose-footer">
       <span class="compose-hint">⌘↵ to post</span>
-      <button class="post-btn" onclick="postNote()">Post</button>
+      <button class="post-btn">Post</button>
     </div>
   </div>
 
@@ -437,16 +437,16 @@ edited 23 Feb 2026
     </div>
     <div class="note-body"><p>Frontline LLM's are capable of following ~150-200 instructions. Before <code>CLAUDE.md</code> is read, <code>claude</code> already gets ~50 instructions. This means that the amount of instructions in your personal <code>CLAUDE.md</code> file plus any in your project, ideally need to stay below ~150.</p></div>
     <div class="note-actions" style="display: flex;">
-      <button class="note-action" onclick="startEdit('mlz1rjkb5qmdn')">edit</button>
-      <button class="note-action delete" onclick="deleteNote('mlz1rjkb5qmdn')">delete</button>
+      <button class="note-action" data-action="edit" data-id="mlz1rjkb5qmdn">edit</button>
+      <button class="note-action delete" data-action="delete" data-id="mlz1rjkb5qmdn">delete</button>
     </div>
   </div>
   <div class="edit-area" id="e-mlz1rjkb5qmdn">
     <input class="edit-title" type="text" placeholder="Title (optional)">
-    <textarea class="edit-textarea" oninput="autoResize(this)"></textarea>
+    <textarea class="edit-textarea"></textarea>
     <div class="edit-footer">
-      <button class="save-btn" onclick="saveEdit('mlz1rjkb5qmdn')">Save</button>
-      <button class="cancel-btn" onclick="cancelEdit('mlz1rjkb5qmdn')">Cancel</button>
+      <button class="save-btn" data-action="save" data-id="mlz1rjkb5qmdn">Save</button>
+      <button class="cancel-btn" data-action="cancel" data-id="mlz1rjkb5qmdn">Cancel</button>
     </div>
   </div>
 </article></main>
@@ -458,7 +458,7 @@ edited 23 Feb 2026
 </div>
 
 <!-- Settings modal -->
-<div class="modal-backdrop" id="settings-modal" onclick="maybeCloseSettings(event)">
+<div class="modal-backdrop" id="settings-modal">
   <div class="modal">
     <h2>Settings</h2>
     <div class="field">
@@ -474,18 +474,18 @@ edited 23 Feb 2026
       <textarea id="s-bio" style="min-height:120px"></textarea>
     </div>
     <div class="modal-footer">
-      <button class="cancel-btn" onclick="closeSettings()">Cancel</button>
-      <button class="save-btn" onclick="saveSettings()">Save</button>
+      <button class="cancel-btn">Cancel</button>
+      <button class="save-btn">Save</button>
     </div>
 
     <div class="modal-divider"></div>
 
     <div class="modal-section-label">Data</div>
     <div class="data-actions">
-      <button class="data-btn" onclick="exportNotes()">↓ export json</button>
+      <button class="data-btn" data-action="export">↓ export json</button>
       <label class="data-btn import-label">
         ↑ import json
-        <input type="file" id="import-input" accept=".json,application/json" style="display:none" onchange="importNotes(this)">
+        <input type="file" id="import-input" accept=".json,application/json" style="display:none">
       </label>
     </div>
     <div id="import-feedback" class="import-feedback"></div>
@@ -602,16 +602,16 @@ function noteToHtml(n) {
     </div>
     <div class="note-body">${md(n.body)}</div>
     <div class="note-actions">
-      <button class="note-action" onclick="startEdit('${n.id}')">edit</button>
-      <button class="note-action delete" onclick="deleteNote('${n.id}')">delete</button>
+      <button class="note-action" data-action="edit" data-id="${n.id}">edit</button>
+      <button class="note-action delete" data-action="delete" data-id="${n.id}">delete</button>
     </div>
   </div>
   <div class="edit-area" id="e-${n.id}">
     <input class="edit-title" type="text" placeholder="Title (optional)" />
-    <textarea class="edit-textarea" oninput="autoResize(this)"></textarea>
+    <textarea class="edit-textarea"></textarea>
     <div class="edit-footer">
-      <button class="save-btn" onclick="saveEdit('${n.id}')">Save</button>
-      <button class="cancel-btn" onclick="cancelEdit('${n.id}')">Cancel</button>
+      <button class="save-btn" data-action="save" data-id="${n.id}">Save</button>
+      <button class="cancel-btn" data-action="cancel" data-id="${n.id}">Cancel</button>
     </div>
   </div>
 </article>`;
@@ -807,16 +807,16 @@ edited 23 Feb 2026
     </div>
     <div class="note-body"><p>Frontline LLM's are capable of following ~150-200 instructions. Before <code>CLAUDE.md</code> is read, <code>claude</code> already gets ~50 instructions. This means that the amount of instructions in your personal <code>CLAUDE.md</code> file plus any in your project, ideally need to stay below ~150.</p></div>
     <div class="note-actions">
-      <button class="note-action" onclick="startEdit('mlz1rjkb5qmdn')">edit</button>
-      <button class="note-action delete" onclick="deleteNote('mlz1rjkb5qmdn')">delete</button>
+      <button class="note-action" data-action="edit" data-id="mlz1rjkb5qmdn">edit</button>
+      <button class="note-action delete" data-action="delete" data-id="mlz1rjkb5qmdn">delete</button>
     </div>
   </div>
   <div class="edit-area" id="e-mlz1rjkb5qmdn">
     <input class="edit-title" type="text" placeholder="Title (optional)" />
-    <textarea class="edit-textarea" oninput="autoResize(this)"></textarea>
+    <textarea class="edit-textarea"></textarea>
     <div class="edit-footer">
-      <button class="save-btn" onclick="saveEdit('mlz1rjkb5qmdn')">Save</button>
-      <button class="cancel-btn" onclick="cancelEdit('mlz1rjkb5qmdn')">Cancel</button>
+      <button class="save-btn" data-action="save" data-id="mlz1rjkb5qmdn">Save</button>
+      <button class="cancel-btn" data-action="cancel" data-id="mlz1rjkb5qmdn">Cancel</button>
     </div>
   </div>
 </article>
@@ -854,10 +854,45 @@ edited 23 Feb 2026
 }
 
 // ── Init ──────────────────────────────────────────────────────────────────────
+
+// Event delegation for dynamically rendered note buttons
+document.getElementById('notes-list').addEventListener('click', e => {
+  const btn = e.target.closest('[data-action]');
+  if (!btn) return;
+  const id = btn.dataset.id;
+  const action = btn.dataset.action;
+  if (action === 'edit')   startEdit(id);
+  if (action === 'delete') deleteNote(id);
+  if (action === 'save')   saveEdit(id);
+  if (action === 'cancel') cancelEdit(id);
+});
+
+// Event delegation for edit textarea auto-resize
+document.getElementById('notes-list').addEventListener('input', e => {
+  if (e.target.classList.contains('edit-textarea')) autoResize(e.target);
+});
+
+// Static button listeners
+document.getElementById('settings-btn').addEventListener('click', openSettings);
+document.getElementById('download-btn').addEventListener('click', downloadQuine);
 document.getElementById('compose-body').addEventListener('keydown', e => {
   if ((e.metaKey || e.ctrlKey) && e.key === 'Enter') postNote();
 });
+document.querySelector('.post-btn').addEventListener('click', postNote);
 
+// Compose textarea auto-resize
+document.getElementById('compose-body').addEventListener('input', function() { autoResize(this); });
+
+// Settings modal
+document.getElementById('settings-modal').addEventListener('click', maybeCloseSettings);
+document.querySelector('.modal .cancel-btn').addEventListener('click', closeSettings);
+document.querySelector('.modal .save-btn').addEventListener('click', saveSettings);
+
+// Export / import
+document.querySelector('[data-action="export"]').addEventListener('click', exportNotes);
+document.getElementById('import-input').addEventListener('change', function() { importNotes(this); });
+
+// Show JS-only elements
 document.getElementById('compose').style.display = 'block';
 document.getElementById('settings-btn').style.display = 'inline';
 document.getElementById('download-btn').style.display = 'inline';
