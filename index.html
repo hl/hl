@@ -428,6 +428,28 @@
 
   <main id="notes-list">
 <!-- NOTES_HTML_START -->
+<article class="note" id="n-mn1jzgt308h3d" data-id="mn1jzgt308h3d" data-title="LLM as the compiler" data-body="I used to trust my compiler to emit correct output and never read the bytecode. If something was wrong, the bug was in my source. Nothing has changed: I now write specs, and the LLM compiles them into code.">
+  <div class="note-view">
+    <div class="note-header">
+      <h2 class="note-title"><a class="note-anchor" href="#llm-as-the-compiler" id="llm-as-the-compiler">LLM as the compiler</a></h2>
+      <time class="note-time" datetime="2026-03-22T09:27:17.463Z">22 Mar 2026
+10:27</time>
+    </div>
+    <div class="note-body"><p>I used to trust my compiler to emit correct output and never read the bytecode. If something was wrong, the bug was in my source. Nothing has changed: I now write specs, and the LLM compiles them into code.</p></div>
+    <div class="note-actions">
+      <button class="note-action" data-action="edit" data-id="mn1jzgt308h3d">edit</button>
+      <button class="note-action delete" data-action="delete" data-id="mn1jzgt308h3d">delete</button>
+    </div>
+  </div>
+  <div class="edit-area" id="e-mn1jzgt308h3d">
+    <input class="edit-title" type="text" placeholder="Title (optional)" />
+    <textarea class="edit-textarea"></textarea>
+    <div class="edit-footer">
+      <button class="save-btn" data-action="save" data-id="mn1jzgt308h3d">Save</button>
+      <button class="cancel-btn" data-action="cancel" data-id="mn1jzgt308h3d">Cancel</button>
+    </div>
+  </div>
+</article>
 <article class="note" id="n-mmdd734f1lc65" data-id="mmdd734f1lc65" data-title="Specs" data-body="Well written specs next to your code are vital for getting a good output from an agent. Together with quality gates like tests, linters and etc you can get great output from your agent. Managing your back-pressure is the key to running an autonomous agent">
   <div class="note-view">
     <div class="note-header">
@@ -611,7 +633,7 @@ const LSKEY  = 'microblog_v1';
 const SETKEY = 'microblog_settings';
 
 // QUINE_NOTES_START
-var EMBEDDED_NOTES = [{"id":"mmdd734f1lc65","title":"Specs","body":"Well written specs next to your code are vital for getting a good output from an agent. Together with quality gates like tests, linters and etc you can get great output from your agent. Managing your back-pressure is the key to running an autonomous agent","createdAt":1772709047439,"editedAt":null},{"id":"mmdd3waffajzh","title":"Context-Efficient Backpressure for Coding Agents","body":"When the agent runs a quality gate command, test, linter, etc, you don't need to feed the success output back into the agents' context. With agent hooks or in the case of #Elixir with a custom mix task, you can have succesful commands like `mix test` simply return checkmark rather than 5k dots.","createdAt":1772708898615,"editedAt":null},{"id":"mlz1rjkb5qmdn","title":"Instructions","body":"Frontline LLM's are capable of following ~150-200 instructions. Before `CLAUDE.md` is read, `claude` already gets ~50 instructions. This means that the amount of instructions in your personal `CLAUDE.md` file plus any in your project, ideally need to stay below ~150.","createdAt":1771843320011,"editedAt":1771850093565}];
+var EMBEDDED_NOTES = [{"id":"mn1jzgt308h3d","title":"LLM as the compiler","body":"I used to trust my compiler to emit correct output and never read the bytecode. If something was wrong, the bug was in my source. Nothing has changed: I now write specs, and the LLM compiles them into code.","createdAt":1774171637463,"editedAt":null},{"id":"mmdd734f1lc65","title":"Specs","body":"Well written specs next to your code are vital for getting a good output from an agent. Together with quality gates like tests, linters and etc you can get great output from your agent. Managing your back-pressure is the key to running an autonomous agent","createdAt":1772709047439,"editedAt":null},{"id":"mmdd3waffajzh","title":"Context-Efficient Backpressure for Coding Agents","body":"When the agent runs a quality gate command, test, linter, etc, you don't need to feed the success output back into the agents' context. With agent hooks or in the case of #Elixir with a custom mix task, you can have succesful commands like `mix test` simply return checkmark rather than 5k dots.","createdAt":1772708898615,"editedAt":null},{"id":"mlz1rjkb5qmdn","title":"Instructions","body":"Frontline LLM's are capable of following ~150-200 instructions. Before `CLAUDE.md` is read, `claude` already gets ~50 instructions. This means that the amount of instructions in your personal `CLAUDE.md` file plus any in your project, ideally need to stay below ~150.","createdAt":1771843320011,"editedAt":1771850093565}];
 // QUINE_NOTES_END
 
 // QUINE_SETTINGS_START
