@@ -582,7 +582,7 @@ function md(src) {
   s = s.replace(/\*(.+?)\*/g,'<em>$1\x3C/em>');
   s = s.replace(/__(.+?)__/g,'<strong>$1\x3C/strong>');
   s = s.replace(/_(.+?)_/g,'<em>$1\x3C/em>');
-  s = s.replace(/\[([^\]]+)\]\(([^)]+)\)/g,'<a href="$2" target="_blank" rel="noopener">$1\x3C/a>');
+  s = s.replace(/\[([^\]]+)\]\(([^)]+)\)/g, (_, text, url) => `<a href="${esc(sanitizeUrl(url))}" target="_blank" rel="noopener">${text}\x3C/a>`);
   s = s.replace(/((?:^[-*] .+\n?)+)/gm, m => {
     const items = m.trim().split('\n').map(l=>`<li>${l.replace(/^[-*] /,'')}\x3C/li>`).join('');
     return `<ul>${items}\x3C/ul>`;
@@ -598,6 +598,17 @@ function md(src) {
     return `<p>${b.replace(/\n/g,'<br>')}\x3C/p>`;
   }).join('\n');
   return s;
+}
+
+function sanitizeUrl(url) {
+  const raw = String(url || '').trim();
+  if (!raw) return '#';
+  if (raw.startsWith('#') || raw.startsWith('/')) return raw;
+  try {
+    const parsed = new URL(raw, location.href);
+    if (['http:', 'https:', 'mailto:'].includes(parsed.protocol)) return parsed.href;
+  } catch(e) {}
+  return '#';
 }
 
 function esc(s) {
