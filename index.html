@@ -428,6 +428,32 @@
 
   <main id="notes-list">
 <!-- NOTES_HTML_START -->
+<article class="note" id="n-mpbaj0kwiolsy" data-id="mpbaj0kwiolsy" data-title="Developers" data-body="1. Add types, tests, and CI before adding agents
+2. Review architecture and test quality, not every line
+3. Give agents their own branches and CI runs
+4. Learn agent management as a deliberate skill
+5. Start now">
+  <div class="note-view">
+    <div class="note-header">
+      <h2 class="note-title"><a class="note-anchor" href="#developers" id="developers">Developers</a></h2>
+      <time class="note-time" datetime="2026-05-18T14:19:39.824Z">18 May 2026
+16:19</time>
+    </div>
+    <div class="note-body"><ol><li>Add types, tests, and CI before adding agents</li><li>Review architecture and test quality, not every line</li><li>Give agents their own branches and CI runs</li><li>Learn agent management as a deliberate skill</li><li>Start now</li></ol></div>
+    <div class="note-actions">
+      <button class="note-action" data-action="edit" data-id="mpbaj0kwiolsy">edit</button>
+      <button class="note-action delete" data-action="delete" data-id="mpbaj0kwiolsy">delete</button>
+    </div>
+  </div>
+  <div class="edit-area" id="e-mpbaj0kwiolsy">
+    <input class="edit-title" type="text" placeholder="Title (optional)" />
+    <textarea class="edit-textarea"></textarea>
+    <div class="edit-footer">
+      <button class="save-btn" data-action="save" data-id="mpbaj0kwiolsy">Save</button>
+      <button class="cancel-btn" data-action="cancel" data-id="mpbaj0kwiolsy">Cancel</button>
+    </div>
+  </div>
+</article>
 <article class="note" id="n-mn1jzgt308h3d" data-id="mn1jzgt308h3d" data-title="LLM as the compiler" data-body="I used to trust my compiler to emit correct output and never read the bytecode. If something was wrong, the bug was in my source. Nothing has changed: I now write specs, and the LLM compiles them into code.">
   <div class="note-view">
     <div class="note-header">
@@ -644,7 +670,7 @@ const LSKEY  = 'microblog_v1';
 const SETKEY = 'microblog_settings';
 
 // QUINE_NOTES_START
-var EMBEDDED_NOTES = [{"id":"mn1jzgt308h3d","title":"LLM as the compiler","body":"I used to trust my compiler to emit correct output and never read the bytecode. If something was wrong, the bug was in my source. Nothing has changed: I now write specs, and the LLM compiles them into code.","createdAt":1774171637463,"editedAt":null},{"id":"mmdd734f1lc65","title":"Specs","body":"Well written specs next to your code are vital for getting a good output from an agent. Together with quality gates like tests, linters and etc you can get great output from your agent. Managing your back-pressure is the key to running an autonomous agent","createdAt":1772709047439,"editedAt":null},{"id":"mmdd3waffajzh","title":"Context-Efficient Backpressure for Coding Agents","body":"When the agent runs a quality gate command, test, linter, etc, you don't need to feed the success output back into the agents' context. With agent hooks or in the case of #Elixir with a custom mix task, you can have succesful commands like `mix test` simply return checkmark rather than 5k dots.","createdAt":1772708898615,"editedAt":null},{"id":"mlz1rjkb5qmdn","title":"Instructions","body":"Frontline LLM's are capable of following ~150-200 instructions. Before `CLAUDE.md` is read, `claude` already gets ~50 instructions. This means that the amount of instructions in your personal `CLAUDE.md` file plus any in your project, ideally need to stay below ~150.","createdAt":1771843320011,"editedAt":1771850093565}];
+var EMBEDDED_NOTES = [{"id":"mpbaj0kwiolsy","title":"Developers","body":"1. Add types, tests, and CI before adding agents\n2. Review architecture and test quality, not every line\n3. Give agents their own branches and CI runs\n4. Learn agent management as a deliberate skill\n5. Start now","createdAt":1779113979824,"editedAt":null},{"id":"mn1jzgt308h3d","title":"LLM as the compiler","body":"I used to trust my compiler to emit correct output and never read the bytecode. If something was wrong, the bug was in my source. Nothing has changed: I now write specs, and the LLM compiles them into code.","createdAt":1774171637463,"editedAt":null},{"id":"mmdd734f1lc65","title":"Specs","body":"Well written specs next to your code are vital for getting a good output from an agent. Together with quality gates like tests, linters and etc you can get great output from your agent. Managing your back-pressure is the key to running an autonomous agent","createdAt":1772709047439,"editedAt":null},{"id":"mmdd3waffajzh","title":"Context-Efficient Backpressure for Coding Agents","body":"When the agent runs a quality gate command, test, linter, etc, you don't need to feed the success output back into the agents' context. With agent hooks or in the case of #Elixir with a custom mix task, you can have succesful commands like `mix test` simply return checkmark rather than 5k dots.","createdAt":1772708898615,"editedAt":null},{"id":"mlz1rjkb5qmdn","title":"Instructions","body":"Frontline LLM's are capable of following ~150-200 instructions. Before `CLAUDE.md` is read, `claude` already gets ~50 instructions. This means that the amount of instructions in your personal `CLAUDE.md` file plus any in your project, ideally need to stay below ~150.","createdAt":1771843320011,"editedAt":1771850093565}];
 // QUINE_NOTES_END
 
 // QUINE_SETTINGS_START
