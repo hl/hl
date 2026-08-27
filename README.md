@@ -1,4 +1,4 @@
-# **Henricus's User Manual (v1.6)**
+# **Henricus's User Manual (v1.7)**
 
 *Welcome! You’ve found the user manual for Henricus. This guide is here to make working together a breeze and set us up for great teamwork. Feel free to read on—or jump right in and enjoy the ride!*
 
@@ -8,8 +8,8 @@ Pressed for time? Here’s what you need to know:
 
 * **Proud Dad:** Above all else, being a dad is what defines me. If you want to see me light up, just ask about my kid.
 * **Backend Enthusiast:** I love complex backend logic and the challenge of untangling tricky code.
-* **Elixir & Rust Fan:** These are my languages of choice.
-* **Role:** Software Developer—backend is my playground; frontend (HTML, CSS, JS) is not.
+* **Elixir & Go Fan:** These are my languages of choice.
+* **Role:** Staff Engineer—backend is my playground; frontend (HTML, CSS, JS) is not.
 * **Best at:** Solving tough problems behind the scenes.
 * **Photography Buff:** I enjoy both analog and digital photography—there’s something about film that just hits different.
 
